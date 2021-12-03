@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
 
     // Alex
     addProductManually() {
-
+        const new;
+        Product(1, "nouveau produit");
     }
 }
