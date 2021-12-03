@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
         //Payer en plusieurs fois
         //Payer un partie CB
         //Payer le reste en espèce
+
+        this.addProductManually();
     }
 
     scanProduct(product) {
@@ -29,7 +31,8 @@ export class AppComponent implements OnInit {
 
     // Alex
     addProductManually() {
-        const new;
-        Product(1, "nouveau produit");
+        const newProduct = new Product(1, "name", 100, 1);
+        this.products.push(newProduct);
+        console.log("add product manually", this.products);
     }
 }
