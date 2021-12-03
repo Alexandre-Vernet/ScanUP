@@ -1,21 +1,27 @@
-import { Product } from './product';
+import { ProductCart } from "./product-cart";
 
 export class Cart {
-    private _products: Product[];
+    private _products: ProductCart[];
 
     constructor() {
-        this._products = new Array<Product>();
+        this._products = new Array<ProductCart>();
     }
 
-    get products(): Product[] {
+    get products(): ProductCart[] {
         return this._products;
     }
 
-    addProduct(product: Product) {
+    addProduct(product: ProductCart) {
         this._products.push(product);
     }
 
     deleteProductById(id: number) {
         this._products.slice(id, 1);
+    }
+
+    getById(id: number) {
+        return this._products.find((x) => {
+            x.id === id;
+        });
     }
 }

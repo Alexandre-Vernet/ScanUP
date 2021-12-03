@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Cart } from "./cart";
-import { Product } from "./product";
+import { ProductCart } from "./product-cart";
 
 @Component({
     selector: "app-root",
@@ -8,25 +8,12 @@ import { Product } from "./product";
     styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    title = "ScanUP";
-
-    products: Product[] = [];
     cart: Cart = new Cart();
 
     total = 0;
     customer = { type: "", amount: 0 };
 
     ngOnInit() {
-        // Scanner un produit
-        // Modifer la quantité
-        // Scanner un autre produit
-        // Scanner un autre produit
-        // Supprimer produit au scan
-        // Ajouter un produit au code
-        //Payer en plusieurs fois
-        //Payer un partie CB
-        //Payer le reste en espèce
-
         this.scanProduct();
         this.changeQuantity();
         this.scanProduct();
@@ -38,23 +25,21 @@ export class AppComponent implements OnInit {
 
     // Arnaud
     changeQuantity() {
-        const newProduct = new Product(1, "name", 100, 1);
-        this.cart.addProduct(newProduct);
-        let index = 0;
-        this.products[index].quantity = 4;
-        console.log("change product quantity", this.products[index]);
+        const product = this.cart.getById(1);
+        product.quantity = 4;
+        console.log("change product quantity", product);
     }
 
     // Alex
     scanProduct() {
-        const newProduct = new Product(1, "name", 100, 1);
-        this.cart.addProduct(newProduct);
-        console.log("add product manually", this.products);
+        const productCart = new ProductCart(1, "name", 100, 1);
+        this.cart.addProduct(productCart);
+        console.log("add product manually", productCart);
     }
 
     // Julie
     addProductByScan(productId: number) {
-        const p = new Product(5, "Patate", 10, 1);
+        const p = new ProductCart(5, "Patate", 10, 1);
         if (p.id === productId) {
             this.cart.addProduct(p);
             console.log("Ajouter un produit au code : OK");
