@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from './product';
+import { Component, OnInit } from "@angular/core";
+import { Cart } from "./cart";
+import { Product } from "./product";
 
 @Component({
     selector: 'app-root',
@@ -10,8 +11,8 @@ export class AppComponent implements OnInit {
     title = 'ScanUP';
 
     products: Product[] = [];
+    cart: Cart = new Cart();
 
-    cart = [{ idProduct: 1, price: 20, quantity: 2 }];
     total = 0;
     customer = { type: '', amount: 0 };
 
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
     // Arnaud
     changeQuantity() {
         const newProduct = new Product(1, 'name', 100, 1);
-        this.products.push(newProduct);
+        this.cart.addProduct(newProduct);
         let index = 0;
         this.products[index].quantity = 4;
         console.log('change product quantity', this.products[index]);
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
     // Alex
     scanProduct() {
         const newProduct = new Product(1, 'name', 100, 1);
-        this.products.push(newProduct);
+        this.cart.addProduct(newProduct);
         console.log('add product manually', this.products);
     }
 
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit {
     addProductByScan(productId: number) {
         const p = new Product(5, 'Patate', 10, 1);
         if (p.id === productId) {
-            this.products.push(p);
+            this.cart.addProduct(p)
             console.log('Ajouter un produit au code : OK');
         } else {
             console.log('Ajouter un produit au code : KO');
@@ -60,7 +61,7 @@ export class AppComponent implements OnInit {
         this.customer = { type: 'CB', amount: 18 };
     }
     Pay() {
-        this.cart.forEach((elmt) => {
+        this.cart.products.forEach((elmt) => {
             this.total = +elmt.price * elmt.quantity;
         });
         do {
