@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
 
     changeQuantity() {
         const product = this.cart.getById(1);
-        console.log(product);
         product.quantity = 4;
         this.printTestResult("change Quantity", product.quantity === 4);
     }
@@ -77,9 +76,9 @@ export class AppComponent implements OnInit {
 
     printTestResult(testName: string, condition: boolean) {
         if (condition) {
-            console.log(`${testName} : OK`);
+            console.log(`%c ${testName} : OK`, "color: green");
         } else {
-            console.log(`${testName} : KO`);
+            console.log(`%c ${testName} : KO`, "color: red");
         }
     }
 }
