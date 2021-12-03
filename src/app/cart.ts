@@ -1,7 +1,7 @@
 import { ProductCart } from "./product-cart";
 
 export class Cart {
-    private _products: ProductCart[];
+    private readonly _products: ProductCart[];
 
     constructor() {
         this._products = new Array<ProductCart>();
@@ -20,8 +20,16 @@ export class Cart {
     }
 
     getById(id: number) {
-        return this._products.find((x) => {
-            x.id === id;
+        const found = this._products.find(x => {
+            return x.id === id;
         });
+
+        return found;
+
+        // this._products.forEach(element => {
+        //     if (element.id === id) {
+        //         return element;
+        //     }
+        // });
     }
 }

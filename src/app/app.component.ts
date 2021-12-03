@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Cart } from "./cart";
 import { ProductCart } from "./product-cart";
-import { Product } from "./product";
 
 @Component({
     selector: "app-root",
@@ -10,12 +9,16 @@ import { Product } from "./product";
 })
 export class AppComponent implements OnInit {
     cart: Cart = new Cart();
-    products: Product[] = [{}];
+    products = [];
 
     total = 0;
     customer = { type: "", amount: 0 };
 
     ngOnInit() {
+
+        const a = new ProductCart(1, "Tronconneuse ma couille", 99.90, 1);
+        this.cart.addProduct(a);
+
         this.scanProduct(1);
         this.changeQuantity();
         this.scanProduct(2);
@@ -26,8 +29,9 @@ export class AppComponent implements OnInit {
 
     changeQuantity() {
         const product = this.cart.getById(1);
+        console.log(product);
         product.quantity = 4;
-        this.printTestResult("change Quantity", product[1].quantity === 4);
+        this.printTestResult("change Quantity", product.quantity === 4);
     }
 
     addProductCart(product: ProductCart) {
