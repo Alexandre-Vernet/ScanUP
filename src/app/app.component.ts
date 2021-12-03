@@ -32,4 +32,15 @@ export class AppComponent implements OnInit {
         const new;
         Product(1, "nouveau produit");
     }
+
+    // Julie
+    addProductByScan(productId: number) {
+        const p = new Product(5, 'Patate', 10, 1);
+        if (p.id = productId) {
+            this.products.push(p);
+            console.log('Ajouter un produit au code : OK');
+        } else {
+            console.log('Ajouter un produit au code : KO');
+        }
+    }
 }
