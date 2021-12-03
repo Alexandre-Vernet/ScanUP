@@ -2,16 +2,12 @@ export class Product {
     private _id: number;
     private _name: string;
     private _price: number;
-    private _quantity: number;
 
-
-    constructor(id: number, name: string, price: number, quantity: number) {
+    constructor(id: number, name: string, price: number) {
         this._id = id;
         this._name = name;
         this._price = price;
-        this._quantity = quantity;
     }
-
 
     get id(): number {
         return this._id;
@@ -35,13 +31,5 @@ export class Product {
 
     set price(value: number) {
         this._price = value;
-    }
-
-    get quantity(): number {
-        return this._quantity;
-    }
-
-    set quantity(value: number) {
-        this._quantity = value;
     }
 }

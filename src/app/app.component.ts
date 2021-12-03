@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Cart } from './cart';
-import { Product } from './product';
+import { Component, OnInit } from "@angular/core";
+import { Cart } from "./cart";
+import { Product } from "./product";
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    title = 'ScanUP';
+    title = "ScanUP";
 
     products: Product[] = [];
     cart: Cart = new Cart();
 
     total = 0;
-    customer = { type: '', amount: 0 };
+    customer = { type: "", amount: 0 };
 
     ngOnInit() {
         // Scanner un produit
@@ -38,34 +38,36 @@ export class AppComponent implements OnInit {
 
     // Arnaud
     changeQuantity() {
-        const newProduct = new Product(1, 'name', 100, 1);
+        const newProduct = new Product(1, "name", 100, 1);
         this.cart.addProduct(newProduct);
         let index = 0;
         this.products[index].quantity = 4;
-        console.log('change product quantity', this.products[index]);
+        console.log("change product quantity", this.products[index]);
     }
 
     // Alex
     scanProduct() {
-        const newProduct = new Product(1, 'name', 100, 1);
+        const newProduct = new Product(1, "name", 100, 1);
         this.cart.addProduct(newProduct);
-        console.log('add product manually', this.products);
+        console.log("add product manually", this.products);
     }
 
     // Julie
     addProductByScan(productId: number) {
-        const p = new Product(5, 'Patate', 10, 1);
+        const p = new Product(5, "Patate", 10, 1);
         if (p.id === productId) {
             this.cart.addProduct(p);
-            console.log('Ajouter un produit au code : OK');
+            console.log("Ajouter un produit au code : OK");
         } else {
-            console.log('Ajouter un produit au code : KO');
+            console.log("Ajouter un produit au code : KO");
         }
     }
+
     //Emma
     choosePayementMode() {
-        this.customer = { type: 'CB', amount: 18 };
+        this.customer = { type: "CB", amount: 18 };
     }
+
     pay() {
         this.cart.products.forEach((elmt) => {
             this.total = +elmt.price * elmt.quantity;
@@ -76,9 +78,9 @@ export class AppComponent implements OnInit {
         } while (this.total > 0);
 
         if (this.total > 0) {
-            console.log('Reste à payer: ' + this.total);
+            console.log("Reste à payer: " + this.total);
         } else {
-            console.log('Montant à rendre: ' + this.total);
+            console.log("Montant à rendre: " + this.total);
         }
     }
 }
