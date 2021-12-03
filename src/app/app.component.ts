@@ -23,14 +23,20 @@ export class AppComponent implements OnInit {
         //Payer le reste en espèce
 
         this.addProductManually();
+        this.changeQuantity();
     }
 
     scanProduct(product) {
         this.products.push(product);
     }
 
-    changeQuantity(index, qty) {
-        this.products[index].quantity = qty;
+    // Arnaud
+    changeQuantity() {
+        const newProduct = new Product(1, "name", 100, 1);
+        this.products.push(newProduct);
+        let index = 0;
+        this.products[index].quantity = 4;
+        console.log("change product quantity", this.products[index])
     }
 
     // Alex
