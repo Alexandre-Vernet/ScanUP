@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
         this.changeQuantity();
         this.scanProduct();
         this.scanProduct();
+        this.cart.deleteProductById(1);
         this.addProductByScan(3);
         this.pay();
     }
