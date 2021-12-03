@@ -22,15 +22,12 @@ export class AppComponent implements OnInit {
         //Payer un partie CB
         //Payer le reste en espèce
 
-        this.addProductManually();
+        this.scanProduct();
     }
 
-    scanProduct(product) {
-        this.products.push(product);
-    }
 
     // Alex
-    addProductManually() {
+    scanProduct() {
         const newProduct = new Product(1, "name", 100, 1);
         this.products.push(newProduct);
         console.log("add product manually", this.products);
