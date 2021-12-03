@@ -27,6 +27,11 @@ export class AppComponent implements OnInit {
         //Payer le reste en espèce
 
         this.scanProduct();
+        this.changeQuantity();
+        this.scanProduct();
+        this.scanProduct();
+        this.addProductByScan(3);
+        this.Pay();
     }
 
     // Arnaud
