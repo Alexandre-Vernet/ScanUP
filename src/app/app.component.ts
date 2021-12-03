@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { Product } from "./product";
+import {Component, OnInit} from "@angular/core";
+import {Product} from "./product";
 
 @Component({
     selector: "app-root",
@@ -25,6 +25,10 @@ export class AppComponent implements OnInit {
 
     scanProduct(product) {
         this.products.push(product);
+    }
+
+    changeQuantity(index, qty) {
+        this.products[index].quantity = qty;
     }
 
     // Alex
