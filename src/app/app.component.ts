@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { initializeApp } from 'firebase/app';
+import { Component, OnInit } from "@angular/core";
+import { Product } from "./product";
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    title = 'ScanUP';
+    title = "ScanUP";
 
-    products = [];
+    products: Product[] = [];
 
     ngOnInit() {
         // Scanner un produit
@@ -22,7 +22,13 @@ export class AppComponent implements OnInit {
         //Payer un partie CB
         //Payer le reste en espèce
     }
-    ScanProduct(product: any) {
+
+    scanProduct(product) {
         this.products.push(product);
+    }
+
+    // Alex
+    addProductManually() {
+
     }
 }
