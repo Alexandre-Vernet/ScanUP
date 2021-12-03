@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
         let index = 0;
         this.products[index].quantity = 4;
         console.log("change product quantity", this.products[index])
+
     }
 
     // Alex
