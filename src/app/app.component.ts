@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     // Julie
     addProductByScan(productId: number) {
         const p = new Product(5, 'Patate', 10, 1);
-        if (p.id = productId) {
+        if (p.id === productId) {
             this.products.push(p);
             console.log('Ajouter un produit au code : OK');
         } else {
