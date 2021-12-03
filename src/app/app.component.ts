@@ -10,16 +10,16 @@ import { Product } from "./product";
 })
 export class AppComponent implements OnInit {
     cart: Cart = new Cart();
-    products: Product[] = [];
+    products: Product[] = [{}];
 
     total = 0;
     customer = { type: "", amount: 0 };
 
     ngOnInit() {
-        this.scanProduct(123);
+        this.scanProduct(1);
         this.changeQuantity();
-        this.scanProduct(456);
-        this.scanProduct(789);
+        this.scanProduct(2);
+        this.scanProduct(3);
         this.cart.deleteProductById(1);
         this.pay();
     }
@@ -27,12 +27,13 @@ export class AppComponent implements OnInit {
     changeQuantity() {
         const product = this.cart.getById(1);
         product.quantity = 4;
-        console.log("change product quantity", product);
+        this.printTestResult("change Quantity", product[1].quantity === 4);
     }
 
     addProductCart(product: ProductCart) {
         this.cart.addProduct(product);
-        console.log("add product manually", product);
+
+        // this.printTestResult('add Product Cart', this.cart);
     }
 
     scanProduct(code: number) {
@@ -44,6 +45,8 @@ export class AppComponent implements OnInit {
             const newProductCart = new ProductCart(exist.id, exist.name, exist.price, 1);
             this.addProductCart(newProductCart);
         }
+
+        // this.printTestResult('scan product', )
     }
 
     choosePaymentMode(type: string, amount: number) {
@@ -64,13 +67,15 @@ export class AppComponent implements OnInit {
         } else {
             console.log("Montant à rendre: " + this.total);
         }
+
+        this.printTestResult("pay", this.total <= 0);
     }
 
     printTestResult(testName: string, condition: boolean) {
         if (condition) {
             console.log(`${testName} : OK`);
         } else {
-            console.log(`${testName} : KO`)
+            console.log(`${testName} : KO`);
         }
     }
 }
