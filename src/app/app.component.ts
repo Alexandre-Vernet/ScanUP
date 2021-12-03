@@ -16,56 +16,46 @@ export class AppComponent implements OnInit {
     customer = { type: "", amount: 0 };
 
     ngOnInit() {
-        this.scanProduct(new ProductCart(1, "name", 100, 1));
+        this.scanProduct(123);
         this.changeQuantity();
-        this.scanProduct(new ProductCart(44, "mandarine", 394, 69));
-        this.scanProduct(new ProductCart(44, "mandarine2", 3944, 699));
+        this.scanProduct(456);
+        this.scanProduct(789);
         this.cart.deleteProductById(1);
         this.pay();
     }
 
-    // Arnaud
     changeQuantity() {
         const product = this.cart.getById(1);
         product.quantity = 4;
         console.log("change product quantity", product);
     }
 
-    // Alex
     addProductCart(product: ProductCart) {
         this.cart.addProduct(product);
         console.log("add product manually", product);
     }
 
     scanProduct(code: number) {
-        this.products.find((x) => {
+        const exist = this.products.find((x) => {
             code === x.id;
         });
-        if (code.id === productId) {
-            this.cart.addProduct(p);
-            console.log("Ajouter un produit au code : OK");
-        } else {
-            console.log("Ajouter un produit au code : KO");
+
+        if (exist) {
+            const newProductCart = new ProductCart(exist.id, exist.name, exist.price, 1);
+            this.addProductCart(newProductCart);
         }
     }
 
-    // Julie
-    addProductByCode(productId: number) {
-        const p = new ProductCart(5, "Patate", 10, 1);
-
-    }
-
-    //Emma
-    choosePayementMode() {
-        this.customer = { type: "CB", amount: 18 };
+    choosePaymentMode(type: string, amount: number) {
+        this.customer = { type, amount };
     }
 
     pay() {
-        this.cart.products.forEach((elmt) => {
-            this.total = +elmt.price * elmt.quantity;
+        this.cart.products.forEach((element: ProductCart) => {
+            this.total += element.price * element.quantity;
         });
         do {
-            this.choosePayementMode();
+            this.choosePaymentMode("CB", 18);
             this.total = this.total - this.customer.amount;
         } while (this.total > 0);
 
