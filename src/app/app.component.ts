@@ -1,20 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { Product } from "./product";
+import { Component, OnInit } from '@angular/core';
+import { Product } from './product';
 
 @Component({
-    selector: "app-root",
-    templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.scss"]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    title = "ScanUP";
+    title = 'ScanUP';
 
     products: Product[] = [];
 
-cart=[{idProduct:1,price:20, quantity:2}];
-total=0;
-customer={type:'CB', amount:18};
-
+    cart = [{ idProduct: 1, price: 20, quantity: 2 }];
+    total = 0;
+    customer = { type: '', amount: 0 };
 
     ngOnInit() {
         // Scanner un produit
@@ -32,19 +31,18 @@ customer={type:'CB', amount:18};
 
     // Arnaud
     changeQuantity() {
-        const newProduct = new Product(1, "name", 100, 1);
+        const newProduct = new Product(1, 'name', 100, 1);
         this.products.push(newProduct);
         let index = 0;
         this.products[index].quantity = 4;
-        console.log("change product quantity", this.products[index])
-
+        console.log('change product quantity', this.products[index]);
     }
 
     // Alex
     scanProduct() {
-        const newProduct = new Product(1, "name", 100, 1);
+        const newProduct = new Product(1, 'name', 100, 1);
         this.products.push(newProduct);
-        console.log("add product manually", this.products);
+        console.log('add product manually', this.products);
     }
 
     // Julie
@@ -57,24 +55,23 @@ customer={type:'CB', amount:18};
             console.log('Ajouter un produit au code : KO');
         }
     }
-      //Emma
-      ChoosePayementMode(){}
-  Pay(){
-      this.cart.forEach(elmt =>{
-          this.total=+elmt.price*elmt.quantity;
-      })
-      do {
-        this.ChoosePayementMode(); 
-        this.total=this.total-this.customer.amount;
-      } while (this.total > 0);
+    //Emma
+    ChoosePayementMode() {
+        this.customer = { type: 'CB', amount: 18 };
+    }
+    Pay() {
+        this.cart.forEach((elmt) => {
+            this.total = +elmt.price * elmt.quantity;
+        });
+        do {
+            this.ChoosePayementMode();
+            this.total = this.total - this.customer.amount;
+        } while (this.total > 0);
 
-     if(this.total >0){
-        console.log("Reste à payer: "+ this.total);
-     }else{
-        console.log("Montant à rendre: "+ this.total);
-     }
-
-  
-    
-  }
+        if (this.total > 0) {
+            console.log('Reste à payer: ' + this.total);
+        } else {
+            console.log('Montant à rendre: ' + this.total);
+        }
+    }
 }
