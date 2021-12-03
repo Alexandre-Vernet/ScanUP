@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { Cart } from "./cart";
-import { Product } from "./product";
+import { Component, OnInit } from '@angular/core';
+import { Cart } from './cart';
+import { Product } from './product';
 
 @Component({
     selector: 'app-root',
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
         this.scanProduct();
         this.scanProduct();
         this.addProductByScan(3);
-        this.Pay();
+        this.pay();
     }
 
     // Arnaud
@@ -55,22 +55,22 @@ export class AppComponent implements OnInit {
     addProductByScan(productId: number) {
         const p = new Product(5, 'Patate', 10, 1);
         if (p.id === productId) {
-            this.cart.addProduct(p)
+            this.cart.addProduct(p);
             console.log('Ajouter un produit au code : OK');
         } else {
             console.log('Ajouter un produit au code : KO');
         }
     }
     //Emma
-    ChoosePayementMode() {
+    choosePayementMode() {
         this.customer = { type: 'CB', amount: 18 };
     }
-    Pay() {
+    pay() {
         this.cart.products.forEach((elmt) => {
             this.total = +elmt.price * elmt.quantity;
         });
         do {
-            this.ChoosePayementMode();
+            this.choosePayementMode();
             this.total = this.total - this.customer.amount;
         } while (this.total > 0);
 

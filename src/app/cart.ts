@@ -1,4 +1,4 @@
-import { Product } from "./product";
+import { Product } from './product';
 
 export class Cart {
     private _products: Product[];
@@ -8,7 +8,7 @@ export class Cart {
     }
 
     get products(): Product[] {
-        return this._products
+        return this._products;
     }
 
     addProduct(product: Product) {
@@ -19,4 +19,3 @@ export class Cart {
         this._products.slice(id, 1);
     }
 }
-
