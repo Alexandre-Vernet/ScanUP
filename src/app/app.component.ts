@@ -26,16 +26,36 @@ customer={type:'CB', amount:18};
         //Payer en plusieurs fois
         //Payer un partie CB
         //Payer le reste en espèce
+
+        this.scanProduct();
     }
 
-    scanProduct(product) {
-        this.products.push(product);
+    // Arnaud
+    changeQuantity() {
+        const newProduct = new Product(1, "name", 100, 1);
+        this.products.push(newProduct);
+        let index = 0;
+        this.products[index].quantity = 4;
+        console.log("change product quantity", this.products[index])
+
     }
 
     // Alex
-    addProductManually() {
-        const new;
-        Product(1, "nouveau produit");
+    scanProduct() {
+        const newProduct = new Product(1, "name", 100, 1);
+        this.products.push(newProduct);
+        console.log("add product manually", this.products);
+    }
+
+    // Julie
+    addProductByScan(productId: number) {
+        const p = new Product(5, 'Patate', 10, 1);
+        if (p.id === productId) {
+            this.products.push(p);
+            console.log('Ajouter un produit au code : OK');
+        } else {
+            console.log('Ajouter un produit au code : KO');
+        }
     }
       //Emma
       ChoosePayementMode(){}
