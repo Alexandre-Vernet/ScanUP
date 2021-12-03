@@ -21,16 +21,16 @@ export class AppComponent implements OnInit {
         //Payer en plusieurs fois
         //Payer un partie CB
         //Payer le reste en espèce
+
+        this.scanProduct();
     }
 
-    scanProduct(product) {
-        this.products.push(product);
-    }
 
     // Alex
-    addProductManually() {
-        const new;
-        Product(1, "nouveau produit");
+    scanProduct() {
+        const newProduct = new Product(1, "name", 100, 1);
+        this.products.push(newProduct);
+        console.log("add product manually", this.products);
     }
 
     // Julie
