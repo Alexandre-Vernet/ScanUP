@@ -40,12 +40,11 @@ export class AppComponent implements OnInit {
     // Julie
     addProductByScan(productId: number) {
         const p = new ProductCart(5, "Patate", 10, 1);
-        if (p.id === productId) {
+        const condition = p.id === productId;
+        if (condition) {
             this.cart.addProduct(p);
-            console.log("Ajouter un produit au code : OK");
-        } else {
-            console.log("Ajouter un produit au code : KO");
         }
+        this.printTestResult('AddProductByScan', condition);
     }
 
     //Emma
@@ -66,6 +65,14 @@ export class AppComponent implements OnInit {
             console.log("Reste à payer: " + this.total);
         } else {
             console.log("Montant à rendre: " + this.total);
+        }
+    }
+
+    printTestResult(testName: string, condition: boolean) {
+        if (condition) {
+            console.log(`${testName} : OK`);
+        } else {
+            console.log(`${testName} : KO`)
         }
     }
 }
