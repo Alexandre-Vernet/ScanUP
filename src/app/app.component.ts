@@ -1,5 +1,5 @@
-import {Component, OnInit} from "@angular/core";
-import {Product} from "./product";
+import { Component, OnInit } from "@angular/core";
+import { Product } from "./product";
 
 @Component({
     selector: "app-root",
@@ -22,12 +22,7 @@ export class AppComponent implements OnInit {
         //Payer un partie CB
         //Payer le reste en espèce
 
-        this.addProductManually();
-        this.changeQuantity();
-    }
-
-    scanProduct(product) {
-        this.products.push(product);
+        this.scanProduct();
     }
 
     // Arnaud
@@ -41,9 +36,20 @@ export class AppComponent implements OnInit {
     }
 
     // Alex
-    addProductManually() {
+    scanProduct() {
         const newProduct = new Product(1, "name", 100, 1);
         this.products.push(newProduct);
         console.log("add product manually", this.products);
+    }
+
+    // Julie
+    addProductByScan(productId: number) {
+        const p = new Product(5, 'Patate', 10, 1);
+        if (p.id === productId) {
+            this.products.push(p);
+            console.log('Ajouter un produit au code : OK');
+        } else {
+            console.log('Ajouter un produit au code : KO');
+        }
     }
 }
