@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Cart } from "./cart";
 import { ProductCart } from "./product-cart";
+import { Product } from "./product";
 
 @Component({
     selector: "app-root",
@@ -9,17 +10,17 @@ import { ProductCart } from "./product-cart";
 })
 export class AppComponent implements OnInit {
     cart: Cart = new Cart();
+    products: Product[] = [];
 
     total = 0;
     customer = { type: "", amount: 0 };
 
     ngOnInit() {
-        this.scanProduct();
+        this.scanProduct(new ProductCart(1, "name", 100, 1));
         this.changeQuantity();
-        this.scanProduct();
-        this.scanProduct();
+        this.scanProduct(new ProductCart(44, "mandarine", 394, 69));
+        this.scanProduct(new ProductCart(44, "mandarine2", 3944, 699));
         this.cart.deleteProductById(1);
-        this.addProductByScan(3);
         this.pay();
     }
 
@@ -31,20 +32,25 @@ export class AppComponent implements OnInit {
     }
 
     // Alex
-    scanProduct() {
-        const productCart = new ProductCart(1, "name", 100, 1);
-        this.cart.addProduct(productCart);
-        console.log("add product manually", productCart);
+    addProductCart(product: ProductCart) {
+        this.cart.addProduct(product);
+        console.log("add product manually", product);
     }
 
-    // Julie
-    addProductByScan(productId: number) {
-        const p = new ProductCart(5, "Patate", 10, 1);
-        const condition = p.id === productId;
-        if (condition) {
+    scanProduct(code: number) {
+        this.products.find((x) => {
+            code === x.id;
+        });
+        if (code.id === productId) {
             this.cart.addProduct(p);
         }
         this.printTestResult('AddProductByScan', condition);
+    }
+
+    // Julie
+    addProductByCode(productId: number) {
+        const p = new ProductCart(5, "Patate", 10, 1);
+
     }
 
     //Emma
