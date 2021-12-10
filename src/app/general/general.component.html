@@ -1,0 +1,18 @@
+<app-nav></app-nav>
+<div id="general">
+    <div>
+        <app-list-products></app-list-products>
+        <div *ngIf="isWaiting; else elseBlock">
+            <button (click)="play()">Reprise du client</button>
+        </div>
+        <ng-template #elseBlock
+            ><button (click)="pause()">Mise en attente</button></ng-template
+        >
+        <button (click)="giveUp()">Abandonner</button>
+    </div>
+    <div>
+        <app-clavier></app-clavier>
+        <p>Total :</p>
+        <button (click)="pay()">Payer</button>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Désignation</th>
+            <th>Qté</th>
+            <th>Prix</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of productList">
+            <td>{{ product.ref }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.price }}</td>
+            <td (click)="deleteProduct(product.id)">X</td>
+        </tr>
+    </tbody>
+</table>
