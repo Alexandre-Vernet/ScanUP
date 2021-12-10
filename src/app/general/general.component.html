@@ -15,6 +15,5 @@
     <div>
         <app-clavier></app-clavier>
         <p>Total : {{totalPrice}} €</p>
-        <button (click)="pay()" [disabled]="isEmpty()">Payer</button>
-    </div>
+        <button class="btn btn-success" (click)="pay()" [disabled]="isEmpty()">Payer</button>
 </div>
