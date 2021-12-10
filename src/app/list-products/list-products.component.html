@@ -10,8 +10,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let product of productList">
-            <td>{{ product.ref }}</td>
-            <td>{{ product.description }}</td>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
             <td>{{ product.quantity }}</td>
             <td>{{ product.price }}</td>
             <td (click)="deleteProduct(product.id)">X</td>

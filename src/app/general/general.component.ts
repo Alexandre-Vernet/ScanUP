@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-general',
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 })
 export class GeneralComponent implements OnInit {
     isWaiting = false;
+    total = 0;
     constructor() {}
 
     ngOnInit(): void {}
@@ -36,10 +37,10 @@ export class GeneralComponent implements OnInit {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire('Success paiement card', '', 'success')
+                Swal.fire('Success paiement card', '', 'success');
             } else if (result.isDenied) {
-                Swal.fire('Success paiement cash', '', 'info')
+                Swal.fire('Success paiement cash', '', 'info');
             }
-        })
+        });
     }
 }

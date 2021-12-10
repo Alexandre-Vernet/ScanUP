@@ -2,17 +2,27 @@
 <div id="general">
     <div>
         <app-list-products></app-list-products>
-        <div *ngIf="isWaiting; else elseBlock">
-            <button (click)="play()">Reprise du client</button>
+        <div class="d-flex justify-content-between px-4">
+            <div *ngIf="isWaiting; else elseBlock">
+                <button class="btn btn-warning" (click)="play()">
+                    Reprise du client
+                </button>
+            </div>
+            <ng-template #elseBlock
+                ><button class="btn btn-warning" (click)="pause()">
+                    Mise en attente
+                </button></ng-template
+            >
+            <button class="btn btn-danger" (click)="giveUp()">
+                Abandonner
+            </button>
         </div>
-        <ng-template #elseBlock
-            ><button (click)="pause()">Mise en attente</button></ng-template
-        >
-        <button (click)="giveUp()">Abandonner</button>
     </div>
     <div>
         <app-clavier></app-clavier>
-        <p>Total :</p>
-        <button class="btn btn-success" (click)="pay()">Payer</button>
+        <div id="paiement" class="d-flex flex-column align-items-center">
+            <p>Total : {{ total }} €</p>
+            <button class="btn btn-success" (click)="pay()">Payer</button>
+        </div>
     </div>
 </div>
