@@ -44,8 +44,6 @@ export class GeneralComponent implements OnInit {
     }
 
     pay() {
-        //si listproduit.length !==0 open pop up moyen de paiement
-
         Swal.fire({
             title: 'Choose your payment method',
             showDenyButton: true,
