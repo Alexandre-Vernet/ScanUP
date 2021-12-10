@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductCart } from '../product-cart';
+import { CartService } from '../service/cart.service';
 import Swal from 'sweetalert2';
+import { Cart } from '../cart';
 
 @Component({
     selector: 'app-general',
@@ -8,23 +11,38 @@ import Swal from 'sweetalert2';
 })
 export class GeneralComponent implements OnInit {
     isWaiting = false;
-    total = 0;
-    constructor() {}
+    totalPrice = 0;
+
+    cart: Cart = new Cart();
+
+    constructor(private cartService: CartService) {
+        this.cartService.cartChanged$.subscribe((cart) => {
+            this.totalPrice = cart.products.reduce(
+                (accumulateur, valeurCourante) =>
+                    accumulateur +
+                    valeurCourante.price * valeurCourante.quantity,
+                0
+            );
+            this.cart = cart;
+        });
+    }
 
     ngOnInit(): void {}
+
     giveUp() {
-        //vide le tableau des produits
+        this.cartService.emptyCart();
     }
+
     pause() {
         this.isWaiting = true;
-        //stocke la liste des produits en local storage
-        //vide le tableau des produits
+        this.cartService.putCartInWait();
     }
+
     play() {
         this.isWaiting = false;
-        //vide le tableau des produit
-        //rempli la liste des produits avec ceux stocké en local storage
+        this.cartService.stopCartInWait();
     }
+
     pay() {
         //si listproduit.length !==0 open pop up moyen de paiement
 
@@ -42,5 +60,19 @@ export class GeneralComponent implements OnInit {
                 Swal.fire('Success paiement cash', '', 'info');
             }
         });
+    }
+
+    scanProductA() {
+        const p = new ProductCart(1, 'Tronconneuse', 99.0, 1);
+        this.cartService.addProduct(p);
+    }
+
+    scanProductB() {
+        const p = new ProductCart(2, 'Perceuse', 50.0, 1);
+        this.cartService.addProduct(p);
+    }
+
+    isEmpty() {
+        return this.cartService.isEmpty();
     }
 }

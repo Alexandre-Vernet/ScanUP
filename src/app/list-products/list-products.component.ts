@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cart } from '../cart';
+import { CartService } from '../service/cart.service';
 
 @Component({
     selector: 'app-list-products',
@@ -34,10 +35,14 @@ export class ListProductsComponent implements OnInit {
             quantity: 2,
         },
     ];
-    constructor() {}
+    constructor(private cartService: CartService) {
+        this.cartService.cartChanged$.subscribe((cart) => {
+            this.productList = cart.products;
+        });
+    }
 
     ngOnInit(): void {}
     deleteProduct(id) {
-        this.cart.deleteProductById(1);
+        this.cartService.deleteProduct(id);
     }
 }

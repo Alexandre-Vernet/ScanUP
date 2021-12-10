@@ -17,12 +17,28 @@
                 Abandonner
             </button>
         </div>
+        <ng-template #elseBlock
+            ><button (click)="pause()" [disabled]="isEmpty()">
+                Mise en attente
+            </button></ng-template
+        >
+        <button (click)="giveUp()" [disabled]="isEmpty()">Abandonner</button>
+        <div>
+            <button (click)="scanProductA()">Scanner un produit A</button>
+            <button (click)="scanProductB()">Scanner un produit B</button>
+        </div>
     </div>
     <div>
         <app-clavier></app-clavier>
         <div id="paiement" class="d-flex flex-column align-items-center">
-            <p>Total : {{ total }} €</p>
-            <button class="btn btn-success" (click)="pay()">Payer</button>
+            <p>Total : {{ totalPrice }} €</p>
+            <button
+                class="btn btn-success"
+                (click)="pay()"
+                [disabled]="isEmpty()"
+            >
+                Payer
+            </button>
         </div>
     </div>
 </div>
