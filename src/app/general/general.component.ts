@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2'
 
 @Component({
     selector: 'app-general',
@@ -25,5 +26,20 @@ export class GeneralComponent implements OnInit {
     }
     pay() {
         //si listproduit.length !==0 open pop up moyen de paiement
+
+        Swal.fire({
+            title: 'Choose your payment method',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Credit card',
+            denyButtonText: `Cash`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire('Success paiement card', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Success paiement cash', '', 'info')
+            }
+        })
     }
 }
