@@ -9,23 +9,29 @@
                 </button>
             </div>
             <ng-template #elseBlock
-                ><button class="btn btn-warning" (click)="pause()">
+                ><button
+                    class="btn btn-warning"
+                    (click)="pause()"
+                    [disabled]="isEmpty()"
+                >
                     Mise en attente
                 </button></ng-template
             >
-            <button class="btn btn-danger" (click)="giveUp()">
+            <button
+                class="btn btn-danger"
+                (click)="giveUp()"
+                [disabled]="isEmpty()"
+            >
                 Abandonner
             </button>
         </div>
-        <ng-template #elseBlock
-            ><button (click)="pause()" [disabled]="isEmpty()">
-                Mise en attente
-            </button></ng-template
-        >
-        <button (click)="giveUp()" [disabled]="isEmpty()">Abandonner</button>
-        <div>
-            <button (click)="scanProductA()">Scanner un produit A</button>
-            <button (click)="scanProductB()">Scanner un produit B</button>
+        <div class="d-flex justify-content-between p-4">
+            <button class="btn btn-dark" (click)="scanProductA()">
+                Scanner un produit A
+            </button>
+            <button class="btn btn-dark" (click)="scanProductB()">
+                Scanner un produit B
+            </button>
         </div>
     </div>
     <div>
