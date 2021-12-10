@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductCart } from '../product-cart';
 import { CartService } from '../service/cart.service';
 import Swal from 'sweetalert2'
+import { Cart } from '../cart';
 
 @Component({
     selector: 'app-general',
@@ -12,11 +13,14 @@ export class GeneralComponent implements OnInit {
     isWaiting = false;
     totalPrice = 0;
 
+    cart: Cart = new Cart();
+
     constructor(private cartService: CartService) {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.totalPrice = cart.products.reduce(
                 (accumulateur, valeurCourante) => accumulateur + valeurCourante.price * valeurCourante.quantity, 0
-            )
+            );
+            this.cart = cart;
         })
     }
 
