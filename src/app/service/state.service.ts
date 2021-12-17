@@ -17,6 +17,7 @@ export class StateService {
         if (this.currentState == etatInit && condition) {
             this.currentState = etatTarget;
             callback;
+            console.log(etatInit + ' => ' + etatTarget);
         }
         this.notifyState();
     }
