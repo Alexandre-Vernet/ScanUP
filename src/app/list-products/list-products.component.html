@@ -12,7 +12,7 @@
         <tr *ngFor="let product of productList">
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
-            <td>{{ product.quantity }}</td>
+            <td (dblclick)="editMode( product.id )">{{ product.quantity }}</td>
             <td>{{ product.price }}</td>
             <td> <button (click)="deleteProduct(product.id)"> X</button></td>
         </tr>

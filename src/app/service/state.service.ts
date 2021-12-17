@@ -8,6 +8,8 @@ export class StateService {
     constructor() {}
 
     currentState = 'waitScan';
+    idEdit: number;
+
     private currentState$: BehaviorSubject<string> =
         new BehaviorSubject<string>('');
     currentStateChanged$: Observable<string> =
@@ -24,16 +26,7 @@ export class StateService {
     notifyState() {
         this.currentState$.next(this.currentState);
     }
-    /*
-
-
-
-//MISE EN ATTENTE
-checkState('waitScan','miseEnAttente',selectMiseEnAttente, stockProductList);
-checkState('miseEnAttente','waitSwan',selectReprise, recupProductList);
-
-//CRUD PRODUCT
-checkState('miseEnAttente','edit',dbclickPdt);
-checkState('edit','waitScan',enterQte,editPdtQte);
-*/
+    setIdEdit(id) {
+        this.idEdit = id;
+    }
 }
