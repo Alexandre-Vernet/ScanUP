@@ -1,25 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
 import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
+import { ProductCart } from "../product-cart";
+
 @Component({
-    selector: 'app-clavier',
-    templateUrl: './clavier.component.html',
-    styleUrls: ['./clavier.component.scss'],
+    selector: "app-clavier",
+    templateUrl: "./clavier.component.html",
+    styleUrls: ["./clavier.component.scss"]
 })
 export class ClavierComponent implements OnInit {
     currentState: string;
-    status = 'espece';
+    status = "espece";
     totalPrice = 100;
     productFound: boolean;
     codeControl = new FormControl();
+    @ViewChild("closeModalUnknownProduct") closeModalUnknownProduct;
 
-    constructor(
-        private stateService: StateService,
-        private cartService: CartService
-    ) {
+    constructor(private stateService: StateService,
+                private cartService: CartService) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
@@ -32,7 +33,8 @@ export class ClavierComponent implements OnInit {
 checkState('waitScan','selectProduct',selectPdtInconnu);
 checkState('selectProduct','selectAmount',chooseProduct);*/
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 
     onKeyup(e) {
         console.log(e);
@@ -117,15 +119,24 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
         });
     }
     clavierNumber(number) {
-        if (this.status === 'espece') {
+        if (this.status === "espece") {
             Swal.fire({
-                title: 'Somme a rendre : ' + (this.totalPrice - number) + ' €',
+                title: "Somme a rendre : " + (this.totalPrice - number) + " €",
                 showCancelButton: true,
                 confirmButtonText:
-                    'Rendre ' + (this.totalPrice - number) + ' €',
+                    "Rendre " + (this.totalPrice - number) + " €"
             });
-        } else if (this.status === 'editQuantity') {
-        } else if (this.status === 'splitPayment') {
+        } else if (this.status === "editQuantity") {
+        } else if (this.status === "splitPayment") {
         }
+    }
+
+    addToCart() {
+        // Add product to cart
+        const p = new ProductCart(1, "Marteau quelconque", 99.0, 1);
+        this.cartService.addProduct(p);
+
+        // Close modal
+        this.closeModalUnknownProduct.nativeElement.click();
     }
 }
