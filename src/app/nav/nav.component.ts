@@ -8,6 +8,7 @@ import { StateService } from '../service/state.service';
 })
 export class NavComponent implements OnInit {
     currentState: string;
+    myDate = Date.now();
     constructor(private stateService: StateService) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;

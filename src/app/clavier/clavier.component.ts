@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
 import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
 import { GeneralComponent } from '../general/general.component';
+import { ProductCart } from '../product-cart';
+
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
@@ -17,6 +19,7 @@ export class ClavierComponent implements OnInit {
     productFound: boolean;
     codeControl = new FormControl();
     enterQte = 12;
+    @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     constructor(
         private stateService: StateService,
@@ -153,5 +156,14 @@ export class ClavierComponent implements OnInit {
         } else if (this.status === 'editQuantity') {
         } else if (this.status === 'splitPayment') {
         }
+    }
+
+    addToCart() {
+        // Add product to cart
+        const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
+        this.cartService.addProduct(p);
+
+        // Close modal
+        this.closeModalUnknownProduct.nativeElement.click();
     }
 }

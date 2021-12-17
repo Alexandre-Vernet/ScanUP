@@ -1,10 +1,10 @@
 <div id="clavier" class="d-flex justify-content-around">
     <div class="d-flex flex-column justify-content-between">
-  
+
             <input type="text" [formControl]="codeControl" placeholder="Code Article" (keyup)="onKeyup($event)"/>
 <button (click)="validCode()">Ok</button>
-       
-        <button class="btn btn-primary" (click)="searchProduct()">
+
+        <button class="btn btn-primary" data-target="#modalUnknownProduct" data-toggle="modal" (click)="searchProduct()">
             Produit inconnu
         </button>
     </div>
@@ -30,4 +30,82 @@
             <td (click)="validClavier(0)">-></td>
         </tr>
     </table>
+</div>
+
+
+<!-- Modal modalUnknownProduct-->
+<div aria-hidden="true" class="modal fade" id="modalUnknownProduct" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="category">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="list-group" id="list-tab" role="tablist">
+
+                                <a aria-controls="home"
+                                   class="list-group-item list-group-item-action active" data-toggle="list" href="#produits-rapide" role="tab">Produits
+                                    rapides</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#jardin" role="tab">Jardin</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#outillage" role="tab">Outillage</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#category-4" role="tab">Catégorie 4</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#category-5" role="tab">Catégorie 5</a>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="tab-content" id="nav-tabContent">
+
+                                <!--Produits rapides-->
+                                <div class="tab-pane fade show active" id="produits-rapide" role="tabpanel">
+                                    <div class="d-flex justify-content-center">
+                                        <ng-container *ngFor="let i of [1, 2, 3, 4]">
+                                            <div (click)="addToCart()" class="card">
+                                                <div class="card-image">
+                                                    <img alt="hammer" src="assets/img/hammer.png">
+                                                </div>
+                                                <div class="card-body d-flex justify-content-center text-center">
+                                                    <span class="card-title">Marteau quelconque</span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <!--Jardin-->
+                                <div class="tab-pane fade" id="jardin" role="tabpanel">Jardin
+                                </div>
+
+                                <!--Outillage-->
+                                <div class="tab-pane fade" id="outillage" role="tabpanel">Outillage
+                                </div>
+
+                                <!--Category 4-->
+                                <div class="tab-pane fade" id="category-4" role="tabpanel">Catégorie 4
+                                </div>
+
+                                <!--Category 5-->
+                                <div class="tab-pane fade" id="category-5" role="tabpanel">Catégorie 5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button #closeModalUnknownProduct class="btn btn-back" data-dismiss="modal" type="button">Retour
+                </button>
+                <button class="btn btn-confirm" type="button">Confirmer</button>
+            </div>
+        </div>
+    </div>
 </div>

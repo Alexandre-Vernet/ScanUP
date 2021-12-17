@@ -1,14 +1,7 @@
 <nav class="d-flex justify-content-between">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            🛒TrucCaisse
-        </button>
-        <div ngbDropDownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another test</a>
-        </div>
-    </div>
+    <button type="button" class="btn btn-secondary" [routerLink]="['']">TrucCaisse 🛒</button>
     <p>Bonjour Truc</p>
     <p>{{currentState}}</p>
     <p>Ven 11/11 17:05</p>
+    <div>{{myDate | date:'short'}}</div>
 </nav>
