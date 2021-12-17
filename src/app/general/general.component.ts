@@ -16,6 +16,8 @@ export class GeneralComponent implements OnInit {
     currentState: string;
     cart: Cart = new Cart();
     static scanProduct = false;
+    paymentSelected: string = null;
+    isCash: boolean = false;
 
     constructor(
         private cartService: CartService,
@@ -123,5 +125,16 @@ export class GeneralComponent implements OnInit {
 
     isEmpty() {
         return this.cartService.isEmpty();
+    }
+
+    changeToPaid() {
+        if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
+            Swal.fire('Success paiement card', '', 'success');
+            this.cartService.emptyCart();
+            this.closeModal.nativeElement.click();
+        } else if (this.paymentSelected === 'cash') {
+            this.isCash = true;
+            this.closeModal.nativeElement.click();
+        }
     }
 }

@@ -2,11 +2,41 @@
     display: flex;
     justify-content: center;
 }
+
 #general div {
     width: 50%;
 }
+
 #paiement {
     background: #fff;
     padding: 20px;
     margin: 20px;
 }
+
+.modal-body {
+    img {
+        width: 175px;
+        height: 87.5px;
+    }
+}
+
+.payment-type-btn {
+    border: 1px solid black;
+    border-radius: 7px;
+    background-color: white;
+}
+
+.payment-type-btn.selected {
+    background-color: rgba(98, 98, 98, 0.47);
+}
+
+.price-amount {
+    cursor: initial !important;
+    box-shadow: 2px 2px 7px #505050;
+    display: flex;
+
+    p {
+        margin: 0;
+    }
+}
+
