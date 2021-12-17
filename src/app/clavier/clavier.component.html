@@ -1,6 +1,9 @@
 <div id="clavier" class="d-flex justify-content-around">
     <div class="d-flex flex-column justify-content-between">
-        <input type="text" placeholder="Code Article" (keyup)="onKeyup($event)"/>
+  
+            <input type="text" [formControl]="codeControl" placeholder="Code Article" (keyup)="onKeyup($event)"/>
+<button (click)="validCode()">Ok</button>
+       
         <button class="btn btn-primary" (click)="searchProduct()">
             Produit inconnu
         </button>
