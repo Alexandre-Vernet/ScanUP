@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cart } from '../cart';
 import { CartService } from '../service/cart.service';
+import { StateService } from '../service/state.service';
 
 @Component({
     selector: 'app-list-products',
@@ -35,7 +36,10 @@ export class ListProductsComponent implements OnInit {
             quantity: 2,
         },
     ];
-    constructor(private cartService: CartService) {
+    constructor(
+        private cartService: CartService,
+        private stateService: StateService
+    ) {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.productList = cart.products;
         });
@@ -44,5 +48,14 @@ export class ListProductsComponent implements OnInit {
     ngOnInit(): void {}
     deleteProduct(id) {
         this.cartService.deleteProduct(id);
+    }
+    editMode(id) {
+        this.stateService.checkState(
+            'waitScan',
+            'edit',
+            true,
+            this.stateService.setIdEdit(id)
+            //+ transforme td en input
+        );
     }
 }

@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProductCart} from '../product-cart';
-import {CartService} from '../service/cart.service';
+import { Component, OnInit } from '@angular/core';
+import { ProductCart } from '../product-cart';
+import { CartService } from '../service/cart.service';
 import Swal from 'sweetalert2';
-import {Cart} from '../cart';
-import {StateService} from '../service/state.service';
+import { Cart } from '../cart';
+import { StateService } from '../service/state.service';
 
 @Component({
     selector: 'app-general',
@@ -15,10 +15,9 @@ export class GeneralComponent implements OnInit {
     totalPrice = 0;
     currentState: string;
     cart: Cart = new Cart();
+    static scanProduct = false;
     paymentSelected: string = null;
     isCash: boolean = false;
-
-    @ViewChild('closeModal') closeModal;
 
     constructor(
         private cartService: CartService,
@@ -39,8 +38,7 @@ export class GeneralComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     //PAIEMENT
 
@@ -57,14 +55,30 @@ export class GeneralComponent implements OnInit {
     }
 
     pause() {
+        //MISE EN ATTENTE
+        this.stateService.checkState(
+            'waitScan',
+            'miseEnAttente',
+            true,
+            this.stockProductList()
+        );
+
         this.isWaiting = true;
         this.cartService.putCartInWait();
     }
 
     play() {
+        this.stateService.checkState(
+            'miseEnAttente',
+            'waitSwan',
+            true,
+            this.recupProductList()
+        );
         this.isWaiting = false;
         this.cartService.stopCartInWait();
     }
+    stockProductList() {}
+    recupProductList() {}
 
     pay() {
         this.stateService.checkState(
@@ -97,15 +111,16 @@ export class GeneralComponent implements OnInit {
             }
         });
     }
-
     scanProductA() {
         const p = new ProductCart(1, 'Tronconneuse', 99.0, 1);
         this.cartService.addProduct(p);
+        GeneralComponent.scanProduct = true;
     }
 
     scanProductB() {
         const p = new ProductCart(2, 'Perceuse', 50.0, 1);
         this.cartService.addProduct(p);
+        GeneralComponent.scanProduct = true;
     }
 
     isEmpty() {

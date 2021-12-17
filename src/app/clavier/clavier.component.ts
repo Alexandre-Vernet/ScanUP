@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
+import { catchError, debounceTime, switchMap } from 'rxjs/operators';
+import { CartService } from '../service/cart.service';
+import { GeneralComponent } from '../general/general.component';
+import { ProductCart } from '../product-cart';
 
 @Component({
     selector: 'app-clavier',
@@ -11,62 +16,130 @@ export class ClavierComponent implements OnInit {
     currentState: string;
     status = 'espece';
     totalPrice = 100;
+    productFound: boolean;
+    codeControl = new FormControl();
+    enterQte = 12;
+    valueClavier = '';
+    @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
-    constructor(private stateService: StateService) {
+    constructor(
+        private stateService: StateService,
+        private cartService: CartService
+    ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
     }
-    /*// CODE SEARCH
-
-checkState('waitForCode','findProduct',code.length === 4);
-checkState('findProduct','ErrorUnknowPdt',productNotFound);
-checkState('ErrorUnknowPdt','waitScan');
-checkState('findProduct','selectAmount',productFound);
-checkState('selectAmount','waitScan',scanProduct,addProductQte1);
-checkState('selectAmount','waitScan',enterQte, addProdcutQteEnter);
-
-// MANUAL SEARCH
-checkState('waitScan','selectProduct',selectPdtInconnu);
-checkState('selectProduct','selectAmount',chooseProduct);*/
 
     ngOnInit(): void {}
 
     onKeyup(e) {
-        console.log(e);
-        // this.stateService.checkState(
-        //     'waitScan',
-        //     'waitForCode',
-        //     'toto ',
-        //     null
-        // );
-    }
-    searchProduct() {
-        Swal.fire({
-            title: 'Choisissez votre produit',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Produit 1',
-            denyButtonText: `Produit 2`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire('Produit 1 ajouté', '', 'success');
-            } else if (result.isDenied) {
-                Swal.fire('Produit 2 ajouté', '', 'success');
-            }
-        });
-    }
-    clavierNumber(number) {
-        if (this.status === 'espece') {
-            Swal.fire({
-                title: 'Somme a rendre : ' + (this.totalPrice - number) + ' €',
-                showCancelButton: true,
-                confirmButtonText:
-                    'Rendre ' + (this.totalPrice - number) + ' €',
+        this.stateService.checkState(
+            'waitScan',
+            'waitForCode',
+            e.key != '',
+            null
+        );
+        this.codeControl.valueChanges
+            .pipe(debounceTime(500))
+            .subscribe((codeValue) => {
+                this.stateService.checkState(
+                    'waitForCode',
+                    'findProduct',
+                    codeValue.length === 4,
+                    this.getProduct(codeValue)
+                );
             });
-        } else if (this.status === 'editQuantity') {
-        } else if (this.status === 'splitPayment') {
-        }
+    }
+    unknowProdcut() {
+        this.stateService.checkState('waitScan', 'selectProduct', true, null);
+    }
+    validCode() {
+        this.stateService.checkState(
+            'findProduct',
+            'ErrorUnknowPdt',
+            !this.productFound,
+            //console.log('Produit non trouvé')
+            //add snabar
+            this.stateService.checkState(
+                'ErrorUnknowPdt',
+                'waitScan',
+                true,
+                null
+            )
+        );
+        this.stateService.checkState(
+            'findProduct',
+            'selectAmount',
+            this.productFound,
+            this.afterProductFind()
+        );
+    }
+
+    afterProductFind() {
+        this.cartService.cartChanged$;
+        console.log('Produit trouvé');
+        //add snabar
+        this.stateService.checkState(
+            'selectAmount',
+            'waitScan',
+            true,
+            // GeneralComponent.scanProduct,
+            this.addProductQte(1)
+        );
+        this.stateService.checkState(
+            'selectAmount',
+            'waitScan',
+            this.validClavier(),
+            this.addProductQte(this.enterQte)
+        );
+    }
+
+    validClavier() {
+        //if state ==
+        this.codeControl.setValue(this.valueClavier);
+
+        this.stateService.checkState(
+            'edit',
+            'waitScan',
+            this.valueClavier != null,
+            this.cartService.changeQuantity(
+                this.stateService.idEdit,
+                this.valueClavier
+            )
+        );
+        return true;
+    }
+
+    getProduct(code) {
+        //code exist dans prodcutlist?
+        //if(productexist)
+        this.productFound = true;
+        // else
+        // this.productFound = false;
+    }
+
+    addProductQte(qte) {}
+
+    clavierNumber(number) {
+        this.valueClavier += number;
+    }
+
+    addToCart() {
+        // Add product to cart
+        const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
+        this.cartService.addProduct(p);
+
+        // State
+        this.productFound = true;
+        this.stateService.checkState(
+            'selectProduct',
+            'findProduct',
+            true,
+            this.validCode()
+        );
+
+        // Close modal
+        this.closeModalUnknownProduct.nativeElement.click();
     }
 }

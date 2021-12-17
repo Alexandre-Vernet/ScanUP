@@ -1,1 +1,27 @@
-<button><a routerLink="/general">Go</a></button>
+<div id="clavier" class="d-flex justify-content-around">
+    <div class="d-flex flex-column justify-content-between">
+        <input type="text" placeholder="Code Pin" (keyup)="($event)"/>
+<table>
+    <tr>
+        <td (click)="(1)">1</td>
+        <td (click)="(2)">2</td>
+        <td (click)="(3)">3</td>
+    </tr>
+    <tr>
+        <td (click)="(4)">4</td>
+        <td (click)="(5)">5</td>
+        <td (click)="(6)">6</td>
+    </tr>
+    <tr>
+        <td (click)="(7)">7</td>
+        <td (click)="(8)">8</td>
+        <td (click)="(9)">9</td>
+    </tr>
+    <tr>
+        <td (click)="(0)">Clear</td>
+        <td (click)="(0)">0</td>
+        <button class="btn btn-danger" ><a routerLink="/general">Valider</a></button>
+    </tr>
+</table>
+    </div>
+</div>

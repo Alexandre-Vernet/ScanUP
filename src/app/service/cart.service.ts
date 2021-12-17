@@ -3,63 +3,65 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Cart } from '../cart';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class CartService {
-  private waintingCart: Cart = new Cart;
+    private waintingCart: Cart = new Cart();
 
-  private cart$: BehaviorSubject<Cart> = new BehaviorSubject<Cart>(new Cart);
-  cartChanged$: Observable<Cart> = this.cart$.asObservable();
-  private cart: Cart = new Cart;
-  
-  constructor() { }
+    private cart$: BehaviorSubject<Cart> = new BehaviorSubject<Cart>(
+        new Cart()
+    );
+    cartChanged$: Observable<Cart> = this.cart$.asObservable();
+    private cart: Cart = new Cart();
 
-  getCart() {
-    return this.cart;
-  }
+    constructor() {}
 
-  addProduct(product) {
-    this.cart.addProduct(product);
-    this.notifyCart();
-  }
+    getCart() {
+        return this.cart;
+    }
 
-  deleteProduct(id) {
-    this.cart.deleteProductById(id);
-    this.notifyCart();
-  }
+    addProduct(product) {
+        this.cart.addProduct(product);
+        this.notifyCart();
+    }
 
-  changeQuantity(id, qte) {
-    this.cart.products[id].quantity = qte;
-    this.notifyCart();
-  }
+    deleteProduct(id) {
+        this.cart.deleteProductById(id);
+        this.notifyCart();
+    }
 
-  putCartInWait() {
-    this.cart.products.forEach(product => {
-      this.waintingCart.addProduct(product);
-    });
-    this.emptyCart();
-    this.notifyCart();
-  }
+    changeQuantity(id, qte) {
+        //remplacer id par index
+        // this.cart.products[id].quantity = qte;
+        this.notifyCart();
+    }
 
-  stopCartInWait() {
-    this.waintingCart.products.forEach(product => {
-      this.cart.addProduct(product);
-    });
-    this.waintingCart.emptyCart();
-    this.notifyCart();
-  }
+    putCartInWait() {
+        this.cart.products.forEach((product) => {
+            this.waintingCart.addProduct(product);
+        });
+        this.emptyCart();
+        this.notifyCart();
+    }
 
-  emptyCart() {
-    this.cart.emptyCart();
-    this.notifyCart();
-  }
+    stopCartInWait() {
+        this.waintingCart.products.forEach((product) => {
+            this.cart.addProduct(product);
+        });
+        this.waintingCart.emptyCart();
+        this.notifyCart();
+    }
 
-  isEmpty() {
-    return !this.cart.products.length;
-  }
+    emptyCart() {
+        this.cart.emptyCart();
+        this.notifyCart();
+    }
 
-  notifyCart(){
-    this.cart$.next(this.cart);
-  }
+    isEmpty() {
+        return !this.cart.products.length;
+    }
 
+    notifyCart() {
+        this.cart$.next(this.cart);
+    }
 }
