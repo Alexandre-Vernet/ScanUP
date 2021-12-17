@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductCart } from '../product-cart';
-import { CartService } from '../service/cart.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ProductCart} from '../product-cart';
+import {CartService} from '../service/cart.service';
 import Swal from 'sweetalert2';
-import { Cart } from '../cart';
-import { StateService } from '../service/state.service';
+import {Cart} from '../cart';
+import {StateService} from '../service/state.service';
 
 @Component({
     selector: 'app-general',
@@ -15,6 +15,10 @@ export class GeneralComponent implements OnInit {
     totalPrice = 0;
     currentState: string;
     cart: Cart = new Cart();
+    paymentSelected: string = null;
+    isCash: boolean = false;
+
+    @ViewChild('closeModal') closeModal;
 
     constructor(
         private cartService: CartService,
@@ -35,7 +39,8 @@ export class GeneralComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 
     //PAIEMENT
 
@@ -92,6 +97,7 @@ export class GeneralComponent implements OnInit {
             }
         });
     }
+
     scanProductA() {
         const p = new ProductCart(1, 'Tronconneuse', 99.0, 1);
         this.cartService.addProduct(p);
@@ -104,5 +110,16 @@ export class GeneralComponent implements OnInit {
 
     isEmpty() {
         return this.cartService.isEmpty();
+    }
+
+    changeToPaid() {
+        if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
+            Swal.fire('Success paiement card', '', 'success');
+            this.cartService.emptyCart();
+            this.closeModal.nativeElement.click();
+        } else if (this.paymentSelected === 'cash') {
+            this.isCash = true;
+            this.closeModal.nativeElement.click();
+        }
     }
 }
