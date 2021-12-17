@@ -33,20 +33,74 @@
 <!-- Modal modalUnknownProduct-->
 <div class="modal fade" id="modalUnknownProduct" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="d-flex justify-content-center">
-                    <ng-container *ngFor="let i of [1, 2, 3, 4]">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="assets/img/hammer.png" alt="hammer">
-                            </div>
-                            <div class="card-body">
-                                <span class="card-title">Marteau quelconque</span>
+                <div class="category">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="list-group" id="list-tab" role="tablist">
+
+                                <a class="list-group-item list-group-item-action active"
+                                   data-toggle="list" href="#list-home" role="tab" aria-controls="home">Produits
+                                    rapides</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#list-profile" role="tab">Jardin</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#list-messages" role="tab">Outillage</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#category-4" role="tab">Catégorie 4</a>
+
+                                <a class="list-group-item list-group-item-action"
+                                   data-toggle="list" href="#category-5" role="tab">Catégorie 5</a>
                             </div>
                         </div>
-                    </ng-container>
+
+                        <div class="col-8">
+                            <div class="tab-content" id="nav-tabContent">
+
+                                <!--Produits rapides-->
+                                <div class="tab-pane fade show active" id="list-home" role="tabpanel"
+                                     aria-labelledby="list-home-list">
+                                    <div class="d-flex justify-content-center">
+                                        <ng-container *ngFor="let i of [1, 2, 3, 4]">
+                                            <div class="card">
+                                                <div class="card-image">
+                                                    <img src="assets/img/hammer.png" alt="hammer">
+                                                </div>
+                                                <div class="card-body">
+                                                    <span class="card-title">Marteau quelconque</span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <!--Jardin-->
+                                <div class="tab-pane fade" id="list-profile" role="tabpanel"
+                                     aria-labelledby="list-profile-list">Jardin
+                                </div>
+
+                                <!--Outillage-->
+                                <div class="tab-pane fade" id="list-messages" role="tabpanel"
+                                     aria-labelledby="list-messages-list">Outillage
+                                </div>
+
+                                <!--Category 4-->
+                                <div class="tab-pane fade" id="category-4" role="tabpanel"
+                                     aria-labelledby="list-settings-list">Catégorie 4
+                                </div>
+
+                                <!--Category 5-->
+                                <div class="tab-pane fade" id="category-5" role="tabpanel"
+                                     aria-labelledby="list-settings-list">Catégorie 5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
