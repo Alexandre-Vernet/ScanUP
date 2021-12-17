@@ -30,7 +30,8 @@ export class ClavierComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 
     onKeyup(e) {
         console.log(e);
@@ -51,6 +52,7 @@ export class ClavierComponent implements OnInit {
                 );
             });
     }
+
     validCode() {
         this.stateService.checkState(
             'findProduct',
@@ -72,6 +74,7 @@ export class ClavierComponent implements OnInit {
             this.afterProductFind()
         );
     }
+
     afterProductFind() {
         this.cartService.cartChanged$;
         console.log('Produit trouvé');
@@ -104,6 +107,7 @@ export class ClavierComponent implements OnInit {
         );
         return true;
     }
+
     getProduct(code) {
         //code exist dans prodcutlist?
         //if(productexist)
@@ -111,40 +115,10 @@ export class ClavierComponent implements OnInit {
         // else
         // this.productFound = false;
     }
-    addProductQte(qte) {}
-    searchProduct() {
-        this.stateService.checkState(
-            'waitScan',
-            'selectProduct',
-            true,
-            this.openPopup()
-        );
-        //dans la pop up au click
-        this.stateService.checkState(
-            'selectProduct',
-            'selectAmount',
-            true,
-            // chooseProduct != 0,
-            null
-        );
-        Swal.fire({
-            title: 'Choisissez votre produit',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Produit 1',
-            denyButtonText: `Produit 2`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire('Produit 1 ajouté', '', 'success');
-            } else if (result.isDenied) {
-                Swal.fire('Produit 2 ajouté', '', 'success');
-            }
-        });
+
+    addProductQte(qte) {
     }
-    openPopup() {
-        //pop up alex
-    }
+
     clavierNumber(number) {
         if (this.status === 'espece') {
             Swal.fire({
