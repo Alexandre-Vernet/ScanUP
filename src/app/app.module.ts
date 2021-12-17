@@ -11,7 +11,14 @@ import { ClavierComponent } from './clavier/clavier.component';
 import { NavComponent } from './nav/nav.component';
 
 @NgModule({
-    declarations: [AppComponent, AuthComponent, GeneralComponent, ListProductsComponent, ClavierComponent, NavComponent],
+    declarations: [
+        AppComponent,
+        AuthComponent,
+        GeneralComponent,
+        ListProductsComponent,
+        ClavierComponent,
+        NavComponent,
+    ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
     bootstrap: [AppComponent],

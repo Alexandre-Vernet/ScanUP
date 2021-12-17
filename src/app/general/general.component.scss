@@ -1,6 +1,9 @@
 #general {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+}
+#general div {
+    width: 50%;
 }
 #paiement {
     background: #fff;
