@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { StateService } from '../service/state.service';
-
+import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
@@ -11,6 +12,8 @@ export class ClavierComponent implements OnInit {
     currentState: string;
     status = 'espece';
     totalPrice = 100;
+    productFound: boolean;
+    codeControl = new FormControl();
 
     constructor(private stateService: StateService) {
         this.stateService.currentStateChanged$.subscribe((data) => {
@@ -19,10 +22,8 @@ export class ClavierComponent implements OnInit {
     }
     /*// CODE SEARCH
 
-checkState('waitForCode','findProduct',code.length === 4);
-checkState('findProduct','ErrorUnknowPdt',productNotFound);
 checkState('ErrorUnknowPdt','waitScan');
-checkState('findProduct','selectAmount',productFound);
+
 checkState('selectAmount','waitScan',scanProduct,addProductQte1);
 checkState('selectAmount','waitScan',enterQte, addProdcutQteEnter);
 
@@ -34,12 +35,52 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
 
     onKeyup(e) {
         console.log(e);
-        // this.stateService.checkState(
-        //     'waitScan',
-        //     'waitForCode',
-        //     'toto ',
-        //     null
-        // );
+        this.stateService.checkState(
+            'waitScan',
+            'waitForCode',
+            e.key != '',
+            null
+        );
+        this.codeControl.valueChanges
+            .pipe(debounceTime(500))
+            .subscribe((codeValue) => {
+                this.stateService.checkState(
+                    'waitForCode',
+                    'findProduct',
+                    codeValue.length === 4,
+                    this.getProduct(codeValue)
+                );
+            });
+    }
+    validCode() {
+        this.stateService.checkState(
+            'findProduct',
+            'ErrorUnknowPdt',
+            !this.productFound,
+            //console.log('Produit non trouvé')
+            //add snabar
+            this.stateService.checkState(
+                'ErrorUnknowPdt',
+                'waitScan',
+                true,
+                null
+            )
+        );
+        this.stateService.checkState(
+            'findProduct',
+            'selectAmount',
+            this.productFound,
+            console.log('Produit trouvé')
+            //add snabar
+        );
+    }
+
+    getProduct(code) {
+        //code exist dans prodcutlist?
+        //if(productexist)
+        this.productFound = true;
+        // else
+        // this.productFound = false;
     }
     searchProduct() {
         Swal.fire({

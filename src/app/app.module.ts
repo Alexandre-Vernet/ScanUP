@@ -9,6 +9,7 @@ import { GeneralComponent } from './general/general.component';
 import { ListProductsComponent } from './list-products/list-products.component';
 import { ClavierComponent } from './clavier/clavier.component';
 import { NavComponent } from './nav/nav.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,7 @@ import { NavComponent } from './nav/nav.component';
         ClavierComponent,
         NavComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule],
+    imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
     providers: [],
     bootstrap: [AppComponent],
 })
