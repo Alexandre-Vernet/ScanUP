@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import Swal from "sweetalert2";
 import { StateService } from "../service/state.service";
+import { ProductCart } from "../product-cart";
+import { CartService } from "../service/cart.service";
 
 @Component({
     selector: "app-clavier",
@@ -11,8 +13,10 @@ export class ClavierComponent implements OnInit {
     currentState: string;
     status = "espece";
     totalPrice = 100;
+    @ViewChild("closeModalUnknownProduct") closeModalUnknownProduct;
 
-    constructor(private stateService: StateService) {
+    constructor(private stateService: StateService,
+                private cartService: CartService) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
@@ -58,6 +62,11 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
     }
 
     addToCart() {
+        // Add product to cart
+        const p = new ProductCart(1, "Marteau quelconque", 99.0, 1);
+        this.cartService.addProduct(p);
 
+        // Close modal
+        this.closeModalUnknownProduct.nativeElement.click();
     }
 }

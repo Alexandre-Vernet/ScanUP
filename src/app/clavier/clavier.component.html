@@ -1,7 +1,7 @@
-<div id="clavier" class="d-flex justify-content-around">
+<div class="d-flex justify-content-around" id="clavier">
     <div class="d-flex flex-column justify-content-between">
-        <input type="text" placeholder="Code Article" (keyup)="onKeyup($event)">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalUnknownProduct">
+        <input (keyup)="onKeyup($event)" placeholder="Code Article" type="text">
+        <button class="btn btn-primary" data-target="#modalUnknownProduct" data-toggle="modal">
             Produit inconnu
         </button>
     </div>
@@ -31,8 +31,8 @@
 
 
 <!-- Modal modalUnknownProduct-->
-<div class="modal fade" id="modalUnknownProduct" tabindex="-1" role="dialog"
-     aria-hidden="true">
+<div aria-hidden="true" class="modal fade" id="modalUnknownProduct" role="dialog"
+     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -41,8 +41,8 @@
                         <div class="col-4">
                             <div class="list-group" id="list-tab" role="tablist">
 
-                                <a class="list-group-item list-group-item-action active"
-                                   data-toggle="list" href="#produits-rapide" role="tab" aria-controls="home">Produits
+                                <a aria-controls="home"
+                                   class="list-group-item list-group-item-action active" data-toggle="list" href="#produits-rapide" role="tab">Produits
                                     rapides</a>
 
                                 <a class="list-group-item list-group-item-action"
@@ -66,9 +66,9 @@
                                 <div class="tab-pane fade show active" id="produits-rapide" role="tabpanel">
                                     <div class="d-flex justify-content-center">
                                         <ng-container *ngFor="let i of [1, 2, 3, 4]">
-                                            <div class="card" (click)="addToCart()">
+                                            <div (click)="addToCart()" class="card">
                                                 <div class="card-image">
-                                                    <img src="assets/img/hammer.png" alt="hammer">
+                                                    <img alt="hammer" src="assets/img/hammer.png">
                                                 </div>
                                                 <div class="card-body d-flex justify-content-center text-center">
                                                     <span class="card-title">Marteau quelconque</span>
@@ -99,8 +99,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-back" data-dismiss="modal">Retour</button>
-                <button type="button" class="btn btn-confirm">Confirmer</button>
+                <button #closeModalUnknownProduct class="btn btn-back" data-dismiss="modal" type="button">Retour
+                </button>
+                <button class="btn btn-confirm" type="button">Confirmer</button>
             </div>
         </div>
     </div>
