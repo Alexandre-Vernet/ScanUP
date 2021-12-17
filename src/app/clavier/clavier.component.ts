@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { StateService } from '../service/state.service';
 import { catchError, debounceTime, switchMap } from 'rxjs/operators';
+import { CartService } from '../service/cart.service';
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
@@ -15,17 +16,17 @@ export class ClavierComponent implements OnInit {
     productFound: boolean;
     codeControl = new FormControl();
 
-    constructor(private stateService: StateService) {
+    constructor(
+        private stateService: StateService,
+        private cartService: CartService
+    ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
     }
-    /*// CODE SEARCH
+    /*
 
-checkState('ErrorUnknowPdt','waitScan');
 
-checkState('selectAmount','waitScan',scanProduct,addProductQte1);
-checkState('selectAmount','waitScan',enterQte, addProdcutQteEnter);
 
 // MANUAL SEARCH
 checkState('waitScan','selectProduct',selectPdtInconnu);
@@ -70,9 +71,25 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
             'findProduct',
             'selectAmount',
             this.productFound,
-            console.log('Produit trouvé')
-            //add snabar
+            this.afterProductFind()
         );
+    }
+    afterProductFind() {
+        this.cartService.cartChanged$;
+        console.log('Produit trouvé');
+        //add snabar
+        // this.stateService.checkState(
+        //     'selectAmount',
+        //     'waitScan',
+        //     scanProduct,
+        //     this.addProductQte(1)
+        // );
+        // this.stateService.checkState(
+        //     'selectAmount',
+        //     'waitScan',
+        //     enterQte,
+        //     this.addProductQte(enterQte)
+        // );
     }
 
     getProduct(code) {
@@ -82,6 +99,7 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
         // else
         // this.productFound = false;
     }
+    addProductQte(qte) {}
     searchProduct() {
         Swal.fire({
             title: 'Choisissez votre produit',
