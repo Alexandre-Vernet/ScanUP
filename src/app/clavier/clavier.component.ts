@@ -19,6 +19,7 @@ export class ClavierComponent implements OnInit {
     productFound: boolean;
     codeControl = new FormControl();
     enterQte = 12;
+    valueClavier = '';
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     constructor(
@@ -30,11 +31,9 @@ export class ClavierComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     onKeyup(e) {
-        console.log(e);
         this.stateService.checkState(
             'waitScan',
             'waitForCode',
@@ -52,7 +51,9 @@ export class ClavierComponent implements OnInit {
                 );
             });
     }
-
+    unknowProdcut() {
+        this.stateService.checkState('waitScan', 'selectProduct', true, null);
+    }
     validCode() {
         this.stateService.checkState(
             'findProduct',
@@ -82,27 +83,29 @@ export class ClavierComponent implements OnInit {
         this.stateService.checkState(
             'selectAmount',
             'waitScan',
-            GeneralComponent.scanProduct,
+            true,
+            // GeneralComponent.scanProduct,
             this.addProductQte(1)
         );
         this.stateService.checkState(
             'selectAmount',
             'waitScan',
-            this.validClavier(this.enterQte),
+            this.validClavier(),
             this.addProductQte(this.enterQte)
         );
     }
 
-    validClavier(valueClavier) {
-        //recupcontenu clavier
+    validClavier() {
+        //if state ==
+        this.codeControl.setValue(this.valueClavier);
 
         this.stateService.checkState(
             'edit',
             'waitScan',
-            valueClavier != null,
+            this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
-                valueClavier
+                this.valueClavier
             )
         );
         return true;
@@ -116,26 +119,25 @@ export class ClavierComponent implements OnInit {
         // this.productFound = false;
     }
 
-    addProductQte(qte) {
-    }
+    addProductQte(qte) {}
 
     clavierNumber(number) {
-        if (this.status === 'espece') {
-            Swal.fire({
-                title: 'Somme a rendre : ' + (this.totalPrice - number) + ' €',
-                showCancelButton: true,
-                confirmButtonText:
-                    'Rendre ' + (this.totalPrice - number) + ' €',
-            });
-        } else if (this.status === 'editQuantity') {
-        } else if (this.status === 'splitPayment') {
-        }
+        this.valueClavier += number;
     }
 
     addToCart() {
         // Add product to cart
         const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
         this.cartService.addProduct(p);
+
+        // State
+        this.productFound = true;
+        this.stateService.checkState(
+            'selectProduct',
+            'findProduct',
+            true,
+            this.validCode()
+        );
 
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
