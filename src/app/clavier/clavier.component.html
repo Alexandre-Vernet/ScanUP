@@ -66,7 +66,7 @@
                                 <div class="tab-pane fade show active" id="produits-rapide" role="tabpanel">
                                     <div class="d-flex justify-content-center">
                                         <ng-container *ngFor="let i of [1, 2, 3, 4]">
-                                            <div class="card">
+                                            <div class="card" (click)="addToCart()">
                                                 <div class="card-image">
                                                     <img src="assets/img/hammer.png" alt="hammer">
                                                 </div>
@@ -99,8 +99,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                <button type="button" class="btn btn-primary">Confirmer</button>
+                <button type="button" class="btn btn-back" data-dismiss="modal">Retour</button>
+                <button type="button" class="btn btn-confirm">Confirmer</button>
             </div>
         </div>
     </div>

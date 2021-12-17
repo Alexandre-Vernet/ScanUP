@@ -29,7 +29,13 @@ table {
     width: 175px;
 }
 
-.list-group-item-action {
+.list-group-item-action,
+.btn-back {
     background-color: #2e4c6d;
+    color: #fff;
+}
+
+.btn-confirm {
+    background-color: #FC997C;
     color: #fff;
 }

@@ -43,7 +43,7 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
         //     null
         // );
     }
-    
+
     clavierNumber(number) {
         if (this.status === "espece") {
             Swal.fire({
@@ -55,5 +55,9 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
         } else if (this.status === "editQuantity") {
         } else if (this.status === "splitPayment") {
         }
+    }
+
+    addToCart() {
+
     }
 }
