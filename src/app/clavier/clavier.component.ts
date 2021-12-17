@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import Swal from 'sweetalert2';
-import { StateService } from '../service/state.service';
+import { Component, OnInit } from "@angular/core";
+import Swal from "sweetalert2";
+import { StateService } from "../service/state.service";
 
 @Component({
-    selector: 'app-clavier',
-    templateUrl: './clavier.component.html',
-    styleUrls: ['./clavier.component.scss'],
+    selector: "app-clavier",
+    templateUrl: "./clavier.component.html",
+    styleUrls: ["./clavier.component.scss"]
 })
 export class ClavierComponent implements OnInit {
     currentState: string;
-    status = 'espece';
+    status = "espece";
     totalPrice = 100;
 
     constructor(private stateService: StateService) {
@@ -17,6 +17,7 @@ export class ClavierComponent implements OnInit {
             this.currentState = data;
         });
     }
+
     /*// CODE SEARCH
 
 checkState('waitForCode','findProduct',code.length === 4);
@@ -30,7 +31,8 @@ checkState('selectAmount','waitScan',enterQte, addProdcutQteEnter);
 checkState('waitScan','selectProduct',selectPdtInconnu);
 checkState('selectProduct','selectAmount',chooseProduct);*/
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 
     onKeyup(e) {
         console.log(e);
@@ -41,32 +43,17 @@ checkState('selectProduct','selectAmount',chooseProduct);*/
         //     null
         // );
     }
-    searchProduct() {
-        Swal.fire({
-            title: 'Choisissez votre produit',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Produit 1',
-            denyButtonText: `Produit 2`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire('Produit 1 ajouté', '', 'success');
-            } else if (result.isDenied) {
-                Swal.fire('Produit 2 ajouté', '', 'success');
-            }
-        });
-    }
+    
     clavierNumber(number) {
-        if (this.status === 'espece') {
+        if (this.status === "espece") {
             Swal.fire({
-                title: 'Somme a rendre : ' + (this.totalPrice - number) + ' €',
+                title: "Somme a rendre : " + (this.totalPrice - number) + " €",
                 showCancelButton: true,
                 confirmButtonText:
-                    'Rendre ' + (this.totalPrice - number) + ' €',
+                    "Rendre " + (this.totalPrice - number) + " €"
             });
-        } else if (this.status === 'editQuantity') {
-        } else if (this.status === 'splitPayment') {
+        } else if (this.status === "editQuantity") {
+        } else if (this.status === "splitPayment") {
         }
     }
 }

@@ -1,7 +1,7 @@
 <div id="clavier" class="d-flex justify-content-around">
     <div class="d-flex flex-column justify-content-between">
         <input type="text" placeholder="Code Article" (keyup)="onKeyup($event)">
-        <button class="btn btn-primary" (click)="searchProduct()">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalUnknownProduct">
             Produit inconnu
         </button>
     </div>
@@ -30,27 +30,28 @@
 </div>
 
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
-    Launch
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal modalUnknownProduct-->
+<div class="modal fade" id="modalUnknownProduct" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <div class="modal-body">
-                Body
+                <div class="d-flex justify-content-center">
+                    <ng-container *ngFor="let i of [1, 2, 3, 4]">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="assets/img/hammer.png" alt="hammer">
+                            </div>
+                            <div class="card-body">
+                                <span class="card-title">Marteau quelconque</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                <button type="button" class="btn btn-primary">Confirmer</button>
             </div>
         </div>
     </div>

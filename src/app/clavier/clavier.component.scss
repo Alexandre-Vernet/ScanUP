@@ -1,5 +1,6 @@
 table {
     border-collapse: inherit;
+
     td {
         text-align: center;
         color: #fff;
@@ -9,8 +10,21 @@ table {
         background-color: #2e4c6d;
     }
 }
+
 #clavier {
     background: #fff;
     padding: 20px;
     margin: 20px;
+}
+
+.card-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-image img {
+    height: 87.5px;
+    width: 175px;
 }
