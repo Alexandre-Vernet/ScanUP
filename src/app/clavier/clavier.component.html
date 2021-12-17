@@ -1,12 +1,10 @@
-<div id="clavier" class="d-flex justify-content-around">
+<div class="d-flex justify-content-around" id="clavier">
     <div class="d-flex flex-column justify-content-between">
     <div class="row">
             <input type="text" [formControl]="codeControl" placeholder="Code Article" (keyup)="onKeyup($event)"/>
             <button class="btn btn-primary"(click)="validCode()">Ok</button>
     </div>
-        <button class="btn btn-primary" data-target="#modalUnknownProduct" data-toggle="modal" (click)="searchProduct()">
-            Produit inconnu
-        </button>
+    <button class="btn btn-primary" data-target="#modalUnknownProduct" data-toggle="modal">
     </div>
     <table>
         <tr>
@@ -45,7 +43,8 @@
                             <div class="list-group" id="list-tab" role="tablist">
 
                                 <a aria-controls="home"
-                                   class="list-group-item list-group-item-action active" data-toggle="list" href="#produits-rapide" role="tab">Produits
+                                   class="list-group-item list-group-item-action active" data-toggle="list"
+                                   href="#produits-rapide" role="tab">Produits
                                     rapides</a>
 
                                 <a class="list-group-item list-group-item-action"
