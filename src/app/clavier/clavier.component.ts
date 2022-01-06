@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
@@ -21,6 +21,10 @@ export class ClavierComponent implements OnInit {
     enterQte = 12;
     valueClavier = '';
     productOK = true;
+
+    @Input() payPart: boolean;
+    @Output() paidPartEvent = new EventEmitter<number>();
+
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     constructor(
@@ -99,6 +103,7 @@ export class ClavierComponent implements OnInit {
         this.codeControl.setValue(null);
         this.valueClavier = '';
     }
+
     validClavier() {
         //if state ==
         this.codeControl.setValue(this.valueClavier);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from "@angular/core";
 import { ProductCart } from "../product-cart";
 import { CartService } from "../service/cart.service";
 import Swal from "sweetalert2";
@@ -13,11 +13,16 @@ import { StateService } from "../service/state.service";
 export class GeneralComponent implements OnInit {
     static scanProduct = false;
     isWaiting = false;
+    subtotal = 0;
     totalPrice = 0;
+    owedMoney = 0;
     currentState: string;
     cart: Cart = new Cart();
     paymentSelected: string = null;
-    isCash: boolean = false;
+
+    isCashBool: boolean = false;
+    payPartBool = false;
+
     @ViewChild("closeModal") closeModal;
 
     constructor(
@@ -135,13 +140,39 @@ export class GeneralComponent implements OnInit {
     }
 
     changeToPaid() {
-        if (this.paymentSelected === "CB" || this.paymentSelected === "check") {
+        if (this.paymentSelected === "CB" || this.paymentSelected === "check" || (this.paymentSelected === "cash" && this.owedMoney !== 0)) {
+            Swal.fire("Paiement effectué", "", "success");
+            this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.owedMoney = 0;
+            this.isCashBool = false;
+            this.closeModal.nativeElement.click();
+        }
+        else if (this.paymentSelected === "cash" && this.owedMoney === 0) {
+            this.isCashBool = true;
+            this.closeModal.nativeElement.click();
+        }
+    }
+
+    payPart() {
+        this.payPartBool = !this.payPartBool;
+    }
+
+    changeSubtotal(number) {
+        if (this.payPartBool && number < (this.totalPrice - this.subtotal)) {
+            this.subtotal += number;
+            this.payPartBool = false;
+        }
+        else if (this.payPartBool && number === (this.totalPrice - this.subtotal)) {
             Swal.fire("Success paiement card", "", "success");
             this.cartService.emptyCart();
-            this.closeModal.nativeElement.click();
-        } else if (this.paymentSelected === "cash") {
-            this.isCash = true;
-            this.closeModal.nativeElement.click();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.payPartBool = false;
+        }
+        else if (this.isCashBool && number > (this.totalPrice - this.subtotal)) {
+            this.owedMoney = number - (this.totalPrice - this.subtotal);
         }
     }
 }
