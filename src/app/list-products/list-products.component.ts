@@ -45,10 +45,12 @@ export class ListProductsComponent implements OnInit {
         },
     ];
 
+    stateWaitForScan: State = State.WaitForScan;
+    stateEditProduct: State = State.EditProduct;
+
     constructor(
         private cartService: CartService,
-        private stateService: StateService,
-        @Inject(String) public stateEnum = State
+        private stateService: StateService
     ) {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.productList = cart.products;
@@ -63,8 +65,8 @@ export class ListProductsComponent implements OnInit {
 
     editMode(id) {
         this.stateService.checkState(
-            this.stateEnum.WaitForScan,
-            this.stateEnum.EditProduct,
+            this.stateWaitForScan,
+            this.stateEditProduct,
             true,
             this.stateService.setIdEdit(id)
             //+ transforme td en input

@@ -21,10 +21,13 @@ export class GeneralComponent implements OnInit {
     isCash: boolean = false;
     @ViewChild('closeModal') closeModal;
 
+    stateWaitForScan: State = State.WaitForScan;
+    statePutOnHold: State = State.PutOnHold;
+    stateChoosePayMode: State = State.ChoosePayMode;
+
     constructor(
         private cartService: CartService,
-        private stateService: StateService,
-        @Inject(String) public stateEnum = State
+        private stateService: StateService
     ) {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.totalPrice = cart.products.reduce(
@@ -35,12 +38,7 @@ export class GeneralComponent implements OnInit {
             );
             this.cart = cart;
         });
-        this.stateService.checkState(
-            '',
-            this.stateEnum.WaitForScan,
-            true,
-            null
-        );
+        this.stateService.checkState('', this.stateWaitForScan, true, null);
     }
 
     ngOnInit(): void {
@@ -64,10 +62,9 @@ export class GeneralComponent implements OnInit {
     }
 
     pause() {
-        //MISE EN ATTENTE
         this.stateService.checkState(
-            this.stateEnum.WaitForScan,
-            this.stateEnum.PutOnHold,
+            this.stateWaitForScan,
+            this.statePutOnHold,
             true,
             this.stockProductList()
         );
@@ -78,8 +75,8 @@ export class GeneralComponent implements OnInit {
 
     play() {
         this.stateService.checkState(
-            this.stateEnum.PutOnHold,
-            this.stateEnum.WaitForScan,
+            this.statePutOnHold,
+            this.stateWaitForScan,
             true,
             this.recupProductList()
         );
@@ -93,8 +90,8 @@ export class GeneralComponent implements OnInit {
 
     pay() {
         this.stateService.checkState(
-            this.stateEnum.WaitForScan,
-            this.stateEnum.ChoosePayMode,
+            this.stateWaitForScan,
+            this.stateChoosePayMode,
             this.totalPrice !== 0,
             this.openPayPopUp()
         );

@@ -24,10 +24,17 @@ export class ClavierComponent implements OnInit {
     productOK = true;
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
+    stateWaitForScan: State = State.WaitForScan;
+    stateWaitForCode: State = State.WaitForCode;
+    stateFindProduct: State = State.FindProduct;
+    stateSelectProduct: State = State.SelectProduct;
+    stateErrorUnknowPdt: State = State.ErrorUnknowPdt;
+    stateSelectAmount: State = State.SelectAmount;
+    stateEditProduct: State = State.EditProduct;
+
     constructor(
         private stateService: StateService,
-        private cartService: CartService,
-        @Inject(String) public stateEnum = State
+        private cartService: CartService
     ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
@@ -38,8 +45,8 @@ export class ClavierComponent implements OnInit {
 
     onKeyup(e) {
         this.stateService.checkState(
-            this.stateEnum.WaitForScan,
-            this.stateEnum.WaitForCode,
+            this.stateWaitForScan,
+            this.stateWaitForCode,
             e.key != '',
             null
         );
@@ -47,8 +54,8 @@ export class ClavierComponent implements OnInit {
             .pipe(debounceTime(500))
             .subscribe((codeValue) => {
                 this.stateService.checkState(
-                    this.stateEnum.WaitForCode,
-                    this.stateEnum.FindProduct,
+                    this.stateWaitForCode,
+                    this.stateFindProduct,
                     codeValue.length === 4,
                     this.getProduct(codeValue)
                 );
@@ -59,20 +66,19 @@ export class ClavierComponent implements OnInit {
     }
     validCode() {
         this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.ErrorUnknowPdt,
+            this.stateFindProduct,
+            this.stateErrorUnknowPdt,
             !this.productFound,
-
             this.stateService.checkState(
-                this.stateEnum.ErrorUnknowPdt,
-                this.stateEnum.WaitForScan,
+                this.stateErrorUnknowPdt,
+                this.stateWaitForScan,
                 true,
                 (this.productOK = false)
             )
         );
         this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.SelectAmount,
+            this.stateFindProduct,
+            this.stateSelectAmount,
             this.productFound,
             this.afterProductFind()
         );
@@ -83,15 +89,15 @@ export class ClavierComponent implements OnInit {
         console.log('Produit trouvé');
         this.productOK = true;
         this.stateService.checkState(
-            this.stateEnum.SelectAmount,
-            this.stateEnum.WaitForScan,
+            this.stateSelectAmount,
+            this.stateWaitForScan,
             true,
             // GeneralComponent.scanProduct,
             this.addProductQte(1)
         );
         this.stateService.checkState(
-            this.stateEnum.SelectAmount,
-            this.stateEnum.WaitForScan,
+            this.stateSelectAmount,
+            this.stateWaitForScan,
             this.validClavier(),
             this.addProductQte(this.enterQte)
         );
@@ -104,10 +110,9 @@ export class ClavierComponent implements OnInit {
     validClavier() {
         //if state ==
         this.codeControl.setValue(this.valueClavier);
-
         this.stateService.checkState(
-            this.stateEnum.EditProduct,
-            this.stateEnum.WaitForScan,
+            this.stateEditProduct,
+            this.stateWaitForScan,
             this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
@@ -136,16 +141,14 @@ export class ClavierComponent implements OnInit {
         // Add product to cart
         const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
         this.cartService.addProduct(p);
-
         // State
         this.productFound = true;
         this.stateService.checkState(
-            this.stateEnum.SelectProduct,
-            this.stateEnum.FindProduct,
+            this.stateSelectProduct,
+            this.stateFindProduct,
             true,
             this.validCode()
         );
-
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
     }
