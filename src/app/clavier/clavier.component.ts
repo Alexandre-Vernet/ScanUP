@@ -18,6 +18,7 @@ export class ClavierComponent {
     codeControl = new FormControl();
     enterQte = 12;
     valueClavier = '';
+    productOK = true;
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     constructor(
@@ -74,13 +75,12 @@ export class ClavierComponent {
             'findProduct',
             'ErrorUnknowPdt',
             !this.productFound,
-            //console.log('Produit non trouvé')
-            //add snabar
+
             this.stateService.checkState(
                 'ErrorUnknowPdt',
                 'waitScan',
                 true,
-                null
+                (this.productOK = false)
             )
         );
         this.stateService.checkState(
@@ -95,6 +95,7 @@ export class ClavierComponent {
         console.log('Produit trouvé');
         this.clear();
         //add snackbar
+        this.productOK = true;
         this.stateService.checkState(
             'selectAmount',
             'waitScan',

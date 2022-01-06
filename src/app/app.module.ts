@@ -10,6 +10,7 @@ import { ListProductsComponent } from './list-products/list-products.component';
 import { ClavierComponent } from './clavier/clavier.component';
 import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,12 @@ import { ReactiveFormsModule } from '@angular/forms';
         ClavierComponent,
         NavComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+    ],
     providers: [],
     bootstrap: [AppComponent],
 })
