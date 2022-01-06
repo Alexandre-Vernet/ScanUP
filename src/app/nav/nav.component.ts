@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
     ngOnInit(): void {
         setInterval(()=> {
             let now = new Date();
-            this.myDate = moment(now).locale('fr').format('LLLL');
+            this.myDate = moment(now).locale('fr').format('dddd DD/MM HH:mm');
         }, 1000);
     }
 }
