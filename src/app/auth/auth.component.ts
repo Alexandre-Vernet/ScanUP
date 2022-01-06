@@ -31,19 +31,7 @@ export class AuthComponent implements OnInit {
         this.validClavier();
     }
     validClavier() {
-        //if state ==
         this.codeControl.setValue(this.valueClavier);
-
-        this.stateService.checkState(
-            'edit',
-            'waitScan',
-            this.valueClavier != null,
-            this.cartService.changeQuantity(
-                this.stateService.idEdit,
-                this.valueClavier
-            )
-        );
-        return true;
     }
     login(code) {
         console.log(code.value);
