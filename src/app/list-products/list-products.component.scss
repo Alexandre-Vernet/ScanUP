@@ -1,7 +1,9 @@
 table {
+    width: 95%;
     background: #fff;
     padding: 20px;
     margin: 20px;
+    
     thead {
         tr {
             background: rgb(75 85 95 / 75%);
@@ -15,4 +17,13 @@ table {
     td {
         padding: 20px;
     }
+}
+
+.btn-back {
+    background-color: rgb(75 85 95 / 75%);
+    color: #fff;
+}
+
+.input-quantity{
+    width: 4em;
 }

@@ -12,9 +12,14 @@
         <tr *ngFor="let product of productList">
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
-            <td (dblclick)="editMode( product.id )">{{ product.quantity }}</td>
-            <td>{{ product.price }}</td>
-            <td> <button (click)="deleteProduct(product.id)"> X</button></td>
+            <td>
+                <span (dblclick)="editMode( product.id )" *ngIf="state !== 'edit' || idEdit !== product.id">{{ product.quantity }}</span>
+                <input class="form-control input-quantity" *ngIf="idEdit === product.id && state === 'edit'" type="text" [value]="product.quantity" />
+            </td>
+            <td>
+                {{ product.price }}
+            </td>
+            <td> <button class="btn btn-back" (click)="deleteProduct(product.id)"> X</button></td>
         </tr>
     </tbody>
 </table>

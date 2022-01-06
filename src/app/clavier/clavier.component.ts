@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
-import { catchError, debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
-import { GeneralComponent } from '../general/general.component';
 import { ProductCart } from '../product-cart';
 
 @Component({
@@ -12,7 +10,7 @@ import { ProductCart } from '../product-cart';
     templateUrl: './clavier.component.html',
     styleUrls: ['./clavier.component.scss'],
 })
-export class ClavierComponent implements OnInit {
+export class ClavierComponent {
     currentState: string;
     status = 'espece';
     totalPrice = 100;
@@ -29,19 +27,35 @@ export class ClavierComponent implements OnInit {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
+
+        this.codeControl.valueChanges.subscribe((inputValue)=>{
+            if(!inputValue){
+                return;
+            }
+            if (this.currentState === 'waitScan') {
+                this.stateService.checkState(
+                    'waitScan',
+                    'waitForCode',
+                    inputValue != '',
+                    null
+                );
+            }
+        })
     }
 
-    ngOnInit(): void {}
-
     onKeyup(e) {
-        this.stateService.checkState(
-            'waitScan',
-            'waitForCode',
-            e.key != '',
-            null
-        );
+        /*
+        if (this.currentState === 'waitScan') {
+            this.stateService.checkState(
+                'waitScan',
+                'waitForCode',
+                e.key != '',
+                null
+            );
+        }
+        //pour la recherche de produit on a le bouton "OK" ?
         this.codeControl.valueChanges
-            .pipe(debounceTime(500))
+            .pipe(debounceTime(100))
             .subscribe((codeValue) => {
                 this.stateService.checkState(
                     'waitForCode',
@@ -49,11 +63,12 @@ export class ClavierComponent implements OnInit {
                     codeValue.length === 4,
                     this.getProduct(codeValue)
                 );
-            });
+            });*/
     }
     unknowProdcut() {
         this.stateService.checkState('waitScan', 'selectProduct', true, null);
     }
+
     validCode() {
         this.stateService.checkState(
             'findProduct',
@@ -77,9 +92,9 @@ export class ClavierComponent implements OnInit {
     }
 
     afterProductFind() {
-        this.cartService.cartChanged$;
         console.log('Produit trouvé');
-        //add snabar
+        this.clear();
+        //add snackbar
         this.stateService.checkState(
             'selectAmount',
             'waitScan',
@@ -90,24 +105,23 @@ export class ClavierComponent implements OnInit {
         this.stateService.checkState(
             'selectAmount',
             'waitScan',
-            this.validClavier(),
+            true,//this.validClavier(),
             this.addProductQte(this.enterQte)
         );
     }
 
     validClavier() {
         //if state ==
-        this.codeControl.setValue(this.valueClavier);
-
         this.stateService.checkState(
             'edit',
             'waitScan',
             this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
-                this.valueClavier
+                +this.valueClavier
             )
         );
+        this.clear();
         return true;
     }
 
@@ -119,11 +133,11 @@ export class ClavierComponent implements OnInit {
         // this.productFound = false;
     }
 
-    addProductQte(qte) {}
+    addProductQte(qte) { }
 
     clavierNumber(number) {
         this.valueClavier += number;
-        this.validClavier();
+        this.codeControl.setValue(this.valueClavier);
     }
 
     addToCart() {
@@ -131,16 +145,23 @@ export class ClavierComponent implements OnInit {
         const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
         this.cartService.addProduct(p);
 
+        
         // State
         this.productFound = true;
         this.stateService.checkState(
             'selectProduct',
             'findProduct',
             true,
-            this.validCode()
+            this.clear()
+            //this.validCode()
         );
-
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
     }
+
+    clear() {
+        this.valueClavier = '';
+        this.codeControl.setValue('');
+    }
+
 }
