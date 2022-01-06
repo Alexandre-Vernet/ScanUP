@@ -1,20 +1,50 @@
 <table>
     <thead>
-        <tr>
-            <th>Référence</th>
-            <th>Désignation</th>
-            <th>Qté</th>
-            <th>Prix</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>Référence</th>
+        <th>Désignation</th>
+        <th>Qté</th>
+        <th>Prix</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let product of productList">
-            <td>{{ product.id }}</td>
-            <td>{{ product.name }}</td>
-            <td (dblclick)="editMode( product.id )">{{ product.quantity }}</td>
-            <td>{{ product.price }}</td>
-            <td> <button (click)="deleteProduct(product.id)"> X</button></td>
-        </tr>
+    <tr *ngFor="let product of productList">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td (dblclick)="editMode( product.id )">{{ product.quantity }}</td>
+        <td>{{ product.price }}</td>
+        <td>
+            <button (click)="getProductId(product.id)"
+                    class="btn btn-danger"
+                    data-target="#modalConfirmDeleteProduct" data-toggle="modal"> X
+            </button>
+        </td>
+    </tr>
     </tbody>
 </table>
+
+
+<!-- Modal confirm delete product -->
+<div aria-hidden="true" aria-labelledby="modelTitleId" class="modal fade"
+     id="modalConfirmDeleteProduct"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modalConfirmDeleteProduct">
+            <div class="modal-body">
+                <h4> Etes-vous sûr de vouloir supprimer ce produit ? </h4>
+            </div>
+            <div class="modal-footer">
+                <div class="buttons">
+                    <button class="btn btn-secondary" data-dismiss="modal"
+                            type="button">Retour
+                    </button>
+                    <button (click)="deleteProduct(productId)"
+                            data-dismiss="modal"
+                            class="btn btn-primary" type="button">Confirmer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
