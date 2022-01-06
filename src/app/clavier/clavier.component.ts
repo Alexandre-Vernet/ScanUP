@@ -7,22 +7,20 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import Swal from 'sweetalert2';
+
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
-import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
-import { GeneralComponent } from '../general/general.component';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
-import { parse } from '@angular/compiler/src/render3/view/style_parser';
+
 
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
     styleUrls: ['./clavier.component.scss'],
 })
-export class ClavierComponent implements OnInit {
+export class ClavierComponent {
     currentState: string;
     status = 'espece';
     totalPrice = 100;
@@ -53,31 +51,26 @@ export class ClavierComponent implements OnInit {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
         });
-    }
 
-    ngOnInit(): void {}
-
-    onKeyup(e) {
-        this.stateService.checkState(
-            this.stateWaitForScan,
-            this.stateWaitForCode,
-            e.key != '',
-            null
-        );
-        this.codeControl.valueChanges
-            .pipe(debounceTime(500))
-            .subscribe((codeValue) => {
+        this.codeControl.valueChanges.subscribe((inputValue)=>{
+            if(!inputValue){
+                return;
+            }
+            if (this.currentState === 'waitScan') {
                 this.stateService.checkState(
-                    this.stateWaitForCode,
-                    this.stateFindProduct,
-                    codeValue.length === 4,
-                    this.getProduct(codeValue)
+                    'waitScan',
+                    'waitForCode',
+                    inputValue != '',
+                    null
                 );
-            });
+            }
+        })
     }
+
     unknowProdcut() {
         this.stateService.checkState('waitScan', 'selectProduct', true, null);
     }
+
     validCode() {
         if (
             this.payPart &&
@@ -119,8 +112,9 @@ export class ClavierComponent implements OnInit {
     }
 
     afterProductFind() {
-        this.cartService.cartChanged$;
         console.log('Produit trouvé');
+        this.clear();
+        //add snackbar
         this.productOK = true;
         this.stateService.checkState(
             this.stateSelectAmount,
@@ -144,6 +138,7 @@ export class ClavierComponent implements OnInit {
 
     validClavier() {
         //if state ==
+
         this.codeControl.setValue(this.valueClavier);
         this.stateService.checkState(
             this.stateEditProduct,
@@ -151,9 +146,10 @@ export class ClavierComponent implements OnInit {
             this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
-                this.valueClavier
+                +this.valueClavier
             )
         );
+        this.clear();
         return true;
     }
 
@@ -165,26 +161,29 @@ export class ClavierComponent implements OnInit {
         // this.productFound = false;
     }
 
-    addProductQte(qte) {}
+    addProductQte(qte) { }
 
     clavierNumber(number) {
         this.valueClavier += number;
-        this.validClavier();
+        this.codeControl.setValue(this.valueClavier);
     }
 
     addToCart() {
         // Add product to cart
         const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
         this.cartService.addProduct(p);
+
         // State
         this.productFound = true;
         this.stateService.checkState(
             this.stateSelectProduct,
             this.stateFindProduct,
             true,
-            this.validCode()
+            this.clear()
+            //this.validCode()
         );
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
     }
+
 }

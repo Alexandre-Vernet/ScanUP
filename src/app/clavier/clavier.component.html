@@ -9,7 +9,7 @@
   <div class="d-flex justify-content-around" id="clavier">
     <div class="d-flex flex-column justify-content-between">
         <div class="row">
-            <input type="text" [formControl]="codeControl" placeholder="Code Article" (keyup)="onKeyup($event)"/>
+            <input type="text" [formControl]="codeControl" placeholder="Code Article" class="form-control input"/>
             <button class="btn btn-back"(click)="validCode()">Ok</button>
         </div>
         <button class="btn btn-back" data-target="#modalUnknownProduct" data-toggle="modal" (click)="unknowProdcut()">Produit inconnu</button>
@@ -33,7 +33,7 @@
         <tr>
             <td (click)="clear()">Clear</td>
             <td (click)="clavierNumber(0)">0</td>
-            <td>-></td>
+            <td (click)="validClavier()">-></td>
         </tr>
     </table>
 </div>

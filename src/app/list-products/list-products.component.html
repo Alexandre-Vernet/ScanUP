@@ -9,18 +9,23 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let product of productList">
-        <td>{{ product.id }}</td>
-        <td>{{ product.name }}</td>
-        <td (dblclick)="editMode( product.id )">{{ product.quantity }}</td>
-        <td>{{ product.price }}</td>
-        <td>
-            <button (click)="getProductId(product.id)"
-                    class="btn btn-danger"
-                    data-target="#modalConfirmDeleteProduct" data-toggle="modal"> X
-            </button>
-        </td>
-    </tr>
+        <tr *ngFor="let product of productList">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>
+                <span (dblclick)="editMode( product.id )" *ngIf="state !== 'edit' || idEdit !== product.id">{{ product.quantity }}</span>
+                <input class="form-control input-quantity" *ngIf="idEdit === product.id && state === 'edit'" type="text" [value]="product.quantity" />
+            </td>
+            <td>
+                {{ product.price }}
+            </td>
+            <td>
+                <button (click)="getProductId(product.id)"
+                        class="btn btn-danger"
+                        data-target="#modalConfirmDeleteProduct" data-toggle="modal"> X
+                </button>
+            </td>
+        </tr>
     </tbody>
 </table>
 

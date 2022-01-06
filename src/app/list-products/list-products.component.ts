@@ -17,6 +17,9 @@ import { State } from '../state.enum';
 })
 export class ListProductsComponent implements OnInit {
     cart: Cart = new Cart();
+    idEdit:number;
+    state: string;
+
     productId: number;
     productList = [
         {
@@ -55,6 +58,13 @@ export class ListProductsComponent implements OnInit {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.productList = cart.products;
         });
+
+        this.stateService.currentStateChanged$.subscribe((state)=>{
+            if(this.stateService.idEdit){
+                this.idEdit = this.stateService.idEdit;
+                this.state = state;
+            }
+        })
     }
 
     ngOnInit(): void {}
@@ -69,7 +79,6 @@ export class ListProductsComponent implements OnInit {
             this.stateEditProduct,
             true,
             this.stateService.setIdEdit(id)
-            //+ transforme td en input
         );
     }
 

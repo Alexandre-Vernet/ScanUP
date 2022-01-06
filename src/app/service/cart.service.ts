@@ -32,7 +32,11 @@ export class CartService {
 
     changeQuantity(id, qte) {
         //remplacer id par index
-        // this.cart.products[id].quantity = qte;
+        const index = this.cart.products.findIndex((product) => product.id === id);
+        if (index === -1) {
+            return;
+        }
+        this.cart.products[index].quantity = qte;
         this.notifyCart();
     }
 
