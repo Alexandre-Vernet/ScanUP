@@ -95,6 +95,10 @@ export class ClavierComponent implements OnInit {
         );
     }
 
+    clear() {
+        this.codeControl.setValue(null);
+        this.valueClavier = '';
+    }
     validClavier() {
         //if state ==
         this.codeControl.setValue(this.valueClavier);
