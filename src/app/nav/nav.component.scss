@@ -1,10 +1,42 @@
 nav {
     color: #fff;
     background-color: rgb(75 85 95 / 75%);
+
     p {
         margin: 10px;
     }
+
+    .theme {
+        width: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-theme {
+        border: 1px solid #000;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+    }
+
+    .theme .btn-theme:nth-child(1) {
+        background-color: green;
+    }
+
+    .theme .btn-theme:nth-child(2) {
+        background-color: #FA8072;
+    }
+
+    .theme .btn-theme:nth-child(3) {
+        background-color: black;
+    }
+
+    .theme button:nth-child(4) {
+        background-color: white;
+    }
 }
+
 .button-disconnect {
     width: 35px;
     height: 35px;
