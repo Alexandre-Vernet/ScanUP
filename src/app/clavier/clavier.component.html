@@ -1,4 +1,12 @@
-<div class="d-flex justify-content-around" id="clavier">
+
+  <div *ngIf="!productOK" class="alert alert-danger alert-dismissible fade show" role="alert">
+    Produit non trouvé !
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="d-flex justify-content-around" id="clavier">
     <div class="d-flex flex-column justify-content-between">
         <div class="row">
             <input type="text" [formControl]="codeControl" placeholder="Code Article" (keyup)="onKeyup($event)"/>
