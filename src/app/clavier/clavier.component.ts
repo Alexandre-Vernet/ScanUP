@@ -1,4 +1,12 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    Inject,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
@@ -7,6 +15,7 @@ import { CartService } from '../service/cart.service';
 import { GeneralComponent } from '../general/general.component';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
+import { parse } from '@angular/compiler/src/render3/view/style_parser';
 
 @Component({
     selector: 'app-clavier',
@@ -22,6 +31,11 @@ export class ClavierComponent implements OnInit {
     enterQte = 12;
     valueClavier = '';
     productOK = true;
+
+    @Input() payPart: boolean;
+    @Input() isCash: boolean;
+    @Output() paidPartEvent = new EventEmitter<number>();
+
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     stateWaitForScan: State = State.WaitForScan;
@@ -65,23 +79,43 @@ export class ClavierComponent implements OnInit {
         this.stateService.checkState('waitScan', 'selectProduct', true, null);
     }
     validCode() {
-        this.stateService.checkState(
-            this.stateFindProduct,
-            this.stateErrorUnknowPdt,
-            !this.productFound,
+        if (
+            this.payPart &&
+            this.valueClavier !== '' &&
+            typeof parseInt(this.valueClavier) === 'number'
+        ) {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        }
+        if (
+            this.isCash &&
+            this.valueClavier !== '' &&
+            typeof parseInt(this.valueClavier) === 'number'
+        ) {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        } else {
             this.stateService.checkState(
+                this.stateFindProduct,
                 this.stateErrorUnknowPdt,
-                this.stateWaitForScan,
-                true,
-                (this.productOK = false)
-            )
-        );
-        this.stateService.checkState(
-            this.stateFindProduct,
-            this.stateSelectAmount,
-            this.productFound,
-            this.afterProductFind()
-        );
+                !this.productFound,
+
+                this.stateService.checkState(
+                    this.stateErrorUnknowPdt,
+                    this.stateWaitForScan,
+                    true,
+                    (this.productOK = false)
+                )
+            );
+            this.stateService.checkState(
+                this.stateFindProduct,
+                this.stateSelectAmount,
+                this.productFound,
+                this.afterProductFind()
+            );
+        }
     }
 
     afterProductFind() {
@@ -107,6 +141,7 @@ export class ClavierComponent implements OnInit {
         this.codeControl.setValue(null);
         this.valueClavier = '';
     }
+
     validClavier() {
         //if state ==
         this.codeControl.setValue(this.valueClavier);

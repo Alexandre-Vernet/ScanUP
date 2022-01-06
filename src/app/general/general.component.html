@@ -37,12 +37,14 @@
         </div>
     </div>
     <div>
-        <app-clavier></app-clavier>
+        <app-clavier [isCash]="isCashBool" [payPart]="payPartBool" (paidPartEvent)="changeSubtotal($event)"></app-clavier>
         <div id="paiement" class="d-flex flex-column align-items-center">
-            <p>Total : {{ totalPrice }} €</p>
+            <p *ngIf="owedMoney === 0">Total : {{ totalPrice }} €</p>
+            <p *ngIf="owedMoney === 0">Total restant : {{ totalPrice - subtotal }} €</p>
+            <p *ngIf="owedMoney !== 0">Argent à rendre : {{owedMoney}}</p>
             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
-                    (click)="paymentSelected = ''; isCash = false" [disabled]="totalPrice<=0">
-                Payer
+                    (click)="paymentSelected = ''; isCashBool = false" [disabled]="totalPrice<=0">
+                {{ owedMoney === 0 ? 'Payer' : 'Rendre' }}
             </button>
         </div>
     </div>
@@ -57,7 +59,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-4 d-flex justify-content-start">
-                            <button (click)="paymentSelected = 'CB'"
+                            <button *ngIf="owedMoney === 0" (click)="paymentSelected = 'CB'"
                                     class="payment-type-btn" [ngClass]="{'selected': paymentSelected === 'CB'}">
                                 <img
                                     src="https://www.prestasoo.com/images/logo-cb.jpg"
@@ -71,7 +73,7 @@
                             </button>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <button (click)="paymentSelected = 'check'" class="payment-type-btn"
+                            <button *ngIf="owedMoney === 0" (click)="paymentSelected = 'check'" class="payment-type-btn"
                                     [ngClass]="{'selected': paymentSelected === 'check'}">
                                 <img
                                     src="https://labouillettetarnaise.com/wp-content/uploads/2017/12/paiement-cheque.png"
@@ -83,7 +85,7 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary">
+                            <button *ngIf="owedMoney === 0  " (click)="payPart()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#payModal">
                                 Payer une partie
                             </button>
                         </div>
@@ -97,14 +99,17 @@
                         </div>
                         <div class="col-4 d-flex justify-content-center">
                             <div class="price-amount btn">
-                                <p>
-                                    Reste à payer : {{totalPrice}} €
+                                <p *ngIf="owedMoney === 0">
+                                    Reste à payer : {{totalPrice - subtotal}} €
+                                </p>
+                                <p *ngIf="owedMoney !== 0">
+                                    Argent à rendre : {{owedMoney}}
                                 </p>
                             </div>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
                             <button type="button" class="btn btn-primary" (click)="changeToPaid()">
-                                Payer >
+                                {{ owedMoney === 0 ? 'Payer >' : 'Rendre >' }}
                             </button>
                         </div>
                     </div>

@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ProductCart } from '../product-cart';
-import { CartService } from '../service/cart.service';
-import Swal from 'sweetalert2';
-import { Cart } from '../cart';
-import { StateService } from '../service/state.service';
-import { State } from '../state.enum';
+import {Component, Inject, EventEmitter, OnInit, Output, ViewChild} from "@angular/core";
+import { ProductCart } from "../product-cart";
+import { CartService } from "../service/cart.service";
+import Swal from "sweetalert2";
+import { Cart } from "../cart";
+import { StateService } from "../service/state.service";
+import {State} from "../state.enum";
 
 @Component({
     selector: 'app-general',
@@ -14,12 +14,17 @@ import { State } from '../state.enum';
 export class GeneralComponent implements OnInit {
     static scanProduct = false;
     isWaiting = false;
+    subtotal = 0;
     totalPrice = 0;
+    owedMoney = 0;
     currentState: string;
     cart: Cart = new Cart();
     paymentSelected: string = null;
-    isCash: boolean = false;
-    @ViewChild('closeModal') closeModal;
+
+    isCashBool: boolean = false;
+    payPartBool = false;
+
+    @ViewChild("closeModal") closeModal;
 
     stateWaitForScan: State = State.WaitForScan;
     statePutOnHold: State = State.PutOnHold;
@@ -113,7 +118,7 @@ export class GeneralComponent implements OnInit {
                 //     (cardSelected || chequeSelected) && payerBtnSelected,
                 //     null
                 // );
-                Swal.fire('Success paiement card', '', 'success');
+                Swal.fire('Paiement effectué', '', 'success');
             } else if (result.isDenied) {
                 Swal.fire('Success paiement cash', '', 'info');
             }
@@ -138,12 +143,38 @@ export class GeneralComponent implements OnInit {
 
     changeToPaid() {
         if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
-            Swal.fire('Success paiement card', '', 'success');
+            Swal.fire('Paiement effectué', '', 'success');
             this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.owedMoney = 0;
+            this.isCashBool = false;
             this.closeModal.nativeElement.click();
-        } else if (this.paymentSelected === 'cash') {
-            this.isCash = true;
+        }
+        else if (this.paymentSelected === "cash" && this.owedMoney === 0) {
+            this.isCashBool = true;
             this.closeModal.nativeElement.click();
+        }
+    }
+
+    payPart() {
+        this.payPartBool = !this.payPartBool;
+    }
+
+    changeSubtotal(number) {
+        if (this.payPartBool && number < (this.totalPrice - this.subtotal)) {
+            this.subtotal += number;
+            this.payPartBool = false;
+        }
+        else if (this.payPartBool && number === (this.totalPrice - this.subtotal)) {
+            Swal.fire("Paiement effectué", "", "success");
+            this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.payPartBool = false;
+        }
+        else if (this.isCashBool && number > (this.totalPrice - this.subtotal)) {
+            this.owedMoney = number - (this.totalPrice - this.subtotal);
         }
     }
 }
