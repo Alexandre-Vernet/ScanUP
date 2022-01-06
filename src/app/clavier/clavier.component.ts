@@ -1,15 +1,19 @@
-<<<<<<< HEAD
-import { Component, OnInit, ViewChild } from '@angular/core';
-=======
-import {Component, Inject, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import Swal from 'sweetalert2';
->>>>>>> 49bb0910e7725597fa89f15f28367e6bc8306938
+import {
+    Component,
+    Inject,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
+
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
-import { debounceTime } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
+
 
 @Component({
     selector: 'app-clavier',
@@ -27,14 +31,22 @@ export class ClavierComponent {
     productOK = true;
 
     @Input() payPart: boolean;
+    @Input() isCash: boolean;
     @Output() paidPartEvent = new EventEmitter<number>();
 
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
+    stateWaitForScan: State = State.WaitForScan;
+    stateWaitForCode: State = State.WaitForCode;
+    stateFindProduct: State = State.FindProduct;
+    stateSelectProduct: State = State.SelectProduct;
+    stateErrorUnknowPdt: State = State.ErrorUnknowPdt;
+    stateSelectAmount: State = State.SelectAmount;
+    stateEditProduct: State = State.EditProduct;
+
     constructor(
         private stateService: StateService,
-        private cartService: CartService,
-        @Inject(String) public stateEnum = State
+        private cartService: CartService
     ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
@@ -55,60 +67,48 @@ export class ClavierComponent {
         })
     }
 
-    onKeyup(e) {
-<<<<<<< HEAD
-        /*
-        if (this.currentState === 'waitScan') {
-            this.stateService.checkState(
-                'waitScan',
-                'waitForCode',
-                e.key != '',
-                null
-            );
-        }
-        //pour la recherche de produit on a le bouton "OK" ?
-=======
-        this.stateService.checkState(
-            this.stateEnum.WaitForScan,
-            this.stateEnum.WaitForCode,
-            e.key != '',
-            null
-        );
->>>>>>> 49bb0910e7725597fa89f15f28367e6bc8306938
-        this.codeControl.valueChanges
-            .pipe(debounceTime(100))
-            .subscribe((codeValue) => {
-                this.stateService.checkState(
-                    this.stateEnum.WaitForCode,
-                    this.stateEnum.FindProduct,
-                    codeValue.length === 4,
-                    this.getProduct(codeValue)
-                );
-            });*/
-    }
     unknowProdcut() {
         this.stateService.checkState('waitScan', 'selectProduct', true, null);
     }
 
     validCode() {
-        this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.ErrorUnknowPdt,
-            !this.productFound,
-
+        if (
+            this.payPart &&
+            this.valueClavier !== '' &&
+            typeof parseInt(this.valueClavier) === 'number'
+        ) {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        }
+        if (
+            this.isCash &&
+            this.valueClavier !== '' &&
+            typeof parseInt(this.valueClavier) === 'number'
+        ) {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        } else {
             this.stateService.checkState(
-                this.stateEnum.ErrorUnknowPdt,
-                this.stateEnum.WaitForScan,
-                true,
-                (this.productOK = false)
-            )
-        );
-        this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.SelectAmount,
-            this.productFound,
-            this.afterProductFind()
-        );
+                this.stateFindProduct,
+                this.stateErrorUnknowPdt,
+                !this.productFound,
+
+                this.stateService.checkState(
+                    this.stateErrorUnknowPdt,
+                    this.stateWaitForScan,
+                    true,
+                    (this.productOK = false)
+                )
+            );
+            this.stateService.checkState(
+                this.stateFindProduct,
+                this.stateSelectAmount,
+                this.productFound,
+                this.afterProductFind()
+            );
+        }
     }
 
     afterProductFind() {
@@ -117,15 +117,15 @@ export class ClavierComponent {
         //add snackbar
         this.productOK = true;
         this.stateService.checkState(
-            this.stateEnum.SelectAmount,
-            this.stateEnum.WaitForScan,
+            this.stateSelectAmount,
+            this.stateWaitForScan,
             true,
             // GeneralComponent.scanProduct,
             this.addProductQte(1)
         );
         this.stateService.checkState(
-            this.stateEnum.SelectAmount,
-            this.stateEnum.WaitForScan,
+            this.stateSelectAmount,
+            this.stateWaitForScan,
             this.validClavier(),
             this.addProductQte(this.enterQte)
         );
@@ -138,9 +138,11 @@ export class ClavierComponent {
 
     validClavier() {
         //if state ==
+
+        this.codeControl.setValue(this.valueClavier);
         this.stateService.checkState(
-            this.stateEnum.EditProduct,
-            this.stateEnum.WaitForScan,
+            this.stateEditProduct,
+            this.stateWaitForScan,
             this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
@@ -171,12 +173,11 @@ export class ClavierComponent {
         const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
         this.cartService.addProduct(p);
 
-        
         // State
         this.productFound = true;
         this.stateService.checkState(
-            this.stateEnum.SelectProduct,
-            this.stateEnum.FindProduct,
+            this.stateSelectProduct,
+            this.stateFindProduct,
             true,
             this.clear()
             //this.validCode()
