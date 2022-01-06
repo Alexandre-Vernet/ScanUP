@@ -20,6 +20,7 @@ export class ClavierComponent implements OnInit {
     codeControl = new FormControl();
     enterQte = 12;
     valueClavier = '';
+    productOK = true;
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
 
     constructor(
@@ -59,13 +60,12 @@ export class ClavierComponent implements OnInit {
             'findProduct',
             'ErrorUnknowPdt',
             !this.productFound,
-            //console.log('Produit non trouvé')
-            //add snabar
+
             this.stateService.checkState(
                 'ErrorUnknowPdt',
                 'waitScan',
                 true,
-                null
+                (this.productOK = false)
             )
         );
         this.stateService.checkState(
@@ -79,7 +79,7 @@ export class ClavierComponent implements OnInit {
     afterProductFind() {
         this.cartService.cartChanged$;
         console.log('Produit trouvé');
-        //add snabar
+        this.productOK = true;
         this.stateService.checkState(
             'selectAmount',
             'waitScan',
