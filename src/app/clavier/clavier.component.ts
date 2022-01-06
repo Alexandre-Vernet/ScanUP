@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, Inject, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
@@ -6,6 +6,7 @@ import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { CartService } from '../service/cart.service';
 import { GeneralComponent } from '../general/general.component';
 import { ProductCart } from '../product-cart';
+import { State } from '../state.enum';
 
 @Component({
     selector: 'app-clavier',
@@ -29,7 +30,8 @@ export class ClavierComponent implements OnInit {
 
     constructor(
         private stateService: StateService,
-        private cartService: CartService
+        private cartService: CartService,
+        @Inject(String) public stateEnum = State
     ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
@@ -40,8 +42,8 @@ export class ClavierComponent implements OnInit {
 
     onKeyup(e) {
         this.stateService.checkState(
-            'waitScan',
-            'waitForCode',
+            this.stateEnum.WaitForScan,
+            this.stateEnum.WaitForCode,
             e.key != '',
             null
         );
@@ -49,8 +51,8 @@ export class ClavierComponent implements OnInit {
             .pipe(debounceTime(500))
             .subscribe((codeValue) => {
                 this.stateService.checkState(
-                    'waitForCode',
-                    'findProduct',
+                    this.stateEnum.WaitForCode,
+                    this.stateEnum.FindProduct,
                     codeValue.length === 4,
                     this.getProduct(codeValue)
                 );
@@ -61,20 +63,20 @@ export class ClavierComponent implements OnInit {
     }
     validCode() {
         this.stateService.checkState(
-            'findProduct',
-            'ErrorUnknowPdt',
+            this.stateEnum.FindProduct,
+            this.stateEnum.ErrorUnknowPdt,
             !this.productFound,
 
             this.stateService.checkState(
-                'ErrorUnknowPdt',
-                'waitScan',
+                this.stateEnum.ErrorUnknowPdt,
+                this.stateEnum.WaitForScan,
                 true,
                 (this.productOK = false)
             )
         );
         this.stateService.checkState(
-            'findProduct',
-            'selectAmount',
+            this.stateEnum.FindProduct,
+            this.stateEnum.SelectAmount,
             this.productFound,
             this.afterProductFind()
         );
@@ -85,15 +87,15 @@ export class ClavierComponent implements OnInit {
         console.log('Produit trouvé');
         this.productOK = true;
         this.stateService.checkState(
-            'selectAmount',
-            'waitScan',
+            this.stateEnum.SelectAmount,
+            this.stateEnum.WaitForScan,
             true,
             // GeneralComponent.scanProduct,
             this.addProductQte(1)
         );
         this.stateService.checkState(
-            'selectAmount',
-            'waitScan',
+            this.stateEnum.SelectAmount,
+            this.stateEnum.WaitForScan,
             this.validClavier(),
             this.addProductQte(this.enterQte)
         );
@@ -109,8 +111,8 @@ export class ClavierComponent implements OnInit {
         this.codeControl.setValue(this.valueClavier);
 
         this.stateService.checkState(
-            'edit',
-            'waitScan',
+            this.stateEnum.EditProduct,
+            this.stateEnum.WaitForScan,
             this.valueClavier != null,
             this.cartService.changeQuantity(
                 this.stateService.idEdit,
@@ -143,8 +145,8 @@ export class ClavierComponent implements OnInit {
         // State
         this.productFound = true;
         this.stateService.checkState(
-            'selectProduct',
-            'findProduct',
+            this.stateEnum.SelectProduct,
+            this.stateEnum.FindProduct,
             true,
             this.validCode()
         );
