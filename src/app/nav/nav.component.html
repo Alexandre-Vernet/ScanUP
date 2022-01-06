@@ -1,7 +1,9 @@
-<nav class="d-flex justify-content-between">
-    <button type="button" class="btn btn-secondary">TrucCaisse 🛒</button>
-    <p>Bonjour Truc</p>
-    <p>{{currentState}}</p>
-    <p>{{myDate | date:'short'}}</p>
-    <p><a routerLink="/">Out</a></p>
-</nav>
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>more_horizontal</mat-icon>
+</button>
+<mat-menu #menu="matMenu" yPosition="below">
+    <button mat-menu-item (click)="colorGreen()">Thème vert</button>
+    <button mat-menu-item (click)="colorSalmon()">Thème Saumon</button>
+    <button mat-menu-item (click)="colorBlack()">Thème Noir</button>
+    <button mat-menu-item (click)="colorDefault()">Thème défaut</button>
+</mat-menu>

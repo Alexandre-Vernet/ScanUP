@@ -10,6 +10,9 @@ import { ListProductsComponent } from './list-products/list-products.component';
 import { ClavierComponent } from './clavier/clavier.component';
 import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
     declarations: [
@@ -20,7 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         ClavierComponent,
         NavComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+    imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, NoopAnimationsModule, MatMenuModule, MatIconModule],
     providers: [],
     bootstrap: [AppComponent],
 })

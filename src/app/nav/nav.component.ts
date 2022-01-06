@@ -14,6 +14,19 @@ export class NavComponent implements OnInit {
             this.currentState = data;
         });
     }
-
     ngOnInit(): void {}
+
+
+    colorGreen() {
+        document.body.style.backgroundColor = 'green';
+    }
+    colorSalmon() {
+        document.body.style.backgroundColor = '#FA8072';
+    }
+    colorBlack() {
+        document.body.style.backgroundColor = 'black';
+    }
+    colorDefault() {
+        document.body.style.backgroundColor = 'rgb(75 85 95 / 75%)';
+    }
 }
