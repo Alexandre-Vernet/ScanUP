@@ -1,7 +1,12 @@
 <nav class="d-flex justify-content-between">
-    <button type="button" class="btn btn-secondary">TrucCaisse 🛒</button>
+    <div class="theme d-flex justify-content-around">
+        <button class="btn-theme" (click)="colorBlack()"></button>
+        <button class="btn-theme" (click)="colorSalmon()"></button>
+        <button class="btn-theme" (click)="colorBlack()"></button>
+        <button class="btn-theme" (click)="colorDefault()"></button>
+    </div>
     <p>Bonjour Truc</p>
     <p>{{currentState}}</p>
     <p>{{myDate}}</p>
-    <img  class="button-disconnect" src="assets/img/power.png" routerLink="/">
+    <img class="button-disconnect" src="assets/img/power.png" routerLink="/">
 </nav>
