@@ -9,13 +9,15 @@
                 </button>
             </div>
             <ng-template #elseBlock
-                ><button
+            >
+                <button
                     class="btn btn-warning"
                     (click)="pause()"
                     [disabled]="isEmpty()"
                 >
                     Mise en attente
-                </button></ng-template
+                </button>
+            </ng-template
             >
             <button
                 class="btn btn-danger"
@@ -38,39 +40,76 @@
         <app-clavier></app-clavier>
         <div id="paiement" class="d-flex flex-column align-items-center">
             <p>Total : {{ totalPrice }} €</p>
-            <button
-            data-bs-target="#payModal"
-             data-bs-toggle="modal" 
-         
-                class="btn btn-success"
-               
-                [disabled]="isEmpty()"
-            >
-            <!-- (click)="pay()" -->
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
+                    (click)="paymentSelected = ''; isCash = false" [disabled]="totalPrice<=0">
                 Payer
             </button>
-            
         </div>
     </div>
 </div>
 
 
 <div class="modal" tabindex="-1" role="dialog" id="payModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-center">Sélectionnez un ou plusieurs mode de paiement</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4 d-flex justify-content-start">
+                            <button (click)="paymentSelected = 'CB'"
+                                    class="payment-type-btn" [ngClass]="{'selected': paymentSelected === 'CB'}">
+                                <img
+                                    src="https://www.prestasoo.com/images/logo-cb.jpg"
+                                    alt="CB">
+                            </button>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center">
+                            <button (click)="paymentSelected = 'cash'" class="payment-type-btn"
+                                    [ngClass]="{'selected': paymentSelected === 'cash'}">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png" alt="Espèces">
+                            </button>
+                        </div>
+                        <div class="col-4 d-flex justify-content-end">
+                            <button (click)="paymentSelected = 'check'" class="payment-type-btn"
+                                    [ngClass]="{'selected': paymentSelected === 'check'}">
+                                <img
+                                    src="https://labouillettetarnaise.com/wp-content/uploads/2017/12/paiement-cheque.png"
+                                    alt="Chèque">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary">
+                                Payer une partie
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-4 d-flex justify-content-start">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeModal>< Retour
+                            </button>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center">
+                            <div class="price-amount btn">
+                                <p>
+                                    Reste à payer : {{totalPrice}} €
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" (click)="changeToPaid()">
+                                Payer >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
