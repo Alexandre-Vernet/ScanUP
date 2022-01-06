@@ -42,7 +42,7 @@
             <p *ngIf="owedMoney === 0">Total : {{ totalPrice }} €</p>
             <p *ngIf="owedMoney === 0">Total restant : {{ totalPrice - subtotal }} €</p>
             <p *ngIf="owedMoney !== 0">Argent à rendre : {{owedMoney}}</p>
-            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
+            <button (click)="pay()" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
                     (click)="paymentSelected = ''; isCashBool = false" [disabled]="totalPrice<=0">
                 {{ owedMoney === 0 ? 'Payer' : 'Rendre' }}
             </button>

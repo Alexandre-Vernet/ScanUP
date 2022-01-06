@@ -7,17 +7,16 @@ nav {
     }
 
     .theme {
-        width: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .btn-theme {
-        border: 1px solid #000;
-        border-radius: 50%;
+        border-radius: 100%;
         width: 10px;
         height: 10px;
+        margin: 0 2px;
     }
 
     .theme .btn-theme:nth-child(1) {
@@ -25,7 +24,7 @@ nav {
     }
 
     .theme .btn-theme:nth-child(2) {
-        background-color: #FA8072;
+        background-color: #fa8072;
     }
 
     .theme .btn-theme:nth-child(3) {
@@ -38,8 +37,8 @@ nav {
 }
 
 .button-disconnect {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     filter: invert(100%);
-    margin-right: 10px;
+    margin: 10px;
 }
