@@ -36,10 +36,13 @@
             </div>
             <div class="modal-footer">
                 <div class="buttons">
-                    <button #closeModalConfirmDeleteProduct class="btn btn-secondary" data-dismiss="modal"
+                    <button class="btn btn-secondary" data-dismiss="modal"
                             type="button">Retour
                     </button>
-                    <button (click)="deleteProduct(productId)" class="btn btn-primary" type="button">Confirmer</button>
+                    <button (click)="deleteProduct(productId)"
+                            data-dismiss="modal"
+                            class="btn btn-primary" type="button">Confirmer
+                    </button>
                 </div>
             </div>
         </div>

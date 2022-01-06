@@ -37,9 +37,7 @@ export class ListProductsComponent implements OnInit {
             quantity: 2
         }
     ];
-
-    @ViewChild("closeModalConfirmDeleteProduct") closeModalConfirmDeleteProduct: ElementRef;
-
+    
     constructor(
         private cartService: CartService,
         private stateService: StateService
@@ -68,6 +66,5 @@ export class ListProductsComponent implements OnInit {
 
     getProductId(productId) {
         this.productId = productId;
-        this.closeModalConfirmDeleteProduct.nativeElement.click();
     }
 }
