@@ -123,6 +123,7 @@ export class ClavierComponent implements OnInit {
 
     clavierNumber(number) {
         this.valueClavier += number;
+        this.validClavier();
     }
 
     addToCart() {
