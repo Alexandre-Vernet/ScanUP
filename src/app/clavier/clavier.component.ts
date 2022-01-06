@@ -7,6 +7,7 @@ import { CartService } from '../service/cart.service';
 import { GeneralComponent } from '../general/general.component';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
+import {parse} from "@angular/compiler/src/render3/view/style_parser";
 
 @Component({
     selector: 'app-clavier',
@@ -24,6 +25,7 @@ export class ClavierComponent implements OnInit {
     productOK = true;
 
     @Input() payPart: boolean;
+    @Input() isCash: boolean;
     @Output() paidPartEvent = new EventEmitter<number>();
 
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
@@ -62,24 +64,36 @@ export class ClavierComponent implements OnInit {
         this.stateService.checkState('waitScan', 'selectProduct', true, null);
     }
     validCode() {
-        this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.ErrorUnknowPdt,
-            !this.productFound,
-
+        if (this.payPart && this.valueClavier !== '' && typeof parseInt(this.valueClavier) === 'number') {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        }
+        if (this.isCash && this.valueClavier !== '' && typeof parseInt(this.valueClavier) === 'number') {
+            this.paidPartEvent.emit(parseInt(this.valueClavier));
+            this.valueClavier = '';
+            this.codeControl.setValue('');
+        }
+        else {
             this.stateService.checkState(
+                this.stateEnum.FindProduct,
                 this.stateEnum.ErrorUnknowPdt,
-                this.stateEnum.WaitForScan,
-                true,
-                (this.productOK = false)
-            )
-        );
-        this.stateService.checkState(
-            this.stateEnum.FindProduct,
-            this.stateEnum.SelectAmount,
-            this.productFound,
-            this.afterProductFind()
-        );
+                !this.productFound,
+
+                this.stateService.checkState(
+                    this.stateEnum.ErrorUnknowPdt,
+                    this.stateEnum.WaitForScan,
+                    true,
+                    (this.productOK = false)
+                )
+            );
+            this.stateService.checkState(
+                this.stateEnum.FindProduct,
+                this.stateEnum.SelectAmount,
+                this.productFound,
+                this.afterProductFind()
+            );
+        }
     }
 
     afterProductFind() {
