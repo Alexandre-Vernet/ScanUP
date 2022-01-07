@@ -228,7 +228,7 @@ export class ClavierComponent {
     }
 
     findProduct(id: number) {
-        if(!id){
+        if (!id) {
             return;
         }
         //on regarde si le produit sélectionné / entré existe
@@ -260,7 +260,14 @@ export class ClavierComponent {
             );
         }
 
+    }
 
-
+    onCloseModal() {
+        this.stateService.checkState(
+            this.stateSelectProduct,
+            this.stateWaitForScan,
+            true,
+            null
+        );
     }
 }

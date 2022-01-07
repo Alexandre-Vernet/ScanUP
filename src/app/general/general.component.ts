@@ -268,4 +268,17 @@ export class GeneralComponent implements OnInit {
             this.owedMoney = number - (this.totalPrice - this.subtotal);
         }
     }
+
+    onCloseModal(){
+        this.stateService.checkState(
+            this.stateChoosePayMode,
+            this.stateWaitForScan,
+            true,
+            null
+        );
+    }
+
+    isOnPay(){
+        return this.currentState === State.ChoosePayMode || this.currentState === State.AmountToPay;
+    }
 }
