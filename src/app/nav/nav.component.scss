@@ -37,8 +37,11 @@ nav {
 }
 
 .button-disconnect {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     filter: invert(100%);
     margin: 10px;
+}
+#date {
+    text-transform: capitalize;
 }

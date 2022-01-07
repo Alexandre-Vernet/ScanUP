@@ -36,6 +36,9 @@ export class GeneralComponent implements OnInit {
     stateWaitForScan: State = State.WaitForScan;
     statePutOnHold: State = State.PutOnHold;
     stateChoosePayMode: State = State.ChoosePayMode;
+    stateAmountToPay: State = State.AmountToPay;
+    stateCashAmount: State = State.CashAmount;
+    stateCashOut: State = State.CashOut;
 
     constructor(
         private cartService: CartService,
@@ -58,16 +61,6 @@ export class GeneralComponent implements OnInit {
             this.currentState = data;
         });
     }
-
-    //PAIEMENT
-
-    //   checkState('chosePayMode','amountToPay', (cardSelected || chequeSelected || cashSelected) && payerPartBtnSelected);
-    //   checkState('amountToPay','chosePayMode', enterAmount && amount<totalPaiement);
-    //   checkState('amountToPay','waitScan', enterAmount && amount==totalPaiement);
-
-    //   checkState('chosePayMode','cashAmount',cashSelected && payerBtnSelected);
-    //   checkState('cashAmount','cashOut',enterAmount && cashAmount>totalPaiement );
-    //   checkState('cashOut','waitScan',selectCashOutBtn );
 
     giveUp() {
         this.cartService.emptyCart();
@@ -101,12 +94,27 @@ export class GeneralComponent implements OnInit {
     recupProductList() {}
 
     pay() {
-        this.stateService.checkState(
-            this.stateWaitForScan,
-            this.stateChoosePayMode,
-            this.totalPrice !== 0,
-            null //remplacer par l'ouverture du pop up
-        );
+        if (this.owedMoney === 0) {
+            this.stateService.checkState(
+                this.stateWaitForScan,
+                this.stateChoosePayMode,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+            this.stateService.checkState(
+                this.stateAmountToPay,
+                this.stateChoosePayMode,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+        } else {
+            this.stateService.checkState(
+                this.stateCashAmount,
+                this.stateCashOut,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+        }
     }
 
     openPayPopUp() {
@@ -150,7 +158,12 @@ export class GeneralComponent implements OnInit {
 
     changeToPaid() {
         if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
-            Swal.fire('Paiement effectué', '', 'success');
+            this.stateService.checkState(
+                this.stateChoosePayMode,
+                this.stateWaitForScan,
+                true,
+                Swal.fire('Paiement effectué', '', 'success')
+            );
             this.cartService.emptyCart();
             this.subtotal = 0;
             this.totalPrice = 0;
@@ -158,13 +171,35 @@ export class GeneralComponent implements OnInit {
             this.isCashBool = false;
             this.closeModal.nativeElement.click();
         } else if (this.paymentSelected === 'cash' && this.owedMoney === 0) {
-            this.isCashBool = true;
+            this.stateService.checkState(
+                this.stateChoosePayMode,
+                this.stateCashAmount,
+                true,
+                (this.isCashBool = true)
+            );
             this.closeModal.nativeElement.click();
+        } else if (this.paymentSelected === 'cash' && this.owedMoney !== 0) {
+            this.stateService.checkState(
+                this.stateCashOut,
+                this.stateWaitForScan,
+                true,
+                Swal.fire('Paiement effectué', '', 'success')
+            );
+            this.closeModal.nativeElement.click();
+            this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.owedMoney = 0;
         }
     }
 
     payPart() {
-        this.payPartBool = !this.payPartBool;
+        this.stateService.checkState(
+            this.stateChoosePayMode,
+            this.stateAmountToPay,
+            true,
+            (this.payPartBool = !this.payPartBool)
+        );
     }
 
     changeSubtotal(number) {
