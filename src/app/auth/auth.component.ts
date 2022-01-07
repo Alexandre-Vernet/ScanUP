@@ -50,11 +50,8 @@ export class AuthComponent implements OnInit {
         });
     }
 
-    clearForm() {
-        this.codeControl.setValue("");
-    }
     clear() {
         this.codeControl.setValue(null);
-        this.valueClavier = '';
+        this.valueClavier = "";
     }
 }
