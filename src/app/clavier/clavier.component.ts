@@ -46,7 +46,7 @@ export class ClavierComponent {
     stateErrorUnknowPdt: State = State.ErrorUnknowPdt;
     stateSelectAmount: State = State.SelectAmount;
     stateEditProduct: State = State.EditProduct;
-
+    stateCashAmount: State = State.CashAmount;
     codeTab = [];
 
     constructor(
@@ -91,16 +91,6 @@ export class ClavierComponent {
         );
     }
 
-    validProductCode() {
-        this.stateService.checkState(
-            this.stateWaitForCode,
-            this.stateFindProduct,
-            true,
-            (this.idToFind = +this.codeControl.value)
-        );
-        this.clear();
-    }
-
     validCode() {
         // si on paie une partie
         if (
@@ -136,6 +126,14 @@ export class ClavierComponent {
                 )
             );
         }
+        //si state= wait for code
+        this.stateService.checkState(
+            this.stateWaitForCode,
+            this.stateFindProduct,
+            true,
+            (this.idToFind = +this.codeControl.value)
+        );
+        this.clear();
     }
 
     clear() {

@@ -1,23 +1,18 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductsService } from '../service/products.service';
-import { CartService } from "../service/cart.service";
-import Swal from "sweetalert2";
-import { Cart } from "../cart";
-import { StateService } from "../service/state.service";
-import { State } from "../state.enum";
+import { CartService } from '../service/cart.service';
+import Swal from 'sweetalert2';
+import { Cart } from '../cart';
+import { StateService } from '../service/state.service';
+import { State } from '../state.enum';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { ProductCart } from '../product-cart';
 
-
 @Component({
-    selector: "app-general",
-    templateUrl: "./general.component.html",
-    styleUrls: ["./general.component.scss"]
+    selector: 'app-general',
+    templateUrl: './general.component.html',
+    styleUrls: ['./general.component.scss'],
 })
 export class GeneralComponent implements OnInit {
     static scanProduct = false;
@@ -32,15 +27,15 @@ export class GeneralComponent implements OnInit {
     isCashBool: boolean = false;
     payPartBool = false;
 
-    @ViewChild("closeModal") closeModal;
+    @ViewChild('closeModal') closeModal;
 
     stateWaitForScan: State = State.WaitForScan;
     statePutOnHold: State = State.PutOnHold;
     stateChoosePayMode: State = State.ChoosePayMode;
     stateSelectAmount: State = State.SelectAmount;
     stateAmountToPay: State = State.AmountToPay;
-	stateCashAmount: State = State.CashAmount;
-	stateCashOut: State = State.CashOut;
+    stateCashAmount: State = State.CashAmount;
+    stateCashOut: State = State.CashOut;
 
     constructor(
         private cartService: CartService,
@@ -61,7 +56,7 @@ export class GeneralComponent implements OnInit {
         this.stateService.checkState('', this.stateWaitForScan, true, null);
         this.stateService.currentStateChanged$.subscribe((state) => {
             this.currentState = state;
-        })
+        });
     }
 
     //PAIEMENT
@@ -78,14 +73,14 @@ export class GeneralComponent implements OnInit {
         // If log
         this.auth.getAuth().then((user) => {
             if (!user) {
-                this.router.navigateByUrl("/");
+                this.router.navigateByUrl('/');
             }
         });
     }
 
-	giveUp() {
-		this.cartService.emptyCart();
-	}
+    giveUp() {
+        this.cartService.emptyCart();
+    }
 
     pause() {
         this.stateService.checkState(
@@ -100,6 +95,7 @@ export class GeneralComponent implements OnInit {
     }
 
     play() {
+        this.cartService.emptyCart();
         this.stateService.checkState(
             this.statePutOnHold,
             this.stateWaitForScan,
@@ -110,39 +106,35 @@ export class GeneralComponent implements OnInit {
         this.cartService.stopCartInWait();
     }
 
-    stockProductList() {
-    }
+    stockProductList() {}
 
-    recupProductList() {
-    }
+    recupProductList() {}
 
-	pay() {
-		if (this.owedMoney === 0) {
-			this.stateService.checkState(
-				this.stateWaitForScan,
-				this.stateChoosePayMode,
-				this.totalPrice !== 0,
-				null //remplacer par l'ouverture du pop up
-			);
-			this.stateService.checkState(
-				this.stateAmountToPay,
-				this.stateChoosePayMode,
-				this.totalPrice !== 0,
-				null //remplacer par l'ouverture du pop up
-			);
-		} else {
-			this.stateService.checkState(
-				this.stateCashAmount,
-				this.stateCashOut,
-				this.totalPrice !== 0,
-				null //remplacer par l'ouverture du pop up
-			);
-		}
-	}
+    pay() {
+        if (this.owedMoney === 0) {
+            this.stateService.checkState(
+                this.stateWaitForScan,
+                this.stateChoosePayMode,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+            this.stateService.checkState(
+                this.stateAmountToPay,
+                this.stateChoosePayMode,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+        } else {
+            this.stateService.checkState(
+                this.stateCashAmount,
+                this.stateCashOut,
+                this.totalPrice !== 0,
+                null //remplacer par l'ouverture du pop up
+            );
+        }
+    }
 
     scanProduct(id: number) {
-        console.log(this.currentState)
-
         const product = this.productService.checkProductExist(id);
         if (!product) {
             console.log('ERROR !');
@@ -152,25 +144,24 @@ export class GeneralComponent implements OnInit {
         this.cartService.addProduct(product);
         GeneralComponent.scanProduct = true;
 
-
         if (this.currentState === State.SelectAmount) {
             this.stateService.checkState(
                 this.stateSelectAmount,
                 this.stateWaitForScan,
                 true,
                 null
-            )
+            );
         }
     }
 
     openPayPopUp() {
         //MODAL A IMPLEMENTER
         Swal.fire({
-            title: "Choose your payment method",
+            title: 'Choose your payment method',
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: "Credit card",
-            denyButtonText: `Cash`
+            confirmButtonText: 'Credit card',
+            denyButtonText: `Cash`,
         }).then((result) => {
             if (result.isConfirmed) {
                 // this.stateService.checkState(
@@ -179,74 +170,62 @@ export class GeneralComponent implements OnInit {
                 //     (cardSelected || chequeSelected) && payerBtnSelected,
                 //     null
                 // );
-                Swal.fire("Paiement effectué", "", "success");
+                Swal.fire('Paiement effectué', '', 'success');
             } else if (result.isDenied) {
-                Swal.fire("Success paiement cash", "", "info");
+                Swal.fire('Success paiement cash', '', 'info');
             }
         });
-    }
-
-    scanProductA() {
-        const p = new ProductCart(1, "Tronconneuse", 99.0, 1);
-        this.cartService.addProduct(p);
-        GeneralComponent.scanProduct = true;
-    }
-
-    scanProductB() {
-        const p = new ProductCart(2, "Perceuse", 50.0, 1);
-        this.cartService.addProduct(p);
-        GeneralComponent.scanProduct = true;
     }
 
     isEmpty() {
         return this.cartService.isEmpty();
     }
 
-	changeToPaid() {
-		if (this.paymentSelected === "CB" || this.paymentSelected === "check") {
-			this.stateService.checkState(
-				this.stateChoosePayMode,
-				this.stateWaitForScan,
-				true,
-				Swal.fire("Paiement effectué", "", "success")
-			);
-			this.cartService.emptyCart();
-			this.subtotal = 0;
-			this.totalPrice = 0;
-			this.owedMoney = 0;
-			this.isCashBool = false;
-			this.closeModal.nativeElement.click();
-		} else if (this.paymentSelected === "cash" && this.owedMoney === 0) {
-			this.stateService.checkState(
-				this.stateChoosePayMode,
-				this.stateCashAmount,
-				true,
-				(this.isCashBool = true)
-			);
-			this.closeModal.nativeElement.click();
-		} else if (this.owedMoney !== 0) {
-			this.stateService.checkState(
-				this.stateCashOut,
-				this.stateWaitForScan,
-				true,
-				Swal.fire("Paiement effectué", "", "success")
-			);
-			this.closeModal.nativeElement.click();
-			this.cartService.emptyCart();
-			this.subtotal = 0;
-			this.totalPrice = 0;
-			this.owedMoney = 0;
-		}
-	}
+    changeToPaid() {
+        if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
+            this.stateService.checkState(
+                this.stateChoosePayMode,
+                this.stateWaitForScan,
+                true,
+                Swal.fire('Paiement effectué', '', 'success')
+            );
+            this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.owedMoney = 0;
+            this.isCashBool = false;
+            this.closeModal.nativeElement.click();
+        } else if (this.paymentSelected === 'cash' && this.owedMoney === 0) {
+            this.stateService.checkState(
+                this.stateChoosePayMode,
+                this.stateCashAmount,
+                true,
+                (this.isCashBool = true)
+            );
+            this.closeModal.nativeElement.click();
+        } else if (this.owedMoney !== 0) {
+            this.stateService.checkState(
+                this.stateCashOut,
+                this.stateWaitForScan,
+                true,
+                Swal.fire('Paiement effectué', '', 'success')
+            );
+            this.closeModal.nativeElement.click();
+            this.cartService.emptyCart();
+            this.subtotal = 0;
+            this.totalPrice = 0;
+            this.owedMoney = 0;
+        }
+    }
 
-	payPart() {
-		this.stateService.checkState(
-			this.stateChoosePayMode,
-			this.stateAmountToPay,
-			true,
-			(this.payPartBool = !this.payPartBool)
-		);
-	}
+    payPart() {
+        this.stateService.checkState(
+            this.stateChoosePayMode,
+            this.stateAmountToPay,
+            true,
+            (this.payPartBool = !this.payPartBool)
+        );
+    }
 
     changeSubtotal(number) {
         if (this.payPartBool && number < this.totalPrice - this.subtotal) {
@@ -256,7 +235,7 @@ export class GeneralComponent implements OnInit {
             this.payPartBool &&
             number === this.totalPrice - this.subtotal
         ) {
-            Swal.fire("Paiement effectué", "", "success");
+            Swal.fire('Paiement effectué', '', 'success');
             this.cartService.emptyCart();
             this.subtotal = 0;
             this.totalPrice = 0;
@@ -269,7 +248,7 @@ export class GeneralComponent implements OnInit {
         }
     }
 
-    onCloseModal(){
+    onCloseModal() {
         this.stateService.checkState(
             this.stateChoosePayMode,
             this.stateWaitForScan,
@@ -278,7 +257,10 @@ export class GeneralComponent implements OnInit {
         );
     }
 
-    isOnPay(){
-        return this.currentState === State.ChoosePayMode || this.currentState === State.AmountToPay;
+    isOnPay() {
+        return (
+            this.currentState === State.ChoosePayMode ||
+            this.currentState === State.AmountToPay
+        );
     }
 }
