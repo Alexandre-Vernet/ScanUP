@@ -14,7 +14,6 @@ import { CartService } from '../service/cart.service';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
 
-
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
@@ -64,7 +63,7 @@ export class ClavierComponent {
                     null
                 );
             }
-        })
+        });
     }
 
     unknowProdcut() {
@@ -107,15 +106,18 @@ export class ClavierComponent {
                     (this.productOK = false)
                 )
             );
-            this.stateService.checkState(
-                this.stateFindProduct,
-                this.stateSelectAmount,
-                this.productFound,
-                this.afterProductFind()
-            );
         }
+        this.stateService.checkState(
+            this.stateWaitForCode,
+            this.stateFindProduct,
+            this.searchProduct(),
+            this.afterProductFind()
+        );
     }
-
+    searchProduct() {
+        this.productFound = true;
+        return this.productFound;
+    }
     afterProductFind() {
         console.log('Produit trouvé');
         this.clear();
@@ -166,7 +168,7 @@ export class ClavierComponent {
         // this.productFound = false;
     }
 
-    addProductQte(qte) { }
+    addProductQte(qte) {}
 
     clavierNumber(number) {
         this.valueClavier += number;
@@ -190,5 +192,4 @@ export class ClavierComponent {
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
     }
-
 }
