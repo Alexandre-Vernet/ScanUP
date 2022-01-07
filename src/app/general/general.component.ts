@@ -9,8 +9,6 @@ import Swal from "sweetalert2";
 import { Cart } from "../cart";
 import { StateService } from "../service/state.service";
 import { State } from "../state.enum";
-import { AuthService } from "../service/auth.service";
-import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-general",
