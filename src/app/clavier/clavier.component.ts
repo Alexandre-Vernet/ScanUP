@@ -238,4 +238,13 @@ export class ClavierComponent {
             );
         }
     }
+
+    onCloseModal() {
+        this.stateService.checkState(
+            this.stateSelectProduct,
+            this.stateWaitForScan,
+            true,
+            null
+        );
+    }
 }

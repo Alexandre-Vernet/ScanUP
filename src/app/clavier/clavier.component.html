@@ -12,7 +12,7 @@
             <input type="text" [formControl]="codeControl" placeholder="Code Article" class="form-control input"/>
             <button class="btn btn-back"(click)="validProductCode()" [disabled]="currentState !== stateWaitForCode">Ok</button>
         </div>
-        <button class="btn btn-back" data-target="#modalUnknownProduct" data-toggle="modal" (click)="unknowProdcut()" [hidden]="currentState !== stateWaitForScan">Produit inconnu</button>
+        <button class="btn btn-back" data-target="#modalUnknownProduct" data-toggle="modal" (click)="unknowProdcut()" [hidden]="currentState !== stateWaitForScan" data-backdrop="static" data-keyboard="false">Produit inconnu</button>
         <button class="btn btn-back" [hidden]="currentState === stateWaitForScan" disabled>Produit inconnu</button>
     </div>
     <table>
@@ -115,7 +115,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button #closeModalUnknownProduct class="btn btn-back" data-dismiss="modal" type="button">Retour
+                <button #closeModalUnknownProduct class="btn btn-back" data-dismiss="modal" type="button" (click)="onCloseModal()">Retour
                 </button>
                 <!-- <button class="btn btn-confirm" type="button">Confirmer</button> -->
             </div>
