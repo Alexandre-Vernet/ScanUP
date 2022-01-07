@@ -38,6 +38,9 @@ export class GeneralComponent implements OnInit {
     statePutOnHold: State = State.PutOnHold;
     stateChoosePayMode: State = State.ChoosePayMode;
     stateSelectAmount: State = State.SelectAmount;
+    stateAmountToPay: State = State.AmountToPay;
+	stateCashAmount: State = State.CashAmount;
+	stateCashOut: State = State.CashOut;
 
     constructor(
         private cartService: CartService,
@@ -70,9 +73,6 @@ export class GeneralComponent implements OnInit {
     //   checkState('chosePayMode','cashAmount',cashSelected && payerBtnSelected);
     //   checkState('cashAmount','cashOut',enterAmount && cashAmount>totalPaiement );
     //   checkState('cashOut','waitScan',selectCashOutBtn );
-    stateAmountToPay: State = State.AmountToPay;
-    stateCashAmount: State = State.CashAmount;
-    stateCashOut: State = State.CashOut;
 
     ngOnInit(): void {
         // If log
@@ -81,14 +81,11 @@ export class GeneralComponent implements OnInit {
                 this.router.navigateByUrl("/");
             }
         });
-        this.stateService.currentStateChanged$.subscribe((data) => {
-            this.currentState = data;
-        });
     }
 
-    giveUp() {
-        this.cartService.emptyCart();
-    }
+	giveUp() {
+		this.cartService.emptyCart();
+	}
 
     pause() {
         this.stateService.checkState(
@@ -119,29 +116,29 @@ export class GeneralComponent implements OnInit {
     recupProductList() {
     }
 
-    pay() {
-        if (this.owedMoney === 0) {
-            this.stateService.checkState(
-                this.stateWaitForScan,
-                this.stateChoosePayMode,
-                this.totalPrice !== 0,
-                null //remplacer par l'ouverture du pop up
-            );
-            this.stateService.checkState(
-                this.stateAmountToPay,
-                this.stateChoosePayMode,
-                this.totalPrice !== 0,
-                null //remplacer par l'ouverture du pop up
-            );
-        } else {
-            this.stateService.checkState(
-                this.stateCashAmount,
-                this.stateCashOut,
-                this.totalPrice !== 0,
-                null //remplacer par l'ouverture du pop up
-            );
-        }
-    }
+	pay() {
+		if (this.owedMoney === 0) {
+			this.stateService.checkState(
+				this.stateWaitForScan,
+				this.stateChoosePayMode,
+				this.totalPrice !== 0,
+				null //remplacer par l'ouverture du pop up
+			);
+			this.stateService.checkState(
+				this.stateAmountToPay,
+				this.stateChoosePayMode,
+				this.totalPrice !== 0,
+				null //remplacer par l'ouverture du pop up
+			);
+		} else {
+			this.stateService.checkState(
+				this.stateCashAmount,
+				this.stateCashOut,
+				this.totalPrice !== 0,
+				null //remplacer par l'ouverture du pop up
+			);
+		}
+	}
 
     scanProduct(id: number) {
         console.log(this.currentState)
@@ -205,51 +202,51 @@ export class GeneralComponent implements OnInit {
         return this.cartService.isEmpty();
     }
 
-    changeToPaid() {
-        if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
-            this.stateService.checkState(
-                this.stateChoosePayMode,
-                this.stateWaitForScan,
-                true,
-                Swal.fire('Paiement effectué', '', 'success')
-            );
-            this.cartService.emptyCart();
-            this.subtotal = 0;
-            this.totalPrice = 0;
-            this.owedMoney = 0;
-            this.isCashBool = false;
-            this.closeModal.nativeElement.click();
-        } else if (this.paymentSelected === 'cash' && this.owedMoney === 0) {
-            this.stateService.checkState(
-                this.stateChoosePayMode,
-                this.stateCashAmount,
-                true,
-                (this.isCashBool = true)
-            );
-            this.closeModal.nativeElement.click();
-        } else if (this.owedMoney !== 0) {
-            this.stateService.checkState(
-                this.stateCashOut,
-                this.stateWaitForScan,
-                true,
-                Swal.fire('Paiement effectué', '', 'success')
-            );
-            this.closeModal.nativeElement.click();
-            this.cartService.emptyCart();
-            this.subtotal = 0;
-            this.totalPrice = 0;
-            this.owedMoney = 0;
-        }
-    }
+	changeToPaid() {
+		if (this.paymentSelected === "CB" || this.paymentSelected === "check") {
+			this.stateService.checkState(
+				this.stateChoosePayMode,
+				this.stateWaitForScan,
+				true,
+				Swal.fire("Paiement effectué", "", "success")
+			);
+			this.cartService.emptyCart();
+			this.subtotal = 0;
+			this.totalPrice = 0;
+			this.owedMoney = 0;
+			this.isCashBool = false;
+			this.closeModal.nativeElement.click();
+		} else if (this.paymentSelected === "cash" && this.owedMoney === 0) {
+			this.stateService.checkState(
+				this.stateChoosePayMode,
+				this.stateCashAmount,
+				true,
+				(this.isCashBool = true)
+			);
+			this.closeModal.nativeElement.click();
+		} else if (this.owedMoney !== 0) {
+			this.stateService.checkState(
+				this.stateCashOut,
+				this.stateWaitForScan,
+				true,
+				Swal.fire("Paiement effectué", "", "success")
+			);
+			this.closeModal.nativeElement.click();
+			this.cartService.emptyCart();
+			this.subtotal = 0;
+			this.totalPrice = 0;
+			this.owedMoney = 0;
+		}
+	}
 
-    payPart() {
-        this.stateService.checkState(
-            this.stateChoosePayMode,
-            this.stateAmountToPay,
-            true,
-            (this.payPartBool = !this.payPartBool)
-        );
-    }
+	payPart() {
+		this.stateService.checkState(
+			this.stateChoosePayMode,
+			this.stateAmountToPay,
+			true,
+			(this.payPartBool = !this.payPartBool)
+		);
+	}
 
     changeSubtotal(number) {
         if (this.payPartBool && number < this.totalPrice - this.subtotal) {
