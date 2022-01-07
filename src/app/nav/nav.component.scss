@@ -7,32 +7,32 @@ nav {
     }
 
     .theme {
+        width: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .btn-theme {
-        border-radius: 100%;
+        border: 1px solid #000;
+        border-radius: 50%;
         width: 10px;
         height: 10px;
-        margin: 0 2px;
     }
 
-    .theme .btn-theme:nth-child(1) {
-        background-color: green;
+    $colors: (#fb3640, #247ba0, #afa2ff, #171a21, #ffffff);
+
+    @for $i from 1 through length($colors) {
+        .theme .btn-theme:nth-child(#{$i}) {
+            background-color: nth($colors, $i);
+        }
     }
 
-    .theme .btn-theme:nth-child(2) {
-        background-color: #fa8072;
-    }
-
-    .theme .btn-theme:nth-child(3) {
-        background-color: black;
-    }
-
-    .theme button:nth-child(4) {
-        background-color: white;
+    .button-disconnect {
+        width: 35px;
+        height: 35px;
+        filter: invert(100%);
+        margin-right: 10px;
     }
 }
 

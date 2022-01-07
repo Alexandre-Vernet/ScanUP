@@ -52,14 +52,14 @@ export class ClavierComponent {
             this.currentState = data;
         });
 
-        this.codeControl.valueChanges.subscribe((inputValue)=>{
-            if(!inputValue){
+        this.codeControl.valueChanges.subscribe((inputValue) => {
+            if (!inputValue) {
                 return;
             }
-            if (this.currentState === 'waitScan') {
+            if (this.currentState === State.WaitForScan) {
                 this.stateService.checkState(
-                    'waitScan',
-                    'waitForCode',
+                    this.stateWaitForScan,
+                    this.stateWaitForCode,
                     inputValue != '',
                     null
                 );
@@ -68,7 +68,12 @@ export class ClavierComponent {
     }
 
     unknowProdcut() {
-        this.stateService.checkState('waitScan', 'selectProduct', true, null);
+        this.stateService.checkState(
+            this.stateWaitForScan,
+            this.stateSelectProduct,
+            true,
+            null
+        );
     }
 
     validCode() {

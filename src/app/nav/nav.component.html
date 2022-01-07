@@ -1,12 +1,13 @@
 <nav class="d-flex justify-content-between align-items-center">
     <div class="theme d-flex justify-content-around">
-        <button class="btn-theme" (click)="colorBlack()"></button>
-        <button class="btn-theme" (click)="colorSalmon()"></button>
-        <button class="btn-theme" (click)="colorBlack()"></button>
-        <button class="btn-theme" (click)="colorDefault()"></button>
+        <button class="btn-theme" (click)="backgroundColor('#fb3640')"></button>
+        <button class="btn-theme" (click)="backgroundColor('#247ba0')"></button>
+        <button class="btn-theme" (click)="backgroundColor('#afa2ff')"></button>
+        <button class="btn-theme" (click)="backgroundColor('#171a21')"></button>
+        <button class="btn-theme" (click)="backgroundColor('#fff')"></button>
     </div>
     <p>Bonjour Truc</p>
     <p>{{currentState}}</p>
     <p id="date">{{myDate}}</p>
-    <img class="button-disconnect" src="assets/img/power.png" routerLink="/">
+    <img class="button-disconnect" src="assets/img/power.png" routerLink="/" alt="disconnect">
 </nav>
