@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { State } from '../state.enum';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StateService {
-    constructor() {}
+    constructor() { }
 
-    currentState = 'waitScan';
+    currentState = State.WaitForScan;
     idEdit: number;
 
     private currentState$: BehaviorSubject<string> =
@@ -18,8 +19,8 @@ export class StateService {
     checkState(etatInit, etatTarget, condition: boolean, callback) {
         if (this.currentState == etatInit && condition) {
             this.currentState = etatTarget;
-            callback;
             console.log(etatInit + ' => ' + etatTarget);
+            callback;
         }
         this.notifyState();
     }

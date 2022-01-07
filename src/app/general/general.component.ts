@@ -6,19 +6,19 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { ProductCart } from '../product-cart';
 import { CartService } from '../service/cart.service';
 import Swal from 'sweetalert2';
 import { Cart } from '../cart';
 import { StateService } from '../service/state.service';
 import { State } from '../state.enum';
+import { ProductsService } from '../service/products.service';
 
 @Component({
     selector: 'app-general',
     templateUrl: './general.component.html',
     styleUrls: ['./general.component.scss'],
 })
-export class GeneralComponent implements OnInit {
+export class GeneralComponent {
     static scanProduct = false;
     isWaiting = false;
     subtotal = 0;
@@ -36,10 +36,12 @@ export class GeneralComponent implements OnInit {
     stateWaitForScan: State = State.WaitForScan;
     statePutOnHold: State = State.PutOnHold;
     stateChoosePayMode: State = State.ChoosePayMode;
+    stateSelectAmount: State = State.SelectAmount;
 
     constructor(
         private cartService: CartService,
-        private stateService: StateService
+        private stateService: StateService,
+        private productService: ProductsService
     ) {
         this.cartService.cartChanged$.subscribe((cart) => {
             this.totalPrice = cart.products.reduce(
@@ -51,12 +53,9 @@ export class GeneralComponent implements OnInit {
             this.cart = cart;
         });
         this.stateService.checkState('', this.stateWaitForScan, true, null);
-    }
-
-    ngOnInit(): void {
-        this.stateService.currentStateChanged$.subscribe((data) => {
-            this.currentState = data;
-        });
+        this.stateService.currentStateChanged$.subscribe((state)=>{
+            this.currentState = state;
+        })
     }
 
     //PAIEMENT
@@ -96,9 +95,9 @@ export class GeneralComponent implements OnInit {
         this.cartService.stopCartInWait();
     }
 
-    stockProductList() {}
+    stockProductList() { }
 
-    recupProductList() {}
+    recupProductList() { }
 
     pay() {
         this.stateService.checkState(
@@ -132,17 +131,34 @@ export class GeneralComponent implements OnInit {
         });
     }
 
-    scanProductA() {
-        const p = new ProductCart(1, 'Tronconneuse', 99.0, 1);
-        this.cartService.addProduct(p);
+    scanProduct(id: number) {
+        console.log(this.currentState)
+
+        const product = this.productService.checkProductExist(id);
+        if(!product){
+            console.log('ERROR !');
+            return;
+        }
+
+        this.cartService.addProduct(product);
         GeneralComponent.scanProduct = true;
+
+        
+        if(this.currentState === State.SelectAmount){
+            this.stateService.checkState(
+                this.stateSelectAmount,
+                this.stateWaitForScan,
+                true,
+                null
+            );
+        }
     }
 
-    scanProductB() {
+    /*scanProductB() {
         const p = new ProductCart(2, 'Perceuse', 50.0, 1);
         this.cartService.addProduct(p);
         GeneralComponent.scanProduct = true;
-    }
+    }*/
 
     isEmpty() {
         return this.cartService.isEmpty();

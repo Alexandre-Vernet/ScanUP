@@ -1,14 +1,16 @@
 table {
     border-collapse: inherit;
 
-    td {
-        text-align: center;
-        color: #fff;
-        border-radius: 8px;
-        padding: 10px;
-        width: 60px;
-        background-color: #2e4c6d;
-    }
+    
+}
+
+.clavier-button {
+    text-align: center;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    width: 60px;
+    background-color: #2e4c6d;
 }
 
 #clavier {
@@ -42,4 +44,12 @@ table {
 
 .input{
     width:76%;
+}
+
+.btn-valid{
+    background-color: #f0805e;
+    color: #fff;
+    width: 100%;
+    height: 46px;
+    border-radius: 7px;
 }

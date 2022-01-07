@@ -13,8 +13,8 @@
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>
-                <span (dblclick)="editMode( product.id )" *ngIf="state !== 'edit' || idEdit !== product.id">{{ product.quantity }}</span>
-                <input class="form-control input-quantity" *ngIf="idEdit === product.id && state === 'edit'" type="text" [value]="product.quantity" />
+                <span (dblclick)="editMode( product.id )" *ngIf="!isInEdit(product.id)">{{ product.quantity }}</span>
+                <input class="form-control input-quantity" *ngIf="isInEdit(product.id)" type="text" [value]="product.quantity" />
             </td>
             <td>
                 {{ product.price }}

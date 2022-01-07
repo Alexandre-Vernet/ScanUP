@@ -1,9 +1,7 @@
 import {
     Component,
-    Inject,
     EventEmitter,
     Input,
-    OnInit,
     Output,
     ViewChild,
 } from '@angular/core';
@@ -13,6 +11,7 @@ import { StateService } from '../service/state.service';
 import { CartService } from '../service/cart.service';
 import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
+import { ProductsService } from '../service/products.service';
 
 
 @Component({
@@ -29,6 +28,9 @@ export class ClavierComponent {
     enterQte = 12;
     valueClavier = '';
     productOK = true;
+    idToFind: number;
+
+    productList = this.productService.productList();
 
     @Input() payPart: boolean;
     @Input() isCash: boolean;
@@ -46,16 +48,23 @@ export class ClavierComponent {
 
     constructor(
         private stateService: StateService,
-        private cartService: CartService
+        private cartService: CartService,
+        private productService: ProductsService
     ) {
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
+
+            if (this.currentState === State.FindProduct) {
+                console.log(this.currentState)
+                this.findProduct(this.idToFind);
+            }
         });
 
         this.codeControl.valueChanges.subscribe((inputValue) => {
             if (!inputValue) {
                 return;
             }
+
             if (this.currentState === State.WaitForScan) {
                 this.stateService.checkState(
                     this.stateWaitForScan,
@@ -76,7 +85,20 @@ export class ClavierComponent {
         );
     }
 
+    validProductCode() {
+
+        this.stateService.checkState(
+            this.stateWaitForCode,
+            this.stateFindProduct,
+            true,
+            this.idToFind = +this.codeControl.value
+        );
+        this.clear();
+    }
+
+    //renommer en validAmountPaiement ou autre
     validCode() {
+        // si on paie une partie
         if (
             this.payPart &&
             this.valueClavier !== '' &&
@@ -86,6 +108,8 @@ export class ClavierComponent {
             this.valueClavier = '';
             this.codeControl.setValue('');
         }
+
+        //si on paie en cash
         if (
             this.isCash &&
             this.valueClavier !== '' &&
@@ -137,33 +161,51 @@ export class ClavierComponent {
     }
 
     clear() {
+        if (this.currentState === State.WaitForCode) {
+            this.stateService.checkState(
+                this.stateWaitForCode,
+                this.stateWaitForScan,
+                this.valueClavier != null,
+                null
+            );
+        }
         this.codeControl.setValue(null);
         this.valueClavier = '';
     }
 
     validClavier() {
-        //if state ==
-
         this.codeControl.setValue(this.valueClavier);
-        this.stateService.checkState(
-            this.stateEditProduct,
-            this.stateWaitForScan,
-            this.valueClavier != null,
-            this.cartService.changeQuantity(
-                this.stateService.idEdit,
-                +this.valueClavier
-            )
-        );
+
+        switch (this.currentState) {
+            case State.EditProduct:
+                this.stateService.checkState(
+                    this.stateEditProduct,
+                    this.stateWaitForScan,
+                    this.valueClavier != null,
+                    this.cartService.changeQuantity(
+                        this.stateService.idEdit,
+                        +this.valueClavier
+                    )
+                );
+                break;
+
+            case State.SelectAmount:
+                this.stateService.checkState(
+                    this.stateSelectAmount,
+                    this.stateWaitForScan,
+                    this.valueClavier != null,
+                    this.cartService.changeQuantity(
+                        this.stateService.idEdit,
+                        +this.valueClavier
+                    )
+                );
+                break;
+
+            default: break;
+        }
+
         this.clear();
         return true;
-    }
-
-    getProduct(code) {
-        //code exist dans prodcutlist?
-        //if(productexist)
-        this.productFound = true;
-        // else
-        // this.productFound = false;
     }
 
     addProductQte(qte) { }
@@ -173,22 +215,52 @@ export class ClavierComponent {
         this.codeControl.setValue(this.valueClavier);
     }
 
-    addToCart() {
-        // Add product to cart
-        const p = new ProductCart(1, 'Marteau quelconque', 99.0, 1);
-        this.cartService.addProduct(p);
+    addToCart(id: number) {
 
         // State
-        this.productFound = true;
         this.stateService.checkState(
             this.stateSelectProduct,
             this.stateFindProduct,
             true,
-            this.clear()
-            //this.validCode()
+            this.idToFind = id
         );
+
         // Close modal
         this.closeModalUnknownProduct.nativeElement.click();
     }
 
+    findProduct(id: number) {
+
+        //on regarde si le produit sélectionné / entré existe
+        const product = this.productService.checkProductExist(id);
+        //si il existe pas
+        if (!product.id) {
+            this.stateService.checkState(
+                this.stateFindProduct,
+                this.stateErrorUnknowPdt,
+                true,
+                null
+            );
+            this.stateService.checkState(
+                this.stateErrorUnknowPdt,
+                this.stateWaitForScan,
+                true,
+                null
+            )
+        } else {
+            //si il existe
+            this.cartService.addProduct(product);
+            this.stateService.idEdit = id;
+
+            this.stateService.checkState(
+                this.stateFindProduct,
+                this.stateSelectAmount,
+                true,
+                null
+            );
+        }
+
+
+
+    }
 }

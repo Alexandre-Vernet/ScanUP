@@ -20,6 +20,7 @@ export class Cart {
         if (id === -1) {
             this._products.push(product);
         } else {
+            
             this._products[id].quantity += product.quantity;
         }
 

@@ -17,35 +17,11 @@ import { State } from '../state.enum';
 })
 export class ListProductsComponent implements OnInit {
     cart: Cart = new Cart();
-    idEdit:number;
-    state: string;
+    idEdit: number;
+    currentState: string;
 
     productId: number;
     productList = [
-        {
-            id: 1,
-            name: 'Tronçonneuse électrique RCS2340B2C 2300W 40cm - RYOBI',
-            price: 99.9,
-            quantity: 2,
-        },
-        {
-            id: 2,
-            name: 'Ratelier de 9 clés torx 1,5 à 10mm chrome vanadium - INVENTIV',
-            price: 12.5,
-            quantity: 2,
-        },
-        {
-            id: 3,
-            name: 'Rénovateur brillant Star longue durée tous sols intérieurs Starwax 1L',
-            price: 17.95,
-            quantity: 2,
-        },
-        {
-            id: 4,
-            name: 'Peinture sol trafic extrême satin 0.5L - Rouge brique - V33',
-            price: 24.9,
-            quantity: 2,
-        },
     ];
 
     stateWaitForScan: State = State.WaitForScan;
@@ -59,15 +35,15 @@ export class ListProductsComponent implements OnInit {
             this.productList = cart.products;
         });
 
-        this.stateService.currentStateChanged$.subscribe((state)=>{
-            if(this.stateService.idEdit){
+        this.stateService.currentStateChanged$.subscribe((state) => {
+            if (this.stateService.idEdit) {
                 this.idEdit = this.stateService.idEdit;
-                this.state = state;
+                this.currentState = state;
             }
         })
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
 
     deleteProduct(id) {
         this.cartService.deleteProduct(id);
@@ -84,5 +60,14 @@ export class ListProductsComponent implements OnInit {
 
     getProductId(productId) {
         this.productId = productId;
+    }
+
+    isInEdit(id: number) {
+        if (this.currentState === State.SelectAmount || this.currentState === State.EditProduct) {
+            if (this.idEdit === id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
