@@ -24,19 +24,7 @@ export class NavComponent implements OnInit {
         }, 1000);
     }
 
-    colorGreen() {
-        document.body.style.backgroundColor = "green";
-    }
-
-    colorSalmon() {
-        document.body.style.backgroundColor = "#FA8072";
-    }
-
-    colorBlack() {
-        document.body.style.backgroundColor = "black";
-    }
-
-    colorDefault() {
-        document.body.style.backgroundColor = "white";
+    backgroundColor(colorName: string) {
+        document.body.style.backgroundColor = colorName;
     }
 }
