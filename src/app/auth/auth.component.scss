@@ -3,13 +3,14 @@ input {
 }
 
 table {
-    border-collapse: inherit;
+    border-collapse: separate;
+    border-spacing: 15px;
     td {
         text-align: center;
         color: #fff;
         border-radius: 8px;
         padding: 10px;
-        width: 60px;
+        width: 70px;
         background-color: #2e4c6d;
     }
     #valid {
