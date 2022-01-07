@@ -13,7 +13,6 @@ import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
 import { ProductsService } from '../service/products.service';
 
-
 @Component({
     selector: 'app-clavier',
     templateUrl: './clavier.component.html',
@@ -55,7 +54,6 @@ export class ClavierComponent {
             this.currentState = data;
 
             if (this.currentState === State.FindProduct) {
-                console.log(this.currentState)
                 this.findProduct(this.idToFind);
             }
         });
@@ -73,7 +71,7 @@ export class ClavierComponent {
                     null
                 );
             }
-        })
+        });
     }
 
     unknowProdcut() {
@@ -86,14 +84,13 @@ export class ClavierComponent {
     }
 
     validProductCode() {
-
         this.stateService.checkState(
             this.stateWaitForCode,
             this.stateFindProduct,
             true,
             this.idToFind = +this.codeControl.value
         );
-        this.clear();
+        //this.clear();
     }
 
     //renommer en validAmountPaiement ou autre
@@ -131,17 +128,19 @@ export class ClavierComponent {
                     (this.productOK = false)
                 )
             );
-            this.stateService.checkState(
-                this.stateFindProduct,
-                this.stateSelectAmount,
-                this.productFound,
-                this.afterProductFind()
-            );
         }
+        this.stateService.checkState(
+            this.stateWaitForCode,
+            this.stateFindProduct,
+            this.searchProduct(),
+            this.afterProductFind()
+        );
     }
-
+    searchProduct() {
+        this.productFound = true;
+        return this.productFound;
+    }
     afterProductFind() {
-        console.log('Produit trouvé');
         this.clear();
         //add snackbar
         this.productOK = true;
@@ -216,7 +215,6 @@ export class ClavierComponent {
     }
 
     addToCart(id: number) {
-
         // State
         this.stateService.checkState(
             this.stateSelectProduct,
@@ -230,7 +228,9 @@ export class ClavierComponent {
     }
 
     findProduct(id: number) {
-
+        if(!id){
+            return;
+        }
         //on regarde si le produit sélectionné / entré existe
         const product = this.productService.checkProductExist(id);
         //si il existe pas

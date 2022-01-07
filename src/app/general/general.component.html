@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-4 d-flex justify-content-center">
                             <button (click)="paymentSelected = 'cash'" class="payment-type-btn"
-                                    [ngClass]="{'selected': paymentSelected === 'cash'}">
+                                    [ngClass]="{'selected': paymentSelected === 'cash' || owedMoney !== 0}">
                                 <img src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png" alt="Espèces">
                             </button>
                         </div>

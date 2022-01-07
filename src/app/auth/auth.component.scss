@@ -1,23 +1,37 @@
 input {
-    margin: 40px 0;
+    box-shadow: 2px 2px 7px #636363;
+    margin: 30px 0;
+    border: none;
+    padding: 10px;
 }
 
 table {
-    border-collapse: inherit;
+    border-collapse: separate;
+    border-spacing: 15px;
+    margin: 0 30px;
     td {
         text-align: center;
         color: #fff;
         border-radius: 8px;
         padding: 10px;
-        width: 60px;
+        width: 70px;
         background-color: #2e4c6d;
     }
+
+    td:hover {
+        cursor: pointer;
+    }
+
+    #valid {
+        background-color: #fc997c;
+    }
 }
+
 #clavier {
-    /* background: #fff;*/
     padding: 20px;
-    margin: 20px;
+    margin: 115px;
 }
+
 button a {
     color: #fff;
 }
