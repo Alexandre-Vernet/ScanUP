@@ -41,4 +41,8 @@ export class AuthComponent implements OnInit {
             this.loginOK = false;
         }
     }
+    clear() {
+        this.codeControl.setValue(null);
+        this.valueClavier = '';
+    }
 }

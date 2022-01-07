@@ -7,17 +7,17 @@ nav {
     }
 
     .theme {
-        width: 60px;
+        margin-left: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .btn-theme {
-        border: 1px solid #000;
+        border: none;
         border-radius: 50%;
-        width: 10px;
-        height: 10px;
+        margin: 2px;
+        height: 12px;
     }
 
     $colors: (#fb3640, #247ba0, #afa2ff, #171a21, #ffffff);
@@ -29,19 +29,13 @@ nav {
     }
 
     .button-disconnect {
-        width: 35px;
-        height: 35px;
+        width: 25px;
+        height: 25px;
         filter: invert(100%);
-        margin-right: 10px;
+        margin: 10px;
     }
 }
 
-.button-disconnect {
-    width: 25px;
-    height: 25px;
-    filter: invert(100%);
-    margin: 10px;
-}
 #date {
     text-transform: capitalize;
 }
