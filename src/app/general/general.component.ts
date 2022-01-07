@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 import { Cart } from "../cart";
 import { StateService } from "../service/state.service";
 import { State } from "../state.enum";
+import { AuthService } from "../service/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-general",
@@ -36,7 +38,9 @@ export class GeneralComponent implements OnInit {
 
 	constructor(
 		private cartService: CartService,
-		private stateService: StateService
+		private stateService: StateService,
+		private auth: AuthService,
+		private router: Router
 	) {
 		this.cartService.cartChanged$.subscribe((cart) => {
 			this.totalPrice = cart.products.reduce(
@@ -51,6 +55,12 @@ export class GeneralComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		// If log
+		this.auth.getAuth().then((user) => {
+			if (!user) {
+				this.router.navigateByUrl("/");
+			}
+		});
 		this.stateService.currentStateChanged$.subscribe((data) => {
 			this.currentState = data;
 		});
