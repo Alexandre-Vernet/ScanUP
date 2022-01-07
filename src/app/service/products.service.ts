@@ -7,6 +7,7 @@ const PRODUCT_LIST = [
         price: 99.0,
         quantity: 1,
         img: 'tronconneuse.png',
+        code: '1111',
     },
     {
         id: 2,
@@ -14,6 +15,7 @@ const PRODUCT_LIST = [
         price: 12.5,
         quantity: 1,
         img: 'ratelier.png',
+        code: '2222',
     },
     {
         id: 3,
@@ -21,6 +23,7 @@ const PRODUCT_LIST = [
         price: 17.95,
         quantity: 1,
         img: 'hammer.png',
+        code: '3333',
     },
     {
         id: 4,
@@ -28,6 +31,7 @@ const PRODUCT_LIST = [
         price: 24.0,
         quantity: 1,
         img: 'paint.jpg',
+        code: '4444',
     },
 ];
 
