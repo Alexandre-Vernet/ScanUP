@@ -178,7 +178,7 @@ export class GeneralComponent implements OnInit {
                 (this.isCashBool = true)
             );
             this.closeModal.nativeElement.click();
-        } else if (this.paymentSelected === 'cash' && this.owedMoney !== 0) {
+        } else if (this.owedMoney !== 0) {
             this.stateService.checkState(
                 this.stateCashOut,
                 this.stateWaitForScan,
