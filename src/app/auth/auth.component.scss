@@ -8,6 +8,7 @@ input {
 table {
     border-collapse: inherit;
     margin: 30px;
+
     td {
         text-align: center;
         color: #fff;
@@ -16,15 +17,21 @@ table {
         width: 60px;
         background-color: #2e4c6d;
     }
+
+    td:hover {
+        cursor: pointer;
+    }
+
     #valid {
         background-color: #fc997c;
     }
 }
+
 #clavier {
-    /* background: #fff;*/
     padding: 20px;
     margin: 115px;
 }
+
 button a {
     color: #fff;
 }

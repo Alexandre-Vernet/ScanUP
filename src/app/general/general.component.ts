@@ -1,37 +1,36 @@
 import {
-    Component,
-    Inject,
-    EventEmitter,
-    OnInit,
-    Output,
-    ViewChild,
-} from '@angular/core';
-import { ProductCart } from '../product-cart';
-import { CartService } from '../service/cart.service';
-import Swal from 'sweetalert2';
-import { Cart } from '../cart';
-import { StateService } from '../service/state.service';
-import { State } from '../state.enum';
+	Component,
+	OnInit,
+	ViewChild
+} from "@angular/core";
+import { ProductCart } from "../product-cart";
+import { CartService } from "../service/cart.service";
+import Swal from "sweetalert2";
+import { Cart } from "../cart";
+import { StateService } from "../service/state.service";
+import { State } from "../state.enum";
+import { AuthService } from "../service/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-    selector: 'app-general',
-    templateUrl: './general.component.html',
-    styleUrls: ['./general.component.scss'],
+	selector: "app-general",
+	templateUrl: "./general.component.html",
+	styleUrls: ["./general.component.scss"]
 })
 export class GeneralComponent implements OnInit {
-    static scanProduct = false;
-    isWaiting = false;
-    subtotal = 0;
-    totalPrice = 0;
-    owedMoney = 0;
-    currentState: string;
-    cart: Cart = new Cart();
-    paymentSelected: string = null;
+	static scanProduct = false;
+	isWaiting = false;
+	subtotal = 0;
+	totalPrice = 0;
+	owedMoney = 0;
+	currentState: string;
+	cart: Cart = new Cart();
+	paymentSelected: string = null;
 
-    isCashBool: boolean = false;
-    payPartBool = false;
+	isCashBool: boolean = false;
+	payPartBool = false;
 
-    @ViewChild('closeModal') closeModal;
+	@ViewChild("closeModal") closeModal;
 
     stateWaitForScan: State = State.WaitForScan;
     statePutOnHold: State = State.PutOnHold;
@@ -40,58 +39,68 @@ export class GeneralComponent implements OnInit {
     stateCashAmount: State = State.CashAmount;
     stateCashOut: State = State.CashOut;
 
-    constructor(
-        private cartService: CartService,
-        private stateService: StateService
-    ) {
-        this.cartService.cartChanged$.subscribe((cart) => {
-            this.totalPrice = cart.products.reduce(
-                (accumulateur, valeurCourante) =>
-                    accumulateur +
-                    valeurCourante.price * valeurCourante.quantity,
-                0
-            );
-            this.cart = cart;
-        });
-        this.stateService.checkState('', this.stateWaitForScan, true, null);
-    }
+	constructor(
+		private cartService: CartService,
+		private stateService: StateService,
+		private auth: AuthService,
+		private router: Router
+	) {
+		this.cartService.cartChanged$.subscribe((cart) => {
+			this.totalPrice = cart.products.reduce(
+				(accumulateur, valeurCourante) =>
+					accumulateur +
+					valeurCourante.price * valeurCourante.quantity,
+				0
+			);
+			this.cart = cart;
+		});
+		this.stateService.checkState("", this.stateWaitForScan, true, null);
+	}
 
-    ngOnInit(): void {
-        this.stateService.currentStateChanged$.subscribe((data) => {
-            this.currentState = data;
-        });
-    }
+	ngOnInit(): void {
+		// If log
+		this.auth.getAuth().then((user) => {
+			if (!user) {
+				this.router.navigateByUrl("/");
+			}
+		});
+		this.stateService.currentStateChanged$.subscribe((data) => {
+			this.currentState = data;
+		});
+	}
 
     giveUp() {
         this.cartService.emptyCart();
     }
 
-    pause() {
-        this.stateService.checkState(
-            this.stateWaitForScan,
-            this.statePutOnHold,
-            true,
-            this.stockProductList()
-        );
+	pause() {
+		this.stateService.checkState(
+			this.stateWaitForScan,
+			this.statePutOnHold,
+			true,
+			this.stockProductList()
+		);
 
-        this.isWaiting = true;
-        this.cartService.putCartInWait();
-    }
+		this.isWaiting = true;
+		this.cartService.putCartInWait();
+	}
 
-    play() {
-        this.stateService.checkState(
-            this.statePutOnHold,
-            this.stateWaitForScan,
-            true,
-            this.recupProductList()
-        );
-        this.isWaiting = false;
-        this.cartService.stopCartInWait();
-    }
+	play() {
+		this.stateService.checkState(
+			this.statePutOnHold,
+			this.stateWaitForScan,
+			true,
+			this.recupProductList()
+		);
+		this.isWaiting = false;
+		this.cartService.stopCartInWait();
+	}
 
-    stockProductList() {}
+	stockProductList() {
+	}
 
-    recupProductList() {}
+	recupProductList() {
+	}
 
     pay() {
         if (this.owedMoney === 0) {
@@ -117,44 +126,44 @@ export class GeneralComponent implements OnInit {
         }
     }
 
-    openPayPopUp() {
-        //MODAL A IMPLEMENTER
-        Swal.fire({
-            title: 'Choose your payment method',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Credit card',
-            denyButtonText: `Cash`,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // this.stateService.checkState(
-                //     'chosePayMode',
-                //     'waitScan',
-                //     (cardSelected || chequeSelected) && payerBtnSelected,
-                //     null
-                // );
-                Swal.fire('Paiement effectué', '', 'success');
-            } else if (result.isDenied) {
-                Swal.fire('Success paiement cash', '', 'info');
-            }
-        });
-    }
+	openPayPopUp() {
+		//MODAL A IMPLEMENTER
+		Swal.fire({
+			title: "Choose your payment method",
+			showDenyButton: true,
+			showCancelButton: true,
+			confirmButtonText: "Credit card",
+			denyButtonText: `Cash`
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// this.stateService.checkState(
+				//     'chosePayMode',
+				//     'waitScan',
+				//     (cardSelected || chequeSelected) && payerBtnSelected,
+				//     null
+				// );
+				Swal.fire("Paiement effectué", "", "success");
+			} else if (result.isDenied) {
+				Swal.fire("Success paiement cash", "", "info");
+			}
+		});
+	}
 
-    scanProductA() {
-        const p = new ProductCart(1, 'Tronconneuse', 99.0, 1);
-        this.cartService.addProduct(p);
-        GeneralComponent.scanProduct = true;
-    }
+	scanProductA() {
+		const p = new ProductCart(1, "Tronconneuse", 99.0, 1);
+		this.cartService.addProduct(p);
+		GeneralComponent.scanProduct = true;
+	}
 
-    scanProductB() {
-        const p = new ProductCart(2, 'Perceuse', 50.0, 1);
-        this.cartService.addProduct(p);
-        GeneralComponent.scanProduct = true;
-    }
+	scanProductB() {
+		const p = new ProductCart(2, "Perceuse", 50.0, 1);
+		this.cartService.addProduct(p);
+		GeneralComponent.scanProduct = true;
+	}
 
-    isEmpty() {
-        return this.cartService.isEmpty();
-    }
+	isEmpty() {
+		return this.cartService.isEmpty();
+	}
 
     changeToPaid() {
         if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
@@ -202,24 +211,24 @@ export class GeneralComponent implements OnInit {
         );
     }
 
-    changeSubtotal(number) {
-        if (this.payPartBool && number < this.totalPrice - this.subtotal) {
-            this.subtotal += number;
-            this.payPartBool = false;
-        } else if (
-            this.payPartBool &&
-            number === this.totalPrice - this.subtotal
-        ) {
-            Swal.fire('Paiement effectué', '', 'success');
-            this.cartService.emptyCart();
-            this.subtotal = 0;
-            this.totalPrice = 0;
-            this.payPartBool = false;
-        } else if (
-            this.isCashBool &&
-            number > this.totalPrice - this.subtotal
-        ) {
-            this.owedMoney = number - (this.totalPrice - this.subtotal);
-        }
-    }
+	changeSubtotal(number) {
+		if (this.payPartBool && number < this.totalPrice - this.subtotal) {
+			this.subtotal += number;
+			this.payPartBool = false;
+		} else if (
+			this.payPartBool &&
+			number === this.totalPrice - this.subtotal
+		) {
+			Swal.fire("Paiement effectué", "", "success");
+			this.cartService.emptyCart();
+			this.subtotal = 0;
+			this.totalPrice = 0;
+			this.payPartBool = false;
+		} else if (
+			this.isCashBool &&
+			number > this.totalPrice - this.subtotal
+		) {
+			this.owedMoney = number - (this.totalPrice - this.subtotal);
+		}
+	}
 }

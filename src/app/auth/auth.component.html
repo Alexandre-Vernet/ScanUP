@@ -1,34 +1,33 @@
-
-  <div *ngIf="!loginOK" class="alert alert-danger alert-dismissible fade show" role="alert">
+<div *ngIf="!loginOK" class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Code incorrect !</strong> Essaie encore.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
     </button>
-  </div>
+</div>
 
-  <div id="clavier" class="d-flex justify-content-around">
+<div id="clavier" class="d-flex justify-content-around">
     <div class="d-flex flex-column justify-content-between">
-        <input type="text" placeholder="Code Pin"  [formControl]="codeControl" (keyup)="($event)"/>
-<table>
-    <tr>
-        <td (click)="clavierNumber(1)">1</td>
-        <td (click)="clavierNumber(2)">2</td>
-        <td (click)="clavierNumber(3)">3</td>
-    </tr>
-    <tr>
-        <td (click)="clavierNumber(4)">4</td>
-        <td (click)="clavierNumber(5)">5</td>
-        <td (click)="clavierNumber(6)">6</td>
-    <tr>
-        <td (click)="clavierNumber(7)">7</td>
-        <td (click)="clavierNumber(8)">8</td>
-        <td (click)="clavierNumber(9)">9</td>
-    </tr>
-    <tr>
-        <td (click)="clear()">Clear</td>
-        <td (click)="clavierNumber(0)">0</td>
-        <td id="valid" (click)="login(codeControl)">Valider</td>      
-    </tr>
-</table>
+        <input type="text" placeholder="Code Pin" [formControl]="codeControl" (keyup)="($event)">
+        <table>
+            <tr>
+                <td (click)="clavierNumber(1)">1</td>
+                <td (click)="clavierNumber(2)">2</td>
+                <td (click)="clavierNumber(3)">3</td>
+            </tr>
+            <tr>
+                <td (click)="clavierNumber(4)">4</td>
+                <td (click)="clavierNumber(5)">5</td>
+                <td (click)="clavierNumber(6)">6</td>
+            <tr>
+                <td (click)="clavierNumber(7)">7</td>
+                <td (click)="clavierNumber(8)">8</td>
+                <td (click)="clavierNumber(9)">9</td>
+            </tr>
+            <tr>
+                <td (click)="clear()">Clear</td>
+                <td (click)="clavierNumber(0)">0</td>
+                <td id="valid" (click)="login(codeControl)">Valider</td>
+            </tr>
+        </table>
     </div>
 </div>
