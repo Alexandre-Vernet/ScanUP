@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Cart } from "./cart";
 import { ProductCart } from "./product-cart";
+import { Router } from "@angular/router";
+import { AuthService } from "./service/auth.service";
 
 @Component({
     selector: "app-root",
@@ -8,6 +10,11 @@ import { ProductCart } from "./product-cart";
     styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
+
+    constructor(private router: Router,
+                private auth: AuthService) {
+    }
+
     cart: Cart = new Cart();
     products = [];
 
@@ -16,7 +23,7 @@ export class AppComponent implements OnInit {
 
     unitTest = false;
 
-    ngOnInit() {
+    async ngOnInit() {
         if (this.unitTest) {
             const a = new ProductCart(1, "Tronconneuse", 99.9, 1);
             this.cart.addProduct(a);
@@ -27,6 +34,13 @@ export class AppComponent implements OnInit {
             this.scanProduct(3);
             this.cart.deleteProductById(1);
             this.pay();
+        }
+
+        // If session
+        const userLogged = localStorage.getItem("userLogged");
+        if (userLogged) {
+            this.auth.userLogged = true;
+            await this.router.navigate(["/general"]);
         }
     }
 
