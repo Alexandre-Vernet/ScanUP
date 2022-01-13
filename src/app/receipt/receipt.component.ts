@@ -10,7 +10,7 @@ import { CartService } from '../service/cart.service';
 })
 export class ReceiptComponent {
     productList = [];
-    paimentMethods: string[];
+    paimentMethods: string[] = [];
 
     marketInfos = {
         name: 'BricoMarket',
@@ -31,7 +31,7 @@ export class ReceiptComponent {
         let total = 0;
         this.productList.forEach(
             (product) => {
-                total += product.price;
+                total += product.price * product.quantity;
             }
         );
         return total;

@@ -106,9 +106,9 @@ export class GeneralComponent implements OnInit {
         this.cartService.stopCartInWait();
     }
 
-    stockProductList() {}
+    stockProductList() { }
 
-    recupProductList() {}
+    recupProductList() { }
 
     pay() {
         if (this.owedMoney === 0) {
@@ -183,7 +183,7 @@ export class GeneralComponent implements OnInit {
 
     changeToPaid() {
         if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
-            this.cartService.addPaimentAction(`${this.paymentSelected} ${this.subtotal}`);
+            this.cartService.addPaimentAction(`${this.paymentSelected} ${this.totalPrice - this.subtotal}`);
             this.stateService.checkState(
                 this.stateChoosePayMode,
                 this.stateWaitForScan,
@@ -272,7 +272,7 @@ export class GeneralComponent implements OnInit {
         );
     }
 
-    displayReceipt(){
+    displayReceipt() {
         this.router.navigateByUrl('/receipt');
     }
 }

@@ -1,15 +1,20 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouterModule, Routes } from "@angular/router";
+import { AdminComponent } from "./admin/admin.component";
 import { AuthComponent } from "./auth/auth.component";
 import { GeneralComponent } from "./general/general.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { ReceiptComponent } from "./receipt/receipt.component";
 
 const routes: Routes = [
-    { path: "", component: AuthComponent },
+    { path: '', component: AuthComponent },
     {
-        path: "general",
+        path: 'admin',
+        component: AdminComponent,
+    },
+    {
+        path: 'general',
         component: GeneralComponent,
         canActivate: [AuthGuard]
     },
@@ -22,7 +27,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [BrowserModule, RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

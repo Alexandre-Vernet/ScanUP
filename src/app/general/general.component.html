@@ -8,8 +8,7 @@
                     Reprise du client
                 </button>
             </div>
-            <ng-template #elseBlock
-            >
+            <ng-template #elseBlock>
                 <button
                     class="btn btn-warning"
                     (click)="pause()"
@@ -17,8 +16,7 @@
                 >
                     Mise en attente
                 </button>
-            </ng-template
-            >
+            </ng-template>
             <button
                 class="btn btn-danger"
                 (click)="giveUp()"
@@ -28,56 +26,104 @@
             </button>
         </div>
         <div class="d-flex justify-content-between p-4">
-            <button class="btn btn-dark" (click)="scanProduct(1)" [disabled]="isOnPay()">
+            <button
+                class="btn btn-dark"
+                (click)="scanProduct(1)"
+                [disabled]="isOnPay()"
+            >
                 Scanner un produit A
             </button>
-            <button class="btn btn-dark" (click)="scanProduct(2)" [disabled]="isOnPay()">
+            <button
+                class="btn btn-dark"
+                (click)="scanProduct(2)"
+                [disabled]="isOnPay()"
+            >
                 Scanner un produit B
             </button>
         </div>
     </div>
     <div>
-        <app-clavier [payMethod]="paymentSelected" [payPart]="payPartBool" (paidPartEvent)="changeSubtotal($event)"></app-clavier>
+        <app-clavier
+            [payMethod]="paymentSelected"
+            [payPart]="payPartBool"
+            (paidPartEvent)="changeSubtotal($event)"
+        ></app-clavier>
         <div id="paiement" class="d-flex flex-column align-items-center">
             <p *ngIf="owedMoney === 0">Total : {{ totalPrice }} €</p>
-            <p *ngIf="owedMoney === 0 && subtotal!== 0">Total restant : {{ totalPrice - subtotal }} €</p>
-            <p *ngIf="owedMoney !== 0">Argent à rendre : {{owedMoney}}</p>
-            <button (click)="pay()" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
-                    (click)="paymentSelected = ''; paymentSelected !== 'cash'" [disabled]="totalPrice<=0" data-backdrop="static" data-keyboard="false">
-                {{ owedMoney === 0 ? 'Payer' : 'Rendre' }}
+            <p *ngIf="owedMoney === 0 && subtotal !== 0">
+                Total restant : {{ totalPrice - subtotal }} €
+            </p>
+            <p *ngIf="owedMoney !== 0">Argent à rendre : {{ owedMoney }}</p>
+            <button
+                (click)="pay()"
+                type="button"
+                class="btn btn-primary btn-lg"
+                data-toggle="modal"
+                data-target="#payModal"
+                (click)="paymentSelected = ''; paymentSelected !== 'cash'"
+                [disabled]="totalPrice <= 0"
+                data-backdrop="static"
+                data-keyboard="false"
+            >
+                {{ owedMoney === 0 ? "Payer" : "Rendre" }}
             </button>
         </div>
     </div>
 </div>
 
-
 <div class="modal" tabindex="-1" role="dialog" id="payModal">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <p class="text-center">Sélectionnez un ou plusieurs mode de paiement</p>
+                <p class="text-center">
+                    Sélectionnez un ou plusieurs mode de paiement
+                </p>
                 <div class="container">
                     <div class="row">
                         <div class="col-4 d-flex justify-content-start">
-                            <button *ngIf="owedMoney === 0" (click)="paymentSelected = 'CB'"
-                                    class="payment-type-btn" [ngClass]="{'selected': paymentSelected === 'CB'}">
+                            <button
+                                *ngIf="owedMoney === 0"
+                                (click)="paymentSelected = 'CB'"
+                                class="payment-type-btn"
+                                [ngClass]="{
+                                    selected: paymentSelected === 'CB'
+                                }"
+                            >
                                 <img
                                     src="https://www.prestasoo.com/images/logo-cb.jpg"
-                                    alt="CB">
+                                    alt="CB"
+                                />
                             </button>
                         </div>
                         <div class="col-4 d-flex justify-content-center">
-                            <button (click)="paymentSelected = 'cash'" class="payment-type-btn"
-                                    [ngClass]="{'selected': paymentSelected === 'cash' || owedMoney !== 0}">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png" alt="Espèces">
+                            <button
+                                (click)="paymentSelected = 'cash'"
+                                class="payment-type-btn"
+                                [ngClass]="{
+                                    selected:
+                                        paymentSelected === 'cash' ||
+                                        owedMoney !== 0
+                                }"
+                            >
+                                <img
+                                    src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png"
+                                    alt="Espèces"
+                                />
                             </button>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <button *ngIf="owedMoney === 0" (click)="paymentSelected = 'check'" class="payment-type-btn"
-                                    [ngClass]="{'selected': paymentSelected === 'check'}">
+                            <button
+                                *ngIf="owedMoney === 0"
+                                (click)="paymentSelected = 'check'"
+                                class="payment-type-btn"
+                                [ngClass]="{
+                                    selected: paymentSelected === 'check'
+                                }"
+                            >
                                 <img
                                     src="https://labouillettetarnaise.com/wp-content/uploads/2017/12/paiement-cheque.png"
-                                    alt="Chèque">
+                                    alt="Chèque"
+                                />
                             </button>
                         </div>
                     </div>
@@ -85,7 +131,17 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col d-flex justify-content-end">
-                            <button [disabled]="!paymentSelected" *ngIf="owedMoney === 0  " (click)="payPart()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#payModal" data-backdrop="static" data-keyboard="false">
+                            <button
+                                [disabled]="!paymentSelected"
+                                *ngIf="owedMoney === 0"
+                                (click)="payPart()"
+                                type="button"
+                                class="btn btn-secondary"
+                                data-toggle="modal"
+                                data-target="#payModal"
+                                data-backdrop="static"
+                                data-keyboard="false"
+                            >
                                 Payer une partie
                             </button>
                         </div>
@@ -94,22 +150,35 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-4 d-flex justify-content-start">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeModal (click)="onCloseModal()">< Retour
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                                #closeModal
+                                (click)="onCloseModal()"
+                            >
+                                < Retour
                             </button>
                         </div>
                         <div class="col-4 d-flex justify-content-center">
                             <div class="price-amount btn">
                                 <p *ngIf="owedMoney === 0">
-                                    Reste à payer : {{totalPrice - subtotal}} €
+                                    Reste à payer :
+                                    {{ totalPrice - subtotal }} €
                                 </p>
                                 <p *ngIf="owedMoney !== 0">
-                                    Argent à rendre : {{owedMoney}}
+                                    Argent à rendre : {{ owedMoney }}
                                 </p>
                             </div>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <button [disabled]="!paymentSelected && owedMoney === 0 " type="button" class="btn btn-primary" (click)="changeToPaid()">
-                                {{ owedMoney === 0 ? 'Payer >' : 'Rendre >' }}
+                            <button
+                                [disabled]="!paymentSelected && owedMoney === 0"
+                                type="button"
+                                class="btn btn-primary"
+                                (click)="changeToPaid()"
+                            >
+                                {{ owedMoney === 0 ? "Payer >" : "Rendre >" }}
                             </button>
                         </div>
                     </div>
@@ -118,3 +187,4 @@
         </div>
     </div>
 </div>
+<app-footer></app-footer>

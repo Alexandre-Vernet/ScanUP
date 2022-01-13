@@ -12,6 +12,10 @@ import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReceiptComponent } from './receipt/receipt.component';
+import { AdminComponent } from './admin/admin.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
     declarations: [
@@ -22,12 +26,16 @@ import { ReceiptComponent } from './receipt/receipt.component';
         ClavierComponent,
         ReceiptComponent,
         NavComponent,
+        AdminComponent,
+        FooterComponent,
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
         ReactiveFormsModule,
+        HttpClientModule,
+        NgbModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

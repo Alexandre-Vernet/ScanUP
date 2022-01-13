@@ -1,0 +1,289 @@
+<app-nav></app-nav>
+<body>
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Gestions des <b>Produits</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <a
+                                href="#addEmployeeModal"
+                                class="btn btn-success"
+                                data-toggle="modal"
+                                ><i class="material-icons">&#xE147;</i>
+                                <span>Ajouter un nouveau produit</span></a
+                            >
+                            <a
+                                (click)="deleteMultiple()"
+                                class="btn btn-danger"
+                                data-toggle="modal"
+                                ><i class="material-icons">&#xE15C;</i>
+                                <span>Supprimer</span></a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        id="selectAll"
+                                        (change)="selectAll($event)"
+                                    />
+                                    <label for="selectAll"></label>
+                                </span>
+                            </th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Photo</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of products">
+                            <td>
+                                <span class="custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        id="checkbox1"
+                                        name="options[]"
+                                        [checked]="isChecked"
+                                        (change)="select($event, product.id)"
+                                    />
+                                    <label for="checkbox1"></label>
+                                </span>
+                            </td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.img }}</td>
+                            <td>
+                                <a
+                                    class="edit"
+                                    data-toggle="modal"
+                                    (click)="openModal(product)"
+                                    ><i
+                                        class="material-icons"
+                                        data-toggle="tooltip"
+                                        title="Editer"
+                                        >&#xE254;</i
+                                    ></a
+                                >
+                                <a
+                                    class="delete"
+                                    data-toggle="modal"
+                                    (click)="openModalD(product.id)"
+                                    ><i
+                                        class="material-icons"
+                                        data-toggle="tooltip"
+                                        title="Supprimer"
+                                        >&#xE872;</i
+                                    ></a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div class="hint-text">
+                        Showing <b>{{ products.length }}</b> out of
+                        <b>{{ products.length }}</b> entries
+                    </div>
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a href="#">Précédent</a>
+                        </li>
+                        <li class="page-item" active>
+                            <a href="#" class="page-link">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">Suivant</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal HTML -->
+    <div id="addEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form [formGroup]="formGroup" (ngSubmit)="addProduct()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ajouter produit</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nom</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                formControlName="name"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Prix</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                formControlName="price"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Photo</label>
+                            <textarea
+                                class="form-control"
+                                formControlName="img"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                            value="Annuler"
+                        />
+                        <input
+                            type="submit"
+                            class="btn btn-success"
+                            value="Ajouter"
+                        />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal HTML -->
+    <ng-template #editModal let-modal>
+        <div class="modal-content">
+            <form
+                [formGroup]="formGroup"
+                (ngSubmit)="editProduct(oneProduct.id)"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">Edition produit</h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="closeModal()"
+                        aria-hidden="true"
+                    >
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name"
+                            [(ngModel)]="oneProduct.name"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            formControlName="price"
+                            [(ngModel)]="oneProduct.price"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <textarea
+                            class="form-control"
+                            formControlName="img"
+                            [(ngModel)]="oneProduct.img"
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input
+                        type="button"
+                        class="btn btn-default"
+                        (click)="closeModal()"
+                        value="Annuler"
+                    />
+                    <input
+                        type="submit"
+                        class="btn btn-info"
+                        value="Enregistrer"
+                    />
+                </div>
+            </form>
+        </div>
+    </ng-template>
+
+    <!-- Delete Modal HTML -->
+    <ng-template #deleteModal let-modal>
+        <div class="modal-content">
+            <form [formGroup]="formGroup" (ngSubmit)="deleteProduct(productId)">
+                <div class="modal-header">
+                    <h4 class="modal-title">Supprimer produit</h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="closeModal()"
+                        aria-hidden="true"
+                    >
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etês vous sur de vouloir supprimer ce produit?</p>
+                    <p class="text-warning">
+                        <small>Cette action est irréversible.</small>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <input
+                        type="button"
+                        class="btn btn-default"
+                        (click)="closeModal()"
+                        value="Annuler"
+                    />
+                    <input
+                        type="submit"
+                        class="btn btn-danger"
+                        value="Supprimer"
+                    />
+                </div>
+            </form>
+        </div>
+    </ng-template>
+    <app-footer></app-footer>
+</body>

@@ -6,8 +6,13 @@
         <button class="btn-theme" (click)="backgroundColor('#171a21')"></button>
         <button class="btn-theme" (click)="backgroundColor('#e5e5e5')"></button>
     </div>
-    <p>Bonjour Truc</p>
-    <p>{{currentState}}</p>
-    <p id="date">{{myDate}}</p>
-    <img class="button-disconnect" src="assets/img/power.png" (click)="disconnect()" alt="disconnect">
+    <p><a [routerLink]="['/general']"> Bonjour Truc</a></p>
+    <p>{{ currentState }}</p>
+    <p id="date">{{ myDate }}</p>
+    <img
+        class="button-disconnect"
+        src="assets/img/power.png"
+        (click)="disconnect()"
+        alt="disconnect"
+    />
 </nav>
