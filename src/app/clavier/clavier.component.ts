@@ -9,10 +9,8 @@ import {
 import { FormControl } from '@angular/forms';
 import { StateService } from '../service/state.service';
 import { CartService } from '../service/cart.service';
-import { ProductCart } from '../product-cart';
 import { State } from '../state.enum';
 import { ProductsService } from '../service/products.service';
-import { compileDeclareInjectableFromMetadata } from '@angular/compiler';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -34,7 +32,7 @@ export class ClavierComponent {
     productList = this.productService.productList();
 
     @Input() payPart: boolean;
-    @Input() isCash: boolean;
+    @Input() payMethod: string;
     @Output() paidPartEvent = new EventEmitter<number>();
 
     @ViewChild('closeModalUnknownProduct') closeModalUnknownProduct;
@@ -54,7 +52,6 @@ export class ClavierComponent {
         private cartService: CartService,
         private productService: ProductsService
     ) {
-        console.log(this.productList);
         this.stateService.currentStateChanged$.subscribe((data) => {
             this.currentState = data;
 
@@ -98,6 +95,7 @@ export class ClavierComponent {
             this.valueClavier !== '' &&
             typeof parseInt(this.valueClavier) === 'number'
         ) {
+            this.cartService.addPaimentAction(`${this.payMethod} ${this.valueClavier}`);
             this.paidPartEvent.emit(parseInt(this.valueClavier));
             this.valueClavier = '';
             this.codeControl.setValue('');
@@ -105,10 +103,11 @@ export class ClavierComponent {
 
         //si on paie en cash
         if (
-            this.isCash &&
+            this.payMethod === 'cash' &&
             this.valueClavier !== '' &&
             typeof parseInt(this.valueClavier) === 'number'
         ) {
+            this.cartService.addPaimentAction(`cash ${this.valueClavier}`);
             this.paidPartEvent.emit(parseInt(this.valueClavier));
             this.valueClavier = '';
             this.codeControl.setValue('');

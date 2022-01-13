@@ -183,27 +183,30 @@ export class GeneralComponent implements OnInit {
 
     changeToPaid() {
         if (this.paymentSelected === 'CB' || this.paymentSelected === 'check') {
+            this.cartService.addPaimentAction(`${this.paymentSelected} ${this.subtotal}`);
             this.stateService.checkState(
                 this.stateChoosePayMode,
                 this.stateWaitForScan,
                 true,
                 Swal.fire('Paiement effectué', '', 'success')
             );
+            this.cartService.setReceiptCart();
             this.cartService.emptyCart();
             this.subtotal = 0;
             this.totalPrice = 0;
             this.owedMoney = 0;
-            this.isCashBool = false;
             this.closeModal.nativeElement.click();
+            this.displayReceipt();
         } else if (this.paymentSelected === 'cash' && this.owedMoney === 0) {
             this.stateService.checkState(
                 this.stateChoosePayMode,
                 this.stateCashAmount,
                 true,
-                (this.isCashBool = true)
+                null
             );
             this.closeModal.nativeElement.click();
         } else if (this.owedMoney !== 0) {
+            this.cartService.addPaimentAction(`rendu ${this.owedMoney}`);
             this.stateService.checkState(
                 this.stateCashOut,
                 this.stateWaitForScan,
@@ -211,10 +214,12 @@ export class GeneralComponent implements OnInit {
                 Swal.fire('Paiement effectué', '', 'success')
             );
             this.closeModal.nativeElement.click();
+            this.cartService.setReceiptCart();
             this.cartService.emptyCart();
             this.subtotal = 0;
             this.totalPrice = 0;
             this.owedMoney = 0;
+            this.displayReceipt();
         }
     }
 
@@ -236,12 +241,14 @@ export class GeneralComponent implements OnInit {
             number === this.totalPrice - this.subtotal
         ) {
             Swal.fire('Paiement effectué', '', 'success');
+            this.cartService.setReceiptCart();
             this.cartService.emptyCart();
             this.subtotal = 0;
             this.totalPrice = 0;
             this.payPartBool = false;
+            this.displayReceipt();
         } else if (
-            this.isCashBool &&
+            this.paymentSelected === 'cash' &&
             number > this.totalPrice - this.subtotal
         ) {
             this.owedMoney = number - (this.totalPrice - this.subtotal);
@@ -260,7 +267,12 @@ export class GeneralComponent implements OnInit {
     isOnPay() {
         return (
             this.currentState === State.ChoosePayMode ||
-            this.currentState === State.AmountToPay
+            this.currentState === State.AmountToPay ||
+            this.currentState === State.CashAmount
         );
+    }
+
+    displayReceipt(){
+        this.router.navigateByUrl('/receipt');
     }
 }

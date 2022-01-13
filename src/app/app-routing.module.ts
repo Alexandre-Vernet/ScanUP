@@ -4,12 +4,18 @@ import { RouterModule, Routes } from "@angular/router";
 import { AuthComponent } from "./auth/auth.component";
 import { GeneralComponent } from "./general/general.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { ReceiptComponent } from "./receipt/receipt.component";
 
 const routes: Routes = [
     { path: "", component: AuthComponent },
     {
         path: "general",
         component: GeneralComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: "receipt",
+        component: ReceiptComponent,
         canActivate: [AuthGuard]
     }
 ];

@@ -1,0 +1,41 @@
+<div class="receipt">
+    <p>{{marketInfos.name}}</p>
+    <p>{{marketInfos.address}}</p>
+    <p>{{marketInfos.city}}</p>
+    <p>{{marketInfos.phone}}</p>
+    <p>{{marketInfos.web}}</p>
+    <br/>
+    <table class="receipt__table">
+        <thead>
+            <tr>
+                <th>Désignation</th>
+                <th>Qté</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of productList">
+                <td>
+                    {{ product.name }}
+                </td>
+                <td>
+                    {{ product.quantity }}
+                </td>
+                <td>
+                    {{ product.price }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p>==================================</p>
+    <p>TOTAL A PAYER {{getTotal()}} €</p>
+    <p>DONT {{getTVA()}} € de TVA</p>
+    <p>==================================</p>
+    <br/>
+    <p> Règlements </p>
+    <p *ngFor="let paiement of paimentMethods">
+        {{paiement}}€
+    </p>
+
+</div>

@@ -14,7 +14,12 @@ export class CartService {
     cartChanged$: Observable<Cart> = this.cart$.asObservable();
     private cart: Cart = new Cart();
 
-    constructor() {}
+    paiementHistory: string[] = [];
+
+    receiptPaiementHistory: string[] = [];
+    receiptCart: any[];
+
+    constructor() { }
 
     getCart() {
         return this.cart;
@@ -58,6 +63,7 @@ export class CartService {
 
     emptyCart() {
         this.cart.emptyCart();
+        this.emptyPaiementHistory();
         this.notifyCart();
     }
 
@@ -67,5 +73,19 @@ export class CartService {
 
     notifyCart() {
         this.cart$.next(this.cart);
+    }
+
+    addPaimentAction(paimentAction: string) {
+        console.log(paimentAction)
+        this.paiementHistory.push(paimentAction);
+    }
+
+    emptyPaiementHistory() {
+        this.paiementHistory.length = 0;
+    }
+
+    setReceiptCart() {
+        this.receiptCart = [...this.cart.products];
+        this.receiptPaiementHistory = [...this.paiementHistory];
     }
 }

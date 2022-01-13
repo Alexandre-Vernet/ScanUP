@@ -11,6 +11,7 @@ import { ClavierComponent } from './clavier/clavier.component';
 import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReceiptComponent } from './receipt/receipt.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         GeneralComponent,
         ListProductsComponent,
         ClavierComponent,
+        ReceiptComponent,
         NavComponent,
     ],
     imports: [

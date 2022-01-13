@@ -37,13 +37,13 @@
         </div>
     </div>
     <div>
-        <app-clavier [isCash]="isCashBool" [payPart]="payPartBool" (paidPartEvent)="changeSubtotal($event)"></app-clavier>
+        <app-clavier [payMethod]="paymentSelected" [payPart]="payPartBool" (paidPartEvent)="changeSubtotal($event)"></app-clavier>
         <div id="paiement" class="d-flex flex-column align-items-center">
             <p *ngIf="owedMoney === 0">Total : {{ totalPrice }} €</p>
             <p *ngIf="owedMoney === 0 && subtotal!== 0">Total restant : {{ totalPrice - subtotal }} €</p>
             <p *ngIf="owedMoney !== 0">Argent à rendre : {{owedMoney}}</p>
             <button (click)="pay()" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#payModal"
-                    (click)="paymentSelected = ''; isCashBool = false" [disabled]="totalPrice<=0" data-backdrop="static" data-keyboard="false">
+                    (click)="paymentSelected = ''; paymentSelected !== 'cash'" [disabled]="totalPrice<=0" data-backdrop="static" data-keyboard="false">
                 {{ owedMoney === 0 ? 'Payer' : 'Rendre' }}
             </button>
         </div>
