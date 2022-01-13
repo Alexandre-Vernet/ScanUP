@@ -21,10 +21,22 @@ export class ReceiptComponent {
     }
 
     constructor(
-        private cartService : CartService
     ) {
-        this.productList = this.cartService.receiptCart;
-        this.paimentMethods = this.cartService.receiptPaiementHistory;
+
+        if(!localStorage.getItem('receiptData')){
+            return;
+        }
+
+        const { productList, paimentMethods } = JSON.parse(localStorage.getItem('receiptData'));
+
+        if (!productList && !paimentMethods) {
+            return;
+        }
+
+        this.productList = productList;
+        this.paimentMethods = paimentMethods;
+
+        localStorage.removeItem('receiptData');
     }
 
     getTotal(): number {

@@ -273,6 +273,12 @@ export class GeneralComponent implements OnInit {
     }
 
     displayReceipt() {
-        this.router.navigateByUrl('/receipt');
+        const data = {
+            productList: this.cartService.receiptCart,
+            paimentMethods: this.cartService.receiptPaiementHistory,
+        }
+        localStorage.setItem('receiptData', JSON.stringify(data));
+        window.open('/receipt');
+
     }
 }
