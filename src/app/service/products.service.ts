@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ProductDto } from './produc';
 
 const PRODUCT_LIST = [
     {
@@ -39,9 +41,10 @@ const PRODUCT_LIST = [
     providedIn: 'root',
 })
 export class ProductsService {
-    // "base de données"
+    prefixePath = 'api';
+    productsResourcePath = 'products';
 
-    constructor() {}
+    constructor(private http: HttpClient) {}
 
     checkProductExist(id: number) {
         return { ...PRODUCT_LIST.find((product) => product.id === id) };
@@ -49,5 +52,37 @@ export class ProductsService {
 
     productList() {
         return [...PRODUCT_LIST];
+    }
+
+    findAll() {
+        return this.http.get<ProductDto[]>(
+            '/' + this.prefixePath + '/' + this.productsResourcePath
+        );
+    }
+
+    getById(id: string) {
+        return this.http.get(
+            '/' + this.prefixePath + '/' + this.productsResourcePath + '/' + id
+        );
+    }
+
+    create(obj: ProductDto) {
+        return this.http.post(
+            '/' + this.prefixePath + '/' + this.productsResourcePath,
+            obj
+        );
+    }
+
+    update(id: string, obj: ProductDto) {
+        return this.http.put(
+            '/' + this.prefixePath + '/' + this.productsResourcePath + '/' + id,
+            obj
+        );
+    }
+
+    delete(id: number) {
+        return this.http.delete(
+            '/' + this.prefixePath + '/' + this.productsResourcePath + '/' + id
+        );
     }
 }
