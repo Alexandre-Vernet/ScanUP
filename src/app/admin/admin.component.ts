@@ -49,7 +49,6 @@ export class AdminComponent implements OnInit {
     }
     selectAll(e) {
         this.isChecked = e.currentTarget.checked;
-        console.log(this.isChecked);
         this.products.forEach((pdt) => {
             this.select(e, pdt.id);
         });
@@ -57,7 +56,6 @@ export class AdminComponent implements OnInit {
     select(e, id) {
         if (e.currentTarget.checked) {
             this.productIdList.push(id);
-            console.log(id);
         } else {
             this.productIdList.splice(this.productIdList.indexOf(id), 1);
         }
@@ -67,7 +65,6 @@ export class AdminComponent implements OnInit {
             .findAll()
             .subscribe((dataProduct: ProductDto[]) => {
                 this.products = dataProduct;
-                console.log(dataProduct);
             });
     }
     deleteProduct(id) {

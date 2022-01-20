@@ -6,7 +6,7 @@ import { State } from '../state.enum';
     providedIn: 'root',
 })
 export class StateService {
-    constructor() { }
+    constructor() {}
 
     currentState = State.WaitForScan;
     idEdit: number;

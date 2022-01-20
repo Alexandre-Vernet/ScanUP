@@ -19,7 +19,7 @@ export class CartService {
     receiptPaiementHistory: string[] = [];
     receiptCart: any[];
 
-    constructor() { }
+    constructor() {}
 
     getCart() {
         return this.cart;
@@ -37,7 +37,9 @@ export class CartService {
 
     changeQuantity(id, qte) {
         //remplacer id par index
-        const index = this.cart.products.findIndex((product) => product.id === id);
+        const index = this.cart.products.findIndex(
+            (product) => product.id === id
+        );
         if (index === -1) {
             return;
         }
@@ -76,7 +78,6 @@ export class CartService {
     }
 
     addPaimentAction(paimentAction: string) {
-        console.log(paimentAction)
         this.paiementHistory.push(paimentAction);
     }
 
